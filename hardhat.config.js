@@ -40,7 +40,7 @@ module.exports = {
     solidity: {
         compilers: [
             {
-                version: "0.8.24",
+                version: "0.8.20",
                 settings: {
                     optimizer: {
                         enabled: true,
@@ -95,6 +95,20 @@ module.exports = {
             }
         },
         // BSC
+        'bsc-testnet': {
+            url: "https://data-seed-prebsc-1-s3.binance.org:8545",
+            accounts,
+            live: true,
+            chainId: 97,
+            gasMultiplier: 2,
+            saveDeployments: true,
+            verify: {
+                etherscan: {
+                    apiKey: process.env.BSCSCAN_KEY,
+                    apiUrl: 'https://api-testnet.bscscan.com'
+                }
+            }
+        },
         bsc: {
             url: "https://bsc-dataseed.binance.org",
             accounts,

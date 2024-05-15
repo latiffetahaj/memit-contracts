@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -29,6 +29,7 @@ contract Fairlaunch is
     bool public teamHasClaimedTokens;
     Setting _settings;
     Tokenomics _tokenomics;
+    uint256 count;
 
     constructor() {
         _disableInitializers();
@@ -57,9 +58,11 @@ contract Fairlaunch is
     }
 
     function contribute() external payable {
+        if (msg.value < 0) revert YourAmountIsZero();
         if (_settings.endTime < block.timestamp) revert FairLaunchHasEnded();
-        contributions[_msgSender()];
+        contributions[_msgSender()] += msg.value;
         claimDate[_msgSender()] = block.timestamp + 10 days;
+        count++;
         emit Contribution(_msgSender(), msg.value);
     }
 
@@ -70,8 +73,8 @@ contract Fairlaunch is
         if (claims[_msgSender()] > 0) revert AlreadyClaimed();
         claims[_msgSender()] = Math.mulDiv(
             contributions[_msgSender()],
-            _tokenomics.totalContribution,
-            _tokenomics.membersAllocation
+            _tokenomics.membersAllocation,
+            _tokenomics.totalContribution
         );
         _settings.token.transfer(_msgSender(), claims[_msgSender()]);
     }
@@ -89,8 +92,6 @@ contract Fairlaunch is
      * Add Liquiduity after sale date ends
      */
     function addLiquidity() external {
-        // dev 10%
-        // sleep 5%
         if (_settings.endTime > block.timestamp) revert FairLaunchIsStillLive();
         uint256 total = address(this).balance;
         payable(_settings.team).sendValue(Math.mulDiv(1000, total, 10000));
@@ -125,7 +126,9 @@ contract Fairlaunch is
         returns (uint128 liquidity, uint256 amount0, uint256 amount1)
     {
         uint256 amount0ToAdd = _tokenomics.liquidityAllocation; // 40%
-        uint256 amount1ToAdd = address(this).balance;
+        uint256 balance = address(this).balance;
+        _settings.weth.deposit{value: balance}();
+        uint256 amount1ToAdd = _settings.weth.balanceOf(address(this));
         createPool(amount0ToAdd, amount1ToAdd);
         _settings.token.approve(address(_settings.uniswap), amount0ToAdd);
         _settings.weth.approve(address(_settings.uniswap), amount1ToAdd);
@@ -172,7 +175,6 @@ contract Fairlaunch is
      * project dev remove any ERC20Tokens Sent here after Launch
      */
     function removeTokens(IERC20Minimal token) external {
-        if (!_settings.lpAdded) revert LiquidtyIsNotYetAdded();
         // some users are still claiming.
         if (_settings.endTime > block.timestamp - 30 days)
             revert LiquidtyIsNotYetAdded();
@@ -180,5 +182,17 @@ contract Fairlaunch is
         if (tbal > 0) token.transfer(owner(), tbal);
         uint256 ethBal = address(this).balance;
         if (ethBal > 0) payable(owner()).sendValue(ethBal);
+    }
+
+    receive() external payable {}
+
+    function onERC721Received(
+        address,
+        address,
+        uint256 _tokenId,
+        bytes memory
+    ) public override returns (bytes4) {
+        tokenId = _tokenId;
+        return this.onERC721Received.selector;
     }
 }

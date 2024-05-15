@@ -22,10 +22,11 @@
         "sepolia:deploy-punter": "hardhat --network  sepolia deploy --tags punter",
         "sepolia:verify": "hardhat --network sepolia verifix",
         "bsc:deploy": "hardhat --network bsc deploy",
-        "bsc:deploy-main": "hardhat --network  bsc deploy --tags main",
-        "bsc:deploy-post": "hardhat --network  bsc deploy --tags post",
-        "bsc:deploy-punter": "hardhat --network  bsc deploy --tags punter",
-        "bsc:verify": "hardhat --network bsc verifix"
+        "bsc:verify": "hardhat --network bsc verifix",
+        "bsctestnet:deploy": "hardhat --network bsc-testnet deploy",
+        "bsctestnet:export": "hardhat --network bsc-testnet export --export exports/bsctestnet.json",
+        "bsctestnet:verify": "hardhat --network bsc-testnet etherscan-verify --solc-input",
+        "done": "npm run export && node build"
     },
     "devDependencies": {
         "@nomicfoundation/hardhat-toolbox": "^3.0.0",

@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract MyToken is Initializable, ERC20Upgradeable {
+contract Token is Initializable, ERC20Upgradeable {
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -17,6 +17,6 @@ contract MyToken is Initializable, ERC20Upgradeable {
         uint256 supply
     ) public initializer {
         __ERC20_init(name, symbol);
-        _mint(msg.sender, supply);
+        _mint(_msgSender(), supply);
     }
 }
