@@ -29,7 +29,7 @@ contract Fairlaunch is
     bool public teamHasClaimedTokens;
     Setting _settings;
     Tokenomics _tokenomics;
-    uint256 count;
+    uint256 public count;
 
     constructor() {
         _disableInitializers();
@@ -43,7 +43,8 @@ contract Fairlaunch is
         MAX_TICK = -MIN_TICK;
         TICK_SPACING = 60;
         uint256 tbal = _settings.token.balanceOf(address(this));
-        _tokenomics.membersAllocation = tbal / 2; //50%
+        _tokenomics.membersReward = Math.mulDiv(tbal, 500, 10000); //5%
+        _tokenomics.membersAllocation = Math.mulDiv(tbal, 4500, 10000); //45%
         _tokenomics.liquidityAllocation = Math.mulDiv(tbal, 4000, 10000); //40%
         _tokenomics.teamAllocation = Math.mulDiv(tbal, 1000, 10000); //10%
         claimDate[_settings.team] = block.timestamp + 25 days; //25day lock
@@ -60,6 +61,7 @@ contract Fairlaunch is
     function contribute() external payable {
         if (msg.value < 0) revert YourAmountIsZero();
         if (_settings.endTime < block.timestamp) revert FairLaunchHasEnded();
+        if (contributions[_msgSender()] == 0) count++;
         contributions[_msgSender()] += msg.value;
         claimDate[_msgSender()] = block.timestamp + 10 days;
         count++;
@@ -86,6 +88,10 @@ contract Fairlaunch is
         if (teamHasClaimedTokens) revert AlreadyClaimed();
         teamHasClaimedTokens = true;
         _settings.token.transfer(_settings.team, _tokenomics.teamAllocation);
+        _settings.token.transfer(
+            _settings.sleepfinance,
+            _tokenomics.membersReward
+        );
     }
 
     /**
@@ -94,9 +100,9 @@ contract Fairlaunch is
     function addLiquidity() external {
         if (_settings.endTime > block.timestamp) revert FairLaunchIsStillLive();
         uint256 total = address(this).balance;
-        payable(_settings.team).sendValue(Math.mulDiv(1000, total, 10000));
+        payable(_settings.team).sendValue(Math.mulDiv(total, 1000, 10000));
         payable(_settings.sleepfinance).sendValue(
-            Math.mulDiv(500, total, 10000)
+            Math.mulDiv(total, 500, 10000)
         );
         _tokenomics.totalContribution = address(this).balance;
         _addLp();

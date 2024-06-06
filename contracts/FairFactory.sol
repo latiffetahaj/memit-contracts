@@ -15,7 +15,7 @@ contract FairFactory is Ownable {
     address public tokenImplementation;
     address public fairLaunchImplementation;
     uint256 public fees;
-
+    error LaunchpadPrizeIsTooSmall();
     event CLONE(
         address indexed creator,
         address indexed fairlaunch,
@@ -60,7 +60,8 @@ contract FairFactory is Ownable {
             endTime: block.timestamp + 10 days
         });
         IFairLaunch(fairlaunch).initialize(settings);
-        payable(owner()).sendValue(fees);
+        if (msg.value < fees) revert LaunchpadPrizeIsTooSmall();
+        payable(owner()).sendValue(address(this).balance);
         emit CLONE(_msgSender(), fairlaunch, address(token));
     }
 

@@ -22,7 +22,8 @@ interface IFairLaunch {
         uint256 endTime;
     }
     struct Tokenomics {
-        uint256 membersAllocation; //50
+        uint256 membersReward; //5%
+        uint256 membersAllocation; //45
         uint256 liquidityAllocation; // 40
         uint256 teamAllocation; //10
         uint256 totalContribution;

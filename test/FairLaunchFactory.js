@@ -115,7 +115,8 @@ describe("FairLaunchFactory", function () {
             const info = await presale.tokenomics();
             const settings = await presale.settings();
             const tbal = ethers.parseEther('21000000');
-            expect(info.membersAllocation).to.be.eq(tbal / 2n);
+            expect(info.membersAllocation).to.be.eq((4500n * tbal) / 10000n);
+            expect(info.membersReward).to.be.eq((500n * tbal) / 10000n);
             expect(info.liquidityAllocation).to.be.eq((4000n * tbal) / 10000n);
             expect(info.teamAllocation).to.be.eq((1000n * tbal) / 10000n);
             expect(await presale.claimDate(team.address)).to.be.gte(twentyFiveDaysLater);
