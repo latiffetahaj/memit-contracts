@@ -1,10 +1,11 @@
 /* eslint-disable no-empty */
+const fs = require('fs');
+const path = require('path');
+
 const { defaultAbiCoder } = require('@ethersproject/abi');
 const axios = require('axios');
 const chalk = require('chalk');
-const fs = require('fs');
 const matchAll = require('match-all');
-const path = require('path');
 const qs = require('qs');
 
 function log(...args) {
@@ -330,10 +331,10 @@ const submitSources = async (
         } else {
             const settings = {
                 ...metadata.settings
-            }
+            };
             settings.libraries = {
                 "": metadata.settings.libraries
-            }
+            };
             delete settings.compilationTarget;
             solcInput = {
                 language: metadata.language,
@@ -532,6 +533,6 @@ const submitSources = async (
             }
         }
     }
-}
+};
 
 module.exports.submitSources = submitSources;
