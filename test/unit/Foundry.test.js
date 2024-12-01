@@ -123,7 +123,7 @@ describe("Foundry Contract", function () {
             };
 
             const deploymentFee = await foundry.getDeploymentFee();
-            const tx = await foundry.connect(user1).deploySystem(user1.address, settings, {
+            const tx = await foundry.connect(user1).deploySystem(user1.address, INITIAL_FEE, settings, {
                 value: deploymentFee
             });
 
@@ -160,7 +160,7 @@ describe("Foundry Contract", function () {
             const insufficientFee = deploymentFee - 1n;
 
             await expect(
-                foundry.connect(user1).deploySystem(user1.address, defaultBondingCurveSettings, {
+                foundry.connect(user1).deploySystem(user1.address, INITIAL_FEE, defaultBondingCurveSettings, {
                     value: insufficientFee
                 })
             ).to.be.revertedWithCustomError(
@@ -175,7 +175,7 @@ describe("Foundry Contract", function () {
 
             const initialBalance = await ethers.provider.getBalance(user1.address);
 
-            const tx = await foundry.connect(user1).deploySystem(user1.address, defaultBondingCurveSettings, {
+            const tx = await foundry.connect(user1).deploySystem(user1.address, INITIAL_FEE, defaultBondingCurveSettings, {
                 value: excessFee
             });
             const receipt = await tx.wait();
@@ -191,7 +191,7 @@ describe("Foundry Contract", function () {
         it("should revert deployment with zero address owner", async function () {
             const deploymentFee = await foundry.getDeploymentFee();
             await expect(
-                foundry.deploySystem(ethers.ZeroAddress, defaultBondingCurveSettings, {
+                foundry.deploySystem(ethers.ZeroAddress, INITIAL_FEE, defaultBondingCurveSettings, {
                     value: deploymentFee
                 })
             ).to.be.revertedWithCustomError(foundry, "ZeroAddress");
@@ -259,7 +259,7 @@ describe("Foundry Contract", function () {
 
         it("should allow owner to withdraw fees", async function () {
             // Deploy a system to accumulate fees
-            await foundry.connect(user1).deploySystem(user1.address, defaultBondingCurveSettings, {
+            await foundry.connect(user1).deploySystem(user1.address, INITIAL_FEE, defaultBondingCurveSettings, {
                 value: INITIAL_FEE
             });
 
@@ -300,7 +300,7 @@ describe("Foundry Contract", function () {
 
             // Deployment should fail while paused
             await expect(
-                foundry.connect(user1).deploySystem(user1.address, defaultBondingCurveSettings, {
+                foundry.connect(user1).deploySystem(user1.address, INITIAL_FEE, defaultBondingCurveSettings, {
                     value: INITIAL_FEE
                 })
             ).to.be.revertedWithCustomError(foundry, "EnforcedPause");
@@ -310,7 +310,7 @@ describe("Foundry Contract", function () {
 
             // Deployment should succeed after unpause
             await expect(
-                foundry.connect(user1).deploySystem(user1.address, defaultBondingCurveSettings, {
+                foundry.connect(user1).deploySystem(user1.address, INITIAL_FEE, defaultBondingCurveSettings, {
                     value: INITIAL_FEE
                 })
             ).to.not.be.reverted;
@@ -333,7 +333,7 @@ describe("Foundry Contract", function () {
 
     describe("Clone Tracking", function () {
         it("should correctly track deployed clones", async function () {
-            const tx = await foundry.connect(user1).deploySystem(user1.address, defaultBondingCurveSettings, {
+            const tx = await foundry.connect(user1).deploySystem(user1.address, INITIAL_FEE, defaultBondingCurveSettings, {
                 value: INITIAL_FEE
             });
             const receipt = await tx.wait();
@@ -353,7 +353,7 @@ describe("Foundry Contract", function () {
 
             // Deploy three systems
             for (let i = 0; i < 3; i++) {
-                const tx = await foundry.connect(user1).deploySystem(user1.address, defaultBondingCurveSettings, {
+                const tx = await foundry.connect(user1).deploySystem(user1.address, INITIAL_FEE, defaultBondingCurveSettings, {
                     value: INITIAL_FEE
                 });
                 const receipt = await tx.wait();

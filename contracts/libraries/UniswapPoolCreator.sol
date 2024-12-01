@@ -10,6 +10,7 @@ library UniswapPoolCreator {
     // Uniswap v3 tick range limits
     int24 private constant MIN_TICK = -887272;
     int24 private constant MAX_TICK = 887272;
+    int24 private constant TICK_SPACING = 60;
 
     struct PoolParams {
         address factory;
@@ -25,7 +26,6 @@ library UniswapPoolCreator {
         address token;
         address weth;
         uint24 fee;
-        int24 tickSpacing;
         uint256 ethAmount;
         uint256 tokenAmount;
     }
@@ -46,32 +46,27 @@ library UniswapPoolCreator {
         PositionParams memory params
     ) internal returns (uint256 tokenId) {
         // Round to the nearest tick spacing
-        int24 minTick = (MIN_TICK / params.tickSpacing) * params.tickSpacing;
-        int24 maxTick = (MAX_TICK / params.tickSpacing) * params.tickSpacing;
-
+        int24 minTick = (MIN_TICK / TICK_SPACING) * TICK_SPACING;
+        int24 maxTick = (MAX_TICK / TICK_SPACING) * TICK_SPACING;
         // Calculate minimum amounts with 50% slippage tolerance
-        uint256 amount0Min = (params.tokenAmount * 50) / 100;
-        uint256 amount1Min = (params.ethAmount * 50) / 100;
-
+        uint256 amount0Min = (params.tokenAmount * 90) / 100;
+        uint256 amount1Min = (params.ethAmount * 90) / 100;
+        bool tokenIs0 = params.token < params.weth;
         INonfungiblePositionManager.MintParams
             memory mintParams = INonfungiblePositionManager.MintParams({
-                token0: params.token < params.weth ? params.token : params.weth,
-                token1: params.token < params.weth ? params.weth : params.token,
+                token0: tokenIs0 ? params.token : params.weth,
+                token1: tokenIs0 ? params.weth : params.token,
                 fee: params.fee,
                 tickLower: minTick,
                 tickUpper: maxTick,
-                amount0Desired: params.token < params.weth
+                amount0Desired: tokenIs0
                     ? params.tokenAmount
                     : params.ethAmount,
-                amount1Desired: params.token < params.weth
+                amount1Desired: tokenIs0
                     ? params.ethAmount
                     : params.tokenAmount,
-                amount0Min: params.token < params.weth
-                    ? amount0Min
-                    : amount1Min,
-                amount1Min: params.token < params.weth
-                    ? amount1Min
-                    : amount0Min,
+                amount0Min: tokenIs0 ? amount0Min : amount1Min,
+                amount1Min: tokenIs0 ? amount1Min : amount0Min,
                 recipient: address(this),
                 deadline: block.timestamp
             });

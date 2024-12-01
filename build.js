@@ -18,7 +18,7 @@ const make = async () => {
             };
         }
     }
-    console.log(data);
+
     for (const name in data) {
         const abiPath = `./build/${name}.json`;
         await fse.ensureDir(path.dirname(abiPath));

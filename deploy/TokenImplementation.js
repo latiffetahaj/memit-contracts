@@ -1,10 +1,11 @@
-module.exports = async function ({ getNamedAccounts, deployments }) {
+module.exports = async function ({ deployments, getNamedAccounts, }) {
     const { deploy } = deployments;
     const { deployer } = await getNamedAccounts();
-    await deploy("USDT", {
+    await deploy("TokenImplementation", {
         from: deployer,
+        args: [],
         log: true,
         deterministicDeployment: false
     });
 };
-module.exports.tags = ["USDT", "coins"];
+module.exports.tags = ["TokenImplementation"];

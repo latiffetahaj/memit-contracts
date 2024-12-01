@@ -81,6 +81,7 @@ contract Foundry is IFoundry, Ownable, ReentrancyGuard, Pausable {
      */
     function deploySystem(
         address owner,
+        uint256 factoryFees,
         IFactory.BondingCurveSettings calldata settings
     )
         external
@@ -110,6 +111,7 @@ contract Foundry is IFoundry, Ownable, ReentrancyGuard, Pausable {
 
         // Initialize factory with all required parameters
         IFactory(factoryAddress).initialize(
+            factoryFees,
             owner,
             tokenImplementation,
             bondingCurveImplementation,

@@ -92,6 +92,7 @@ interface IFoundry {
      */
     function deploySystem(
         address owner,
+         uint256 factoryFees,
         IFactory.BondingCurveSettings calldata settings
     ) external payable returns (address factoryAddress, address lockAddress);
 

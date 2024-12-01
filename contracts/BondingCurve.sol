@@ -15,6 +15,7 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "hardhat/console.sol";
 
 interface IToken is IERC20 {
     function TOTAL_SUPPLY() external returns (uint256);
@@ -53,9 +54,9 @@ contract BondingCurve is
     Phase public currentPhase;
 
     uint256 public totalPreBondingContributions;
-    uint256 public preBondingTokenPrice;
     uint256 public ethReserve;
     uint256 public tokenReserve;
+    uint256 public preBondingTokens;
     uint256 public totalETHCollected;
     uint256 public accumulatedFees;
 
@@ -84,9 +85,6 @@ contract BondingCurve is
         lockContract = lock_;
         settings = settings_;
         currentPhase = Phase.PreBonding;
-        preBondingTokenPrice =
-            (settings.virtualEth * 1e18) /
-            token.TOTAL_SUPPLY();
     }
 
     function contributePreBonding()
@@ -101,21 +99,24 @@ contract BondingCurve is
         if (newTotal > settings.preBondingTarget)
             revert PreBondingTargetReached();
 
+        uint256 tokensOut = BondingMath.calculateTokensForETH(
+            settings.virtualEth, // virtual
+            token.balanceOf(address(this)), // total supply (10B)
+            msg.value // contribution amount
+        );
         contributions[msg.sender] += msg.value;
-        totalPreBondingContributions = newTotal;
-
-        uint256 tokenAmount = (msg.value * 1e18) / preBondingTokenPrice;
-        tokenAllocations[msg.sender] += tokenAmount;
+        tokenAllocations[msg.sender] += tokensOut;
+        totalPreBondingContributions += msg.value;
+        preBondingTokens += tokensOut;
         tokenLocks[msg.sender] = true;
-
-        emit PreBondingContribution(msg.sender, msg.value, tokenAmount);
-
-        if (newTotal >= settings.preBondingTarget) {
+        emit PreBondingContribution(msg.sender, msg.value, tokensOut);
+        if (totalPreBondingContributions >= settings.preBondingTarget) {
             currentPhase = Phase.Bonding;
+            // Now ethReserve includes both virtual and real ETH
             ethReserve = settings.virtualEth + totalPreBondingContributions;
-            tokenReserve = token.balanceOf(address(this));
             totalETHCollected = totalPreBondingContributions;
-            emit PreBondingCompleted(settings.preBondingTarget, tokenReserve);
+            // tokenReserve is reduced by allocated tokens
+            tokenReserve = token.balanceOf(address(this)) - preBondingTokens;
         }
     }
 
@@ -150,7 +151,6 @@ contract BondingCurve is
         uint256 minETH
     ) external nonReentrant onlyPhase(Phase.Bonding) {
         if (tokenAmount == 0) revert InsufficientTokens();
-        if (tokenLocks[msg.sender]) revert TokensLocked();
         (uint256 ethToReceive, uint256 fee) = BondingMath.calculateETHForTokens(
             ethReserve,
             tokenReserve,
@@ -184,7 +184,6 @@ contract BondingCurve is
             });
 
         address pool = UniswapPoolCreator.createAndInitializePool(poolParams);
-
         uint256 ethLiquidity = address(this).balance;
         uint256 tokenLiquidity = (ethLiquidity * tokenReserve) / ethReserve;
 
@@ -194,14 +193,17 @@ contract BondingCurve is
             .PositionParams({
                 positionManager: settings.positionManager,
                 token: address(token),
-                weth: address(this),
+                weth: settings.weth,
                 fee: settings.poolFee,
-                tickSpacing: 60,
                 ethAmount: ethLiquidity,
                 tokenAmount: tokenLiquidity
             });
         uint256 tokenId = UniswapPoolCreator.createLPPosition(posParams);
-        // approve tokenId transfer
+        // Approve lock contract to transfer the NFT
+        INonfungiblePositionManager(settings.positionManager).approve(
+            lockContract,
+            tokenId
+        );
         ILock(lockContract).lockNFT(tokenId);
         uniswapPool = pool;
         lpTokenId = tokenId;
@@ -211,6 +213,26 @@ contract BondingCurve is
     }
 
     receive() external payable {}
+
+    /**
+     * @notice Withdraw allocated tokens after curve finalization
+     * @dev Can only be called after curve is finalized and only by addresses with allocations
+     * @param recipient Address to receive the tokens
+     */
+    function withdrawTokenAllocation(address recipient) external nonReentrant {
+        if (!isFinalized) revert CannotFinalizeYet();
+        if (recipient == address(0)) revert ZeroAddress();
+        if (!tokenLocks[msg.sender]) revert TokensNotLocked();
+        uint256 allocation = tokenAllocations[msg.sender];
+        if (allocation == 0) revert InsufficientTokens();
+        // Reset state before transfer to prevent reentrancy
+        tokenAllocations[msg.sender] = 0;
+        tokenLocks[msg.sender] = false;
+        // Transfer tokens to the specified recipient
+        token.safeTransfer(recipient, allocation);
+
+        emit TokensUnlocked(recipient);
+    }
 
     /**
      * @notice Implements IERC721Receiver

@@ -61,7 +61,7 @@ describe("Factory Contract", function () {
         );
 
         // Deploy system through Foundry (this creates and initializes Factory and Lock clones)
-        const tx = await foundry.deploySystem(owner.address, defaultSettings, {
+        const tx = await foundry.deploySystem(owner.address, DEPLOYMENT_FEE, defaultSettings, {
             value: DEPLOYMENT_FEE
         });
         const receipt = await tx.wait();
@@ -126,6 +126,7 @@ describe("Factory Contract", function () {
             // Try to initialize again (should fail)
             await expect(
                 factory.initialize(
+                    DEPLOYMENT_FEE,
                     owner.address,
                     await tokenImplementation.getAddress(),
                     await bondingCurveImplementation.getAddress(),
@@ -160,6 +161,7 @@ describe("Factory Contract", function () {
         it("should not allow reinitialization", async function () {
             await expect(
                 factory.initialize(
+                    DEPLOYMENT_FEE,
                     owner.address,
                     await tokenImplementation.getAddress(),
                     await bondingCurveImplementation.getAddress(),

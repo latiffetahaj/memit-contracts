@@ -100,7 +100,7 @@ module.exports = {
             accounts,
             live: true,
             chainId: 97,
-            gasMultiplier: 2,
+            // gasMultiplier: 2,
             saveDeployments: true,
             verify: {
                 etherscan: {
@@ -183,7 +183,7 @@ module.exports = {
             chainId: 11155111,
             live: true,
             saveDeployments: true,
-            gasMultiplier: 3,
+            gasMultiplier: 0,
             verify: {
                 skipContracts: [],
                 etherscan: {

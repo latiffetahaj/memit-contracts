@@ -42,6 +42,7 @@ contract Factory is
      * @inheritdoc IFactory
      */
     function initialize(
+        uint256 factoryFees,
         address owner,
         address tokenImpl,
         address bondingCurveImpl,
@@ -60,7 +61,10 @@ contract Factory is
         bondingCurveImplementation = bondingCurveImpl;
         lockContract = lockContractAddr;
         settings = initialSettings;
-        deploymentFee = 0.1 ether;
+        settings.preBondingTarget = (initialSettings.virtualEth * 20) / 100;
+        if (settings.bondingTarget <= settings.preBondingTarget)
+            revert InvalidDeploymentParameters();
+        deploymentFee = factoryFees;
     }
 
     function updateBondingCurveSettings(
@@ -68,6 +72,9 @@ contract Factory is
     ) external onlyOwner {
         // Update settings
         settings = newSettings;
+        settings.preBondingTarget = (newSettings.virtualEth * 20) / 100;
+        if (settings.bondingTarget <= settings.preBondingTarget)
+            revert InvalidDeploymentParameters();
         emit BondingCurveSettingsUpdated(
             newSettings.virtualEth,
             newSettings.preBondingTarget,

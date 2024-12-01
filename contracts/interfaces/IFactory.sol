@@ -130,6 +130,7 @@ interface IFactory {
      */
     // Update initialize function
     function initialize(
+        uint256 factoryFees,
         address owner,
         address tokenImpl,
         address bondingCurveImpl,
