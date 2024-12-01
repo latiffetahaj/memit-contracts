@@ -112,7 +112,7 @@ describe("Foundry Contract", function () {
         it("should deploy factory and lock contracts successfully", async function () {
             const settings = {
                 virtualEth: ethers.parseEther("5"),
-                preBondingTarget: ethers.parseEther("5"),
+                preBondingTarget: ethers.parseEther("1"),
                 bondingTarget: ethers.parseEther("30"),
                 minContribution: ethers.parseEther("0.1"),
                 poolFee: 3000, // 0.3%

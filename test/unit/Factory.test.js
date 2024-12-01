@@ -19,7 +19,7 @@ describe("Factory Contract", function () {
     // Default bonding curve settings
     const defaultSettings = {
         virtualEth: ethers.parseEther("5"),
-        preBondingTarget: ethers.parseEther("5"),
+        preBondingTarget: ethers.parseEther("1"),
         bondingTarget: ethers.parseEther("30"),
         minContribution: ethers.parseEther("0.1"),
         poolFee: 3000, // 0.3%
@@ -244,7 +244,7 @@ describe("Factory Contract", function () {
             const newSettings = {
                 ...defaultSettings,
                 virtualEth: ethers.parseEther("10"),
-                preBondingTarget: ethers.parseEther("10"),
+                preBondingTarget: ethers.parseEther("2"), // forces 20%
                 bondingTarget: ethers.parseEther("50")
             };
 
