@@ -33,7 +33,11 @@ interface ILock {
      * @param owner Address of the NFT owner
      * @param tokenId ID of the unlocked NFT
      */
-    event NFTUnlocked(address indexed owner, uint256 indexed tokenId);
+    event NFTUnlocked(
+        address indexed owner,
+        uint256 indexed tokenId,
+        address to
+    );
 
     /**
      * @notice Emitted when fees are claimed
@@ -52,9 +56,9 @@ interface ILock {
     // Functions
     function initialize() external;
 
-    function lockNFT(uint256 tokenId) external;
+    function lockNFT(uint256 tokenId, address owner) external;
 
-    function unlockNFT(uint256 tokenId) external;
+    function unlockNFT(uint256 tokenId, address to) external;
 
     function claimFees(
         uint256 tokenId

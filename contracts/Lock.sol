@@ -58,7 +58,7 @@ contract Lock is
      * @notice Lock a Uniswap V3 LP NFT
      * @param tokenId The ID of the NFT to lock
      */
-    function lockNFT(uint256 tokenId) external nonReentrant {
+    function lockNFT(uint256 tokenId, address owner) external nonReentrant {
         if (lockedNFTs[tokenId].isLocked) revert NFTAlreadyLocked();
 
         // Transfer NFT to this contract
@@ -66,22 +66,22 @@ contract Lock is
 
         // Create locked NFT record
         lockedNFTs[tokenId] = LockedNFT({
-            owner: _msgSender(),
+            owner: owner,
             tokenId: tokenId,
             isLocked: true,
             lockedAt: block.timestamp
         });
 
-        ownerNFTs[_msgSender()].push(tokenId);
+        ownerNFTs[owner].push(tokenId);
 
-        emit NFTLocked(_msgSender(), tokenId);
+        emit NFTLocked(owner, tokenId);
     }
 
     /**
      * @notice Unlock an NFT after the lock period
      * @param tokenId The ID of the NFT to unlock
      */
-    function unlockNFT(uint256 tokenId) external nonReentrant {
+    function unlockNFT(uint256 tokenId, address to) external nonReentrant {
         LockedNFT storage nft = lockedNFTs[tokenId];
 
         if (!nft.isLocked) revert NFTNotLocked();
@@ -90,7 +90,7 @@ contract Lock is
             revert LockPeriodNotEnded();
 
         // Transfer NFT back to owner
-        positionManager.safeTransferFrom(address(this), _msgSender(), tokenId);
+        positionManager.safeTransferFrom(address(this), to, tokenId);
 
         // Update state
         nft.isLocked = false;
@@ -98,7 +98,7 @@ contract Lock is
         // Remove from owner's NFT array
         _removeNFTFromOwner(_msgSender(), tokenId);
 
-        emit NFTUnlocked(_msgSender(), tokenId);
+        emit NFTUnlocked(_msgSender(), tokenId, to);
     }
 
     /**

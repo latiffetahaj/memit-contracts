@@ -223,7 +223,7 @@ contract BondingCurve is
             lockContract,
             tokenId
         );
-        ILock(lockContract).lockNFT(tokenId);
+        ILock(lockContract).lockNFT(tokenId, owner());
         uniswapPool = pool;
         lpTokenId = tokenId;
         isFinalized = true;
