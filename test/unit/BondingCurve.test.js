@@ -23,6 +23,7 @@ describe("BondingCurve Contract", function () {
     const BONDING_TARGET = ethers.parseEther("30");
     const MIN_CONTRIBUTION = ethers.parseEther("0.1");
     const POOL_FEE = 3000; // 0.3%
+    const SELL_FEE = 100n; // 1%
 
     const defaultSettings = {
         virtualEth: VIRTUAL_ETH,
@@ -30,6 +31,7 @@ describe("BondingCurve Contract", function () {
         bondingTarget: BONDING_TARGET,
         minContribution: MIN_CONTRIBUTION,
         poolFee: POOL_FEE,
+        sellFee: SELL_FEE,
         uniswapV3Factory: "0x1F98431c8aD98523631AE4a59f267346ea31F984",
         positionManager: "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
         weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",

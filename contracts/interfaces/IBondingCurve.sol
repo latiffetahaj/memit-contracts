@@ -80,14 +80,19 @@ interface IBondingCurve {
      * @notice Buy tokens during bonding phase
      * @param minTokens Minimum tokens to receive (slippage protection)
      */
-    function buyTokens(uint256 minTokens) external payable;
+    function buyTokens(
+        uint256 minTokens
+    ) external payable returns (uint256 tokensToReceive);
 
     /**
      * @notice Sell tokens during bonding phase
      * @param tokenAmount Amount of tokens to sell
      * @param minETH Minimum ETH to receive (slippage protection)
      */
-    function sellTokens(uint256 tokenAmount, uint256 minETH) external;
+    function sellTokens(
+        uint256 tokenAmount,
+        uint256 minETH
+    ) external returns (uint256 ethToReceive, uint256 fee);
 
     /**
      * @notice Finalize the curve and create Uniswap pool

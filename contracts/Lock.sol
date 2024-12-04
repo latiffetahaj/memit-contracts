@@ -104,13 +104,9 @@ contract Lock is
     /**
      * @notice Claim accumulated fees for a locked NFT position
      * @param tokenId The NFT position ID
-     * @param token0 The address of token0 in the pair
-     * @param token1 The address of token1 in the pair
      */
     function claimFees(
-        uint256 tokenId,
-        address token0,
-        address token1
+        uint256 tokenId
     ) external nonReentrant returns (uint256 amount0, uint256 amount1) {
         LockedNFT storage nft = lockedNFTs[tokenId];
 
@@ -127,14 +123,7 @@ contract Lock is
             })
         );
 
-        emit FeesClaimed(
-            _msgSender(),
-            tokenId,
-            token0,
-            token1,
-            amount0,
-            amount1
-        );
+        emit FeesClaimed(_msgSender(), tokenId, amount0, amount1);
     }
 
     /**

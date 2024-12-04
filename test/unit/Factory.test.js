@@ -23,6 +23,7 @@ describe("Factory Contract", function () {
         bondingTarget: ethers.parseEther("30"),
         minContribution: ethers.parseEther("0.1"),
         poolFee: 3000, // 0.3%
+        sellFee: 10000, // 0.3%
         uniswapV3Factory: "0x1F98431c8aD98523631AE4a59f267346ea31F984",
         positionManager: "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
         weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",

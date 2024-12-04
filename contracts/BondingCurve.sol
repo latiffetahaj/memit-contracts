@@ -87,6 +87,14 @@ contract BondingCurve is
         currentPhase = Phase.PreBonding;
     }
 
+    function getBondingCurveSettings()
+        external
+        view
+        returns (IFactory.BondingCurveSettings memory)
+    {
+        return settings;
+    }
+
     function contributePreBonding()
         external
         payable
@@ -122,12 +130,18 @@ contract BondingCurve is
 
     function buyTokens(
         uint256 minTokens
-    ) external payable nonReentrant onlyPhase(Phase.Bonding) {
+    )
+        external
+        payable
+        nonReentrant
+        onlyPhase(Phase.Bonding)
+        returns (uint256 tokensToReceive)
+    {
         if (msg.value < settings.minContribution) revert ContributionTooLow();
         if (totalETHCollected > settings.bondingTarget)
             revert BondingTargetReached();
 
-        uint256 tokensToReceive = BondingMath.calculateTokensForETH(
+        tokensToReceive = BondingMath.calculateTokensForETH(
             ethReserve,
             tokenReserve,
             msg.value
@@ -149,13 +163,18 @@ contract BondingCurve is
     function sellTokens(
         uint256 tokenAmount,
         uint256 minETH
-    ) external nonReentrant onlyPhase(Phase.Bonding) {
+    )
+        external
+        nonReentrant
+        onlyPhase(Phase.Bonding)
+        returns (uint256 ethToReceive, uint256 fee)
+    {
         if (tokenAmount == 0) revert InsufficientTokens();
-        (uint256 ethToReceive, uint256 fee) = BondingMath.calculateETHForTokens(
+        (ethToReceive, fee) = BondingMath.calculateETHForTokens(
             ethReserve,
             tokenReserve,
             tokenAmount,
-            true
+            settings.sellFee
         );
         if (ethToReceive < minETH) revert SlippageExceeded();
         uint256 availableETH = ethReserve - settings.virtualEth;
@@ -168,7 +187,7 @@ contract BondingCurve is
         emit TokensSold(msg.sender, tokenAmount, ethToReceive, fee);
     }
 
-    function finalizeCurve() external nonReentrant onlyOwner {
+    function finalizeCurve() external nonReentrant {
         if (totalETHCollected < settings.bondingTarget)
             revert CannotFinalizeYet();
         if (isFinalized) revert AlreadyFinalized();

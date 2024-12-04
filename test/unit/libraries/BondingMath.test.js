@@ -78,7 +78,7 @@ describe("BondingMath Library", function () {
                 ETH_RESERVE,
                 TOKEN_RESERVE,
                 tokenIn,
-                true
+                SELL_FEE
             );
             const [ethOut, fee] = [result[0], result[1]];
 
@@ -102,7 +102,7 @@ describe("BondingMath Library", function () {
                 ETH_RESERVE,
                 TOKEN_RESERVE,
                 tokenIn,
-                false,
+                0,
             );
             const [ethOut, fee] = [result[0], result[1]];
 
@@ -118,7 +118,7 @@ describe("BondingMath Library", function () {
                 ETH_RESERVE,
                 TOKEN_RESERVE,
                 tokenIn,
-                true,
+                SELL_FEE,
             );
             const [ethOut, fee] = [result[0], result[1]];
 
@@ -132,7 +132,7 @@ describe("BondingMath Library", function () {
                 ETH_RESERVE,
                 TOKEN_RESERVE,
                 tokenIn,
-                true,
+                SELL_FEE,
             );
             const [ethOut, fee] = [result[0], result[1]];
 
@@ -144,7 +144,7 @@ describe("BondingMath Library", function () {
                 ETH_RESERVE,
                 TOKEN_RESERVE,
                 0,
-                true,
+                SELL_FEE,
             );
             const [ethOut, fee] = [result[0], result[1]];
 
@@ -250,7 +250,7 @@ describe("BondingMath Library", function () {
                     largeButSafeValue,
                     largeButSafeValue,
                     ethers.parseEther("1000"),
-                    true
+                    SELL_FEE
                 )
             ).to.not.be.reverted;
         });
@@ -271,7 +271,7 @@ describe("BondingMath Library", function () {
                     ethers.parseEther("40"),
                     ethers.parseEther("1000000000"),
                     ethers.parseEther("400000"),
-                    true,
+                    SELL_FEE,
                 ),
             ).to.not.be.reverted;
         });

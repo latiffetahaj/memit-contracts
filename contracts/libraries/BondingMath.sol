@@ -3,7 +3,6 @@ pragma solidity ^0.8.20;
 
 library BondingMath {
     uint256 private constant PRECISION = 1e18;
-    uint256 private constant SELL_FEE = 100; // 1% fee (based on 10000)
 
     function calculateTokensForETH(
         uint256 ethReserve,
@@ -19,14 +18,13 @@ library BondingMath {
         uint256 ethReserve,
         uint256 tokenReserve,
         uint256 tokenIn,
-        bool applyFee
+        uint256 sellFee
     ) internal pure returns (uint256 ethOut, uint256 fee) {
         uint256 numerator = tokenIn * ethReserve;
         uint256 denominator = tokenReserve + tokenIn;
         ethOut = numerator / denominator;
-
-        if (applyFee) {
-            fee = (ethOut * SELL_FEE) / 10000;
+        if (sellFee > 0) {
+            fee = (ethOut * sellFee) / 10000;
             ethOut -= fee;
         }
     }

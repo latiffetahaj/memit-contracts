@@ -79,6 +79,7 @@ interface IFactory {
         uint256 bondingTarget;
         uint256 minContribution;
         uint24 poolFee;
+        uint24 sellFee;
         address uniswapV3Factory;
         address positionManager;
         address weth;

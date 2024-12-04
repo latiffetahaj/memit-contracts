@@ -17,14 +17,14 @@ contract BondingMathTest {
         uint256 ethReserve,
         uint256 tokenReserve,
         uint256 tokenIn,
-        bool applyFee
+        uint24 sellFee
     ) external pure returns (uint256 ethOut, uint256 fee) {
         return
             BondingMath.calculateETHForTokens(
                 ethReserve,
                 tokenReserve,
                 tokenIn,
-                applyFee
+                sellFee
             );
     }
 

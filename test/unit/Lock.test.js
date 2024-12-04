@@ -196,19 +196,13 @@ describe("Lock Contract", function () {
             // Mock fee accumulation
             await mockNFTManager.setFees(tokenId, ethers.parseEther("1"), ethers.parseEther("2"));
 
-            const tx = await lock.connect(user1).claimFees(
-                tokenId,
-                mockToken0.target,
-                mockToken1.target
-            );
+            const tx = await lock.connect(user1).claimFees(tokenId);
 
             await expect(tx)
                 .to.emit(lock, "FeesClaimed")
                 .withArgs(
                     user1.address,
                     tokenId,
-                    mockToken0.target,
-                    mockToken1.target,
                     ethers.parseEther("1"),
                     ethers.parseEther("2")
                 );
@@ -216,7 +210,7 @@ describe("Lock Contract", function () {
 
         it("should not allow fee claiming by non-owner", async function () {
             await expect(
-                lock.connect(user2).claimFees(tokenId, mockToken0.target, mockToken1.target)
+                lock.connect(user2).claimFees(tokenId)
             ).to.be.revertedWithCustomError(lock, "NotNFTOwner");
         });
 

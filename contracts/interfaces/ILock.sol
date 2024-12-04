@@ -39,16 +39,12 @@ interface ILock {
      * @notice Emitted when fees are claimed
      * @param owner Address claiming the fees
      * @param tokenId NFT position ID
-     * @param token0 Address of token0 in the pair
-     * @param token1 Address of token1 in the pair
      * @param amount0 Amount of token0 fees claimed
      * @param amount1 Amount of token1 fees claimed
      */
     event FeesClaimed(
         address indexed owner,
         uint256 indexed tokenId,
-        address token0,
-        address token1,
         uint256 amount0,
         uint256 amount1
     );
@@ -61,9 +57,7 @@ interface ILock {
     function unlockNFT(uint256 tokenId) external;
 
     function claimFees(
-        uint256 tokenId,
-        address token0,
-        address token1
+        uint256 tokenId
     ) external returns (uint256 amount0, uint256 amount1);
 
     function checkAvailableFees(

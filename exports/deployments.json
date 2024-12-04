@@ -1483,7 +1483,7 @@
       "chainId": "11155111",
       "contracts": {
         "BondingCurve": {
-          "address": "0x4a49A7ac79024C61B1Cde1485345Cd4ab6503F48",
+          "address": "0xa62F528B8392E861EaE55bAE1A535BF94d847B95",
           "abi": [
             {
               "inputs": [],
@@ -1854,7 +1854,13 @@
                 }
               ],
               "name": "buyTokens",
-              "outputs": [],
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "tokensToReceive",
+                  "type": "uint256"
+                }
+              ],
               "stateMutability": "payable",
               "type": "function"
             },
@@ -1918,6 +1924,71 @@
               "type": "function"
             },
             {
+              "inputs": [],
+              "name": "getBondingCurveSettings",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "virtualEth",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "preBondingTarget",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "bondingTarget",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minContribution",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint24",
+                      "name": "poolFee",
+                      "type": "uint24"
+                    },
+                    {
+                      "internalType": "uint24",
+                      "name": "sellFee",
+                      "type": "uint24"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "uniswapV3Factory",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "positionManager",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "weth",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "feeTo",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct IFactory.BondingCurveSettings",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
               "inputs": [
                 {
                   "internalType": "address",
@@ -1959,6 +2030,11 @@
                     {
                       "internalType": "uint24",
                       "name": "poolFee",
+                      "type": "uint24"
+                    },
+                    {
+                      "internalType": "uint24",
+                      "name": "sellFee",
                       "type": "uint24"
                     },
                     {
@@ -2125,7 +2201,18 @@
                 }
               ],
               "name": "sellTokens",
-              "outputs": [],
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "ethToReceive",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "fee",
+                  "type": "uint256"
+                }
+              ],
               "stateMutability": "nonpayable",
               "type": "function"
             },
@@ -2265,7 +2352,7 @@
           ]
         },
         "Factory": {
-          "address": "0xd236316B8489B10A6943863d7d0B89b8fE3Ab4EC",
+          "address": "0xDb9ecFed2f0f607df3CB937cA518Bd1BF1a5944C",
           "abi": [
             {
               "inputs": [],
@@ -2649,6 +2736,11 @@
                       "type": "uint24"
                     },
                     {
+                      "internalType": "uint24",
+                      "name": "sellFee",
+                      "type": "uint24"
+                    },
+                    {
                       "internalType": "address",
                       "name": "uniswapV3Factory",
                       "type": "address"
@@ -2790,6 +2882,11 @@
                       "type": "uint24"
                     },
                     {
+                      "internalType": "uint24",
+                      "name": "sellFee",
+                      "type": "uint24"
+                    },
+                    {
                       "internalType": "address",
                       "name": "uniswapV3Factory",
                       "type": "address"
@@ -2896,6 +2993,11 @@
                       "type": "uint24"
                     },
                     {
+                      "internalType": "uint24",
+                      "name": "sellFee",
+                      "type": "uint24"
+                    },
+                    {
                       "internalType": "address",
                       "name": "uniswapV3Factory",
                       "type": "address"
@@ -2959,7 +3061,7 @@
           ]
         },
         "Foundry": {
-          "address": "0x8179dd1d9FFd40B3Eb4D96C3FBF56ea869Fc4A80",
+          "address": "0xC51E5810fC1651164B801018aC941Da1b845B697",
           "abi": [
             {
               "inputs": [
@@ -3282,6 +3384,11 @@
                       "type": "uint24"
                     },
                     {
+                      "internalType": "uint24",
+                      "name": "sellFee",
+                      "type": "uint24"
+                    },
+                    {
                       "internalType": "address",
                       "name": "uniswapV3Factory",
                       "type": "address"
@@ -3518,7 +3625,7 @@
           ]
         },
         "Lock": {
-          "address": "0x4151077739df7cF36b7271913D195C67B3D3E2F9",
+          "address": "0x9A6142bcc6d93D1a677e8942986C715111a3E580",
           "abi": [
             {
               "inputs": [
@@ -3602,18 +3709,6 @@
                   "internalType": "uint256",
                   "name": "tokenId",
                   "type": "uint256"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "token0",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "token1",
-                  "type": "address"
                 },
                 {
                   "indexed": false,
@@ -3783,16 +3878,6 @@
                   "internalType": "uint256",
                   "name": "tokenId",
                   "type": "uint256"
-                },
-                {
-                  "internalType": "address",
-                  "name": "token0",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "token1",
-                  "type": "address"
                 }
               ],
               "name": "claimFees",
