@@ -1483,7 +1483,7 @@
       "chainId": "11155111",
       "contracts": {
         "BondingCurve": {
-          "address": "0xa62F528B8392E861EaE55bAE1A535BF94d847B95",
+          "address": "0x7Eb9A051392c771cF1Cf5482450B263628cbF6cc",
           "abi": [
             {
               "inputs": [],
@@ -3061,7 +3061,7 @@
           ]
         },
         "Foundry": {
-          "address": "0xC51E5810fC1651164B801018aC941Da1b845B697",
+          "address": "0xB2A3d4E68276a08BcF35eB60c4F8E10cB6Ea9177",
           "abi": [
             {
               "inputs": [
@@ -3625,7 +3625,7 @@
           ]
         },
         "Lock": {
-          "address": "0x9A6142bcc6d93D1a677e8942986C715111a3E580",
+          "address": "0x0eb154CeE53e49B3749f3E0b59c2189d0C638B01",
           "abi": [
             {
               "inputs": [
@@ -3772,6 +3772,12 @@
                   "internalType": "uint256",
                   "name": "tokenId",
                   "type": "uint256"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
                 }
               ],
               "name": "NFTUnlocked",
@@ -3966,6 +3972,11 @@
                   "internalType": "uint256",
                   "name": "tokenId",
                   "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "owner",
+                  "type": "address"
                 }
               ],
               "name": "lockNFT",
@@ -4130,6 +4141,11 @@
                   "internalType": "uint256",
                   "name": "tokenId",
                   "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
                 }
               ],
               "name": "unlockNFT",

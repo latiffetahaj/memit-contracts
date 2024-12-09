@@ -63,12 +63,13 @@ module.exports = {
         }
     },
     namedAccounts: {
-        deployer: {
-            default: 0,
-        },
-        oracle: {
-            default: 1,
-        },
+        deployer: { default: 0 },
+        ether: { default: 1 },
+        bsc: { default: 2 },
+        arbitrum: { default: 3 },
+        base: { default: 4 },
+        avalanche: { default: 5 },
+        zora: { default: 6 }
     },
     networks: {
         hardhat: {

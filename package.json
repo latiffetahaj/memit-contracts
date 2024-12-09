@@ -12,17 +12,10 @@
         "test:gas": "cross-env REPORT_GAS=true npm run test",
         "remove:logs": "hardhat remove-logs",
         "export": "hardhat export --export-all exports/deployments.json",
-        "goerli:deploy": "hardhat --network  goerli deploy",
-        "goerli:deploy-main": "hardhat --network  goerli deploy --tags main",
-        "goerli:deploy-post": "hardhat --network  goerli deploy --tags post",
-        "goerli:verify": "hardhat --network goerli verifix",
         "sepolia:deploy": "hardhat --network  sepolia deploy",
         "sepolia:verify": "hardhat --network  sepolia verifix",
         "bsc:deploy": "hardhat --network bsc deploy",
         "bsc:verify": "hardhat --network bsc verifix",
-        "bsctestnet:deploy": "hardhat --network bsc-testnet deploy",
-        "bsctestnet:export": "hardhat --network bsc-testnet export --export exports/bsctestnet.json",
-        "bsctestnet:verify": "hardhat --network bsc-testnet etherscan-verify --solc-input",
         "done": "npm run export && node build"
     },
     "devDependencies": {

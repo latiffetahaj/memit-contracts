@@ -110,7 +110,7 @@ describe("Lock Contract", function () {
         });
 
         it("should successfully lock an NFT", async function () {
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
 
             const lockedNFT = await lock.lockedNFTs(tokenId);
             expect(lockedNFT.owner).to.equal(user1.address);
@@ -122,14 +122,14 @@ describe("Lock Contract", function () {
         });
 
         it("should emit NFTLocked event", async function () {
-            await expect(lock.connect(user1).lockNFT(tokenId))
+            await expect(lock.connect(user1).lockNFT(tokenId, user1.address))
                 .to.emit(lock, "NFTLocked")
                 .withArgs(user1.address, tokenId);
         });
 
         it("should not allow locking already locked NFT", async function () {
-            await lock.connect(user1).lockNFT(tokenId);
-            await expect(lock.connect(user1).lockNFT(tokenId))
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
+            await expect(lock.connect(user1).lockNFT(tokenId, user1.address))
                 .to.be.revertedWithCustomError(lock, "NFTAlreadyLocked");
         });
 
@@ -138,8 +138,8 @@ describe("Lock Contract", function () {
             await mockNFTManager.mint(user1.address, tokenId2);
             await mockNFTManager.connect(user1).approve(lock.target, tokenId2);
 
-            await lock.connect(user1).lockNFT(tokenId);
-            await lock.connect(user1).lockNFT(tokenId2);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
+            await lock.connect(user1).lockNFT(tokenId2, user1.address);
 
             const ownerNFTs = await lock.getNFTsByOwner(user1.address);
             expect(ownerNFTs).to.have.lengthOf(2);
@@ -154,20 +154,20 @@ describe("Lock Contract", function () {
         beforeEach(async function () {
             await mockNFTManager.mint(user1.address, tokenId);
             await mockNFTManager.connect(user1).approve(lock.target, tokenId);
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
         });
 
         it("should not allow unlocking before lock period ends", async function () {
-            await expect(lock.connect(user1).unlockNFT(tokenId))
+            await expect(lock.connect(user1).unlockNFT(tokenId, user1.address))
                 .to.be.revertedWithCustomError(lock, "LockPeriodNotEnded");
         });
 
         it("should allow unlocking after lock period", async function () {
             await time.increase(LOCK_DURATION + 1);
 
-            await expect(lock.connect(user1).unlockNFT(tokenId))
+            await expect(lock.connect(user1).unlockNFT(tokenId, user1.address))
                 .to.emit(lock, "NFTUnlocked")
-                .withArgs(user1.address, tokenId);
+                .withArgs(user1.address, tokenId, user1.address);
 
             const lockedNFT = await lock.lockedNFTs(tokenId);
             expect(lockedNFT.isLocked).to.be.false;
@@ -178,7 +178,7 @@ describe("Lock Contract", function () {
 
         it("should not allow non-owner to unlock", async function () {
             await time.increase(LOCK_DURATION + 1);
-            await expect(lock.connect(user2).unlockNFT(tokenId))
+            await expect(lock.connect(user2).unlockNFT(tokenId, user1.address))
                 .to.be.revertedWithCustomError(lock, "NotNFTOwner");
         });
     });
@@ -189,7 +189,7 @@ describe("Lock Contract", function () {
         beforeEach(async function () {
             await mockNFTManager.mint(user1.address, tokenId);
             await mockNFTManager.connect(user1).approve(lock.target, tokenId);
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
         });
 
         it("should allow fee claiming by NFT owner", async function () {
@@ -234,12 +234,12 @@ describe("Lock Contract", function () {
         it("should correctly check if NFT is locked", async function () {
             expect(await lock.isNFTLocked(tokenId)).to.be.false;
 
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
             expect(await lock.isNFTLocked(tokenId)).to.be.true;
         });
 
         it("should correctly calculate remaining lock time", async function () {
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
 
             const remainingTime = await lock.getRemainingLockTime(tokenId);
             expect(remainingTime).to.be.closeTo(BigInt(LOCK_DURATION), BigInt(5)); // Allow small deviation due to block time
@@ -254,7 +254,7 @@ describe("Lock Contract", function () {
         });
 
         it("should return 0 remaining time after lock period ends", async function () {
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
             await time.increase(LOCK_DURATION + 1);
             expect(await lock.getRemainingLockTime(tokenId)).to.equal(0);
         });
@@ -267,14 +267,14 @@ describe("Lock Contract", function () {
             // First lock cycle
             await mockNFTManager.mint(user1.address, tokenId);
             await mockNFTManager.connect(user1).approve(lock.target, tokenId);
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
 
             await time.increase(LOCK_DURATION + 1);
-            await lock.connect(user1).unlockNFT(tokenId);
+            await lock.connect(user1).unlockNFT(tokenId, user1.address);
 
             // Second lock cycle
             await mockNFTManager.connect(user1).approve(lock.target, tokenId);
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
 
             expect(await lock.isNFTLocked(tokenId)).to.be.true;
         });
@@ -282,14 +282,14 @@ describe("Lock Contract", function () {
         it("should handle NFT transfers correctly", async function () {
             await mockNFTManager.mint(user1.address, tokenId);
             await mockNFTManager.connect(user1).approve(lock.target, tokenId);
-            await lock.connect(user1).lockNFT(tokenId);
+            await lock.connect(user1).lockNFT(tokenId, user1.address);
 
             // Verify NFT is in lock contract
             expect(await mockNFTManager.ownerOf(tokenId)).to.equal(lock.target);
 
             // Complete lock period and unlock
             await time.increase(LOCK_DURATION + 1);
-            await lock.connect(user1).unlockNFT(tokenId);
+            await lock.connect(user1).unlockNFT(tokenId, user1.address);
 
             // Verify NFT returned to original owner
             expect(await mockNFTManager.ownerOf(tokenId)).to.equal(user1.address);
@@ -301,7 +301,7 @@ describe("Lock Contract", function () {
             for (const id of tokenIds) {
                 await mockNFTManager.mint(user1.address, id);
                 await mockNFTManager.connect(user1).approve(lock.target, id);
-                await lock.connect(user1).lockNFT(id);
+                await lock.connect(user1).lockNFT(id, user1.address);
             }
 
             // Verify initial state
@@ -310,7 +310,7 @@ describe("Lock Contract", function () {
 
             // Unlock middle NFT
             await time.increase(LOCK_DURATION + 1);
-            await lock.connect(user1).unlockNFT(2);
+            await lock.connect(user1).unlockNFT(2, user1.address);
 
             // Verify updated state
             ownerNFTs = await lock.getNFTsByOwner(user1.address);
