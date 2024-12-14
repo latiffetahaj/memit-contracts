@@ -1,7 +1,7 @@
 module.exports = async function ({ deployments, getNamedAccounts, ethers, getChainId }) {
     const { deploy } = deployments;
     const chainId = await getChainId();
-    const { deployer, ether, bnb, arbitrum, base, avalanche, zora } = await getNamedAccounts();
+    const { deployer, ether, bnb, arbitrum, base, blast, linea, avalanche, zora } = await getNamedAccounts();
     const accounts = {
         1: ether, // mainnet
         11155111: deployer, // sepolia
@@ -9,8 +9,10 @@ module.exports = async function ({ deployments, getNamedAccounts, ethers, getCha
         42161: arbitrum, // 
         8453: base, // base
         43114: avalanche, // avalanche
+        81457: blast, // 
         7777777: zora, // Zora
         999999999: zora, // Zora Sepolia
+        59144: linea
     };
     // Get previously deployed implementations
     const tokenImplementation = await deployments.get("TokenImplementation");
@@ -18,7 +20,7 @@ module.exports = async function ({ deployments, getNamedAccounts, ethers, getCha
     const lockImplementation = await deployments.get("Lock");
     const factoryImplementation = await deployments.get("Factory");
     // Deploy Foundry with implementations
-    const initialDeploymentFee = ethers.parseEther("0.018"); // 0.1 ETH deployment fee
+    const initialDeploymentFee = ethers.parseEther("0.01814"); // 0.1 ETH deployment fee
     await deploy("Foundry", {
         from: accounts[chainId],
         args: [
@@ -26,7 +28,7 @@ module.exports = async function ({ deployments, getNamedAccounts, ethers, getCha
             lockImplementation.address,
             tokenImplementation.address,
             bondingCurve.address,
-            initialDeploymentFee,
+            chainId === 56 ? initialDeploymentFee : ethers.parseEther("0.002649"),
         ],
         log: true,
     });

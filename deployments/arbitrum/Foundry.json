@@ -1,0 +1,933 @@
+{
+  "address": "0xcf7fb1051258076f11869081E72c1A840a02c4D6",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_factoryImpl",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_lockImpl",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_tokenImpl",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_bondingCurveImpl",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_initialFee",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "EnforcedPause",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ExpectedPause",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "FailedDeployment",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "operation",
+          "type": "string"
+        }
+      ],
+      "name": "FeeOperationFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "contractType",
+          "type": "string"
+        }
+      ],
+      "name": "InitializationFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "needed",
+          "type": "uint256"
+        }
+      ],
+      "name": "InsufficientBalance",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "provided",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "required",
+          "type": "uint256"
+        }
+      ],
+      "name": "InsufficientDeploymentFee",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "providedType",
+          "type": "string"
+        }
+      ],
+      "name": "InvalidImplementationType",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NoFeesToWithdraw",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ReentrancyGuardReentrantCall",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroAddress",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "oldFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "DeploymentFeeUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "FeesWithdrawn",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "string",
+          "name": "implementationType",
+          "type": "string"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "oldImplementation",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newImplementation",
+          "type": "address"
+        }
+      ],
+      "name": "ImplementationUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "Paused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "factoryAddress",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "lockAddress",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "SystemDeployed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "Unpaused",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "factoryFees",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "virtualEth",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "preBondingTarget",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bondingTarget",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minContribution",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint24",
+              "name": "poolFee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "uint24",
+              "name": "sellFee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "address",
+              "name": "uniswapV3Factory",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "positionManager",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "weth",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "feeTo",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct IFactory.BondingCurveSettings",
+          "name": "settings",
+          "type": "tuple"
+        }
+      ],
+      "name": "deploySystem",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "factoryAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "lockAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBondingCurveImplementation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getDeploymentFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getFactoryImplementation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getLockImplementation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTokenImplementation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "cloneAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isDeployedClone",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "paused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "unpause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "newFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateDeploymentFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "implementationType",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "newImplementation",
+          "type": "address"
+        }
+      ],
+      "name": "updateImplementation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        }
+      ],
+      "name": "withdrawFees",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0x304149a2f5fe461038b23d81b1f3efbecf138e2291c2f9f795015828472c9a3b",
+  "receipt": {
+    "to": null,
+    "from": "0x407a8bdA7583fa8E85Fcb633C51B3feace5C781F",
+    "contractAddress": "0xcf7fb1051258076f11869081E72c1A840a02c4D6",
+    "transactionIndex": 5,
+    "gasUsed": "2633516",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000001000000000000000000000000000000000000020000000000000001000800000000000000000000000000000000400000001000000000000000000000000010000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x73daf341eca262a9bd4384ec90bc1700dccaebee929196e0fcf643346dc357ad",
+    "transactionHash": "0x304149a2f5fe461038b23d81b1f3efbecf138e2291c2f9f795015828472c9a3b",
+    "logs": [
+      {
+        "transactionIndex": 5,
+        "blockNumber": 283229608,
+        "transactionHash": "0x304149a2f5fe461038b23d81b1f3efbecf138e2291c2f9f795015828472c9a3b",
+        "address": "0xcf7fb1051258076f11869081E72c1A840a02c4D6",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000407a8bda7583fa8e85fcb633c51b3feace5c781f"
+        ],
+        "data": "0x",
+        "logIndex": 9,
+        "blockHash": "0x73daf341eca262a9bd4384ec90bc1700dccaebee929196e0fcf643346dc357ad"
+      }
+    ],
+    "blockNumber": 283229608,
+    "cumulativeGasUsed": "3961729",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x0b84e04a3C10f87BDCEef953875e28f3F286f466",
+    "0x394F0Fc8029898FB054ffcdB667a2C530Da671dD",
+    "0x0bf866DD962BA1062b241c5dF6AC7B42918f169b",
+    "0x40e8eFCeF03ae3C7006f8d1FA50E137EFD0465D4",
+    "2649000000000000"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "755db2098558d55cecbeb68d819ee939",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_factoryImpl\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_lockImpl\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_tokenImpl\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_bondingCurveImpl\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_initialFee\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"EnforcedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ExpectedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedDeployment\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"operation\",\"type\":\"string\"}],\"name\":\"FeeOperationFailed\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"contractType\",\"type\":\"string\"}],\"name\":\"InitializationFailed\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"needed\",\"type\":\"uint256\"}],\"name\":\"InsufficientBalance\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"provided\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"required\",\"type\":\"uint256\"}],\"name\":\"InsufficientDeploymentFee\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"providedType\",\"type\":\"string\"}],\"name\":\"InvalidImplementationType\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NoFeesToWithdraw\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ReentrancyGuardReentrantCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAddress\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"oldFee\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"newFee\",\"type\":\"uint256\"}],\"name\":\"DeploymentFeeUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"FeesWithdrawn\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"string\",\"name\":\"implementationType\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"oldImplementation\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"ImplementationUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Paused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"factoryAddress\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"lockAddress\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"SystemDeployed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Unpaused\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"factoryFees\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"virtualEth\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"preBondingTarget\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"bondingTarget\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minContribution\",\"type\":\"uint256\"},{\"internalType\":\"uint24\",\"name\":\"poolFee\",\"type\":\"uint24\"},{\"internalType\":\"uint24\",\"name\":\"sellFee\",\"type\":\"uint24\"},{\"internalType\":\"address\",\"name\":\"uniswapV3Factory\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"positionManager\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"weth\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"feeTo\",\"type\":\"address\"}],\"internalType\":\"struct IFactory.BondingCurveSettings\",\"name\":\"settings\",\"type\":\"tuple\"}],\"name\":\"deploySystem\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"factoryAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"lockAddress\",\"type\":\"address\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBondingCurveImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDeploymentFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getFactoryImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLockImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTokenImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"cloneAddress\",\"type\":\"address\"}],\"name\":\"isDeployedClone\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unpause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"newFee\",\"type\":\"uint256\"}],\"name\":\"updateDeploymentFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"implementationType\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"updateImplementation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"}],\"name\":\"withdrawFees\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"details\":\"Implements minimal proxy pattern for gas-efficient deployment\",\"errors\":{\"EnforcedPause()\":[{\"details\":\"The operation failed because the contract is paused.\"}],\"ExpectedPause()\":[{\"details\":\"The operation failed because the contract is not paused.\"}],\"FailedDeployment()\":[{\"details\":\"The deployment failed.\"}],\"FeeOperationFailed(string)\":[{\"params\":{\"operation\":\"The operation that failed (e.g., \\\"refund\\\", \\\"withdrawal\\\")\"}}],\"InitializationFailed(string)\":[{\"params\":{\"contractType\":\"The type of contract that failed to initialize\"}}],\"InsufficientBalance(uint256,uint256)\":[{\"details\":\"The ETH balance of the account is not enough to perform the operation.\"}],\"InsufficientDeploymentFee(uint256,uint256)\":[{\"params\":{\"provided\":\"The amount of ETH provided\",\"required\":\"The required deployment fee\"}}],\"InvalidImplementationType(string)\":[{\"params\":{\"providedType\":\"The invalid implementation type\"}}],\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}],\"ReentrancyGuardReentrantCall()\":[{\"details\":\"Unauthorized reentrant call.\"}]},\"events\":{\"DeploymentFeeUpdated(uint256,uint256)\":{\"params\":{\"newFee\":\"The new fee amount\",\"oldFee\":\"The previous fee amount\"}},\"FeesWithdrawn(address,uint256)\":{\"params\":{\"amount\":\"The amount withdrawn\",\"recipient\":\"The address receiving the fees\"}},\"ImplementationUpdated(string,address,address)\":{\"params\":{\"implementationType\":\"The type of implementation being updated\",\"newImplementation\":\"The new implementation address\",\"oldImplementation\":\"The previous implementation address\"}},\"Paused(address)\":{\"details\":\"Emitted when the pause is triggered by `account`.\"},\"SystemDeployed(address,address,address)\":{\"params\":{\"factoryAddress\":\"The address of the newly deployed factory\",\"lockAddress\":\"The address of the newly deployed lock contract\",\"owner\":\"The address of the factory owner\"}},\"Unpaused(address)\":{\"details\":\"Emitted when the pause is lifted by `account`.\"}},\"kind\":\"dev\",\"methods\":{\"deploySystem(address,uint256,(uint256,uint256,uint256,uint256,uint24,uint24,address,address,address,address))\":{\"params\":{\"owner\":\"Address that will own the factory\",\"settings\":\"Bonding curve settings for initialization\"},\"returns\":{\"factoryAddress\":\"The address of the newly deployed factory\",\"lockAddress\":\"The address of the newly deployed lock contract\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"pause()\":{\"details\":\"Only callable by owner\"},\"paused()\":{\"details\":\"Returns true if the contract is paused, and false otherwise.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"unpause()\":{\"details\":\"Only callable by owner\"},\"updateDeploymentFee(uint256)\":{\"params\":{\"newFee\":\"The new fee amount in wei\"}},\"updateImplementation(string,address)\":{\"params\":{\"implementationType\":\"The type of implementation to update\",\"newImplementation\":\"The new implementation address\"}},\"withdrawFees(address)\":{\"params\":{\"recipient\":\"The address to receive the fees\"}}},\"title\":\"Foundry\",\"version\":1},\"userdoc\":{\"errors\":{\"FeeOperationFailed(string)\":[{\"notice\":\"Thrown when a fee-related operation fails\"}],\"InitializationFailed(string)\":[{\"notice\":\"Thrown when initialization of a contract fails\"}],\"InsufficientDeploymentFee(uint256,uint256)\":[{\"notice\":\"Thrown when the deployment fee provided is insufficient\"}],\"InvalidImplementationType(string)\":[{\"notice\":\"Thrown when an invalid implementation type is provided\"}],\"NoFeesToWithdraw()\":[{\"notice\":\"Thrown when attempting to withdraw zero fees or when contract has no balance\"}],\"ZeroAddress()\":[{\"notice\":\"Thrown when an address parameter is zero\"}]},\"events\":{\"DeploymentFeeUpdated(uint256,uint256)\":{\"notice\":\"Emitted when the deployment fee is updated\"},\"FeesWithdrawn(address,uint256)\":{\"notice\":\"Emitted when fees are withdrawn\"},\"ImplementationUpdated(string,address,address)\":{\"notice\":\"Emitted when implementation addresses are updated\"},\"SystemDeployed(address,address,address)\":{\"notice\":\"Emitted when a new system (factory + lock) is deployed\"}},\"kind\":\"user\",\"methods\":{\"constructor\":{\"notice\":\"Constructor to initialize the Foundry contract\"},\"deploySystem(address,uint256,(uint256,uint256,uint256,uint256,uint24,uint24,address,address,address,address))\":{\"notice\":\"Deploy both factory and lock contracts in a single transaction\"},\"pause()\":{\"notice\":\"Pause the contract\"},\"unpause()\":{\"notice\":\"Unpause the contract\"},\"updateDeploymentFee(uint256)\":{\"notice\":\"Update the deployment fee\"},\"updateImplementation(string,address)\":{\"notice\":\"Update the implementation address for a specific contract type\"},\"withdrawFees(address)\":{\"notice\":\"Withdraw collected fees\"}},\"notice\":\"Main deployer contract for the bonding curve system\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Foundry.sol\":\"Foundry\"},\"evmVersion\":\"paris\",\"libraries\":{\":__CACHE_BREAKER__\":\"0x00000000d41867734bbee4c6863d9255b2b06ac1\"},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/proxy/Clones.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (proxy/Clones.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Errors} from \\\"../utils/Errors.sol\\\";\\n\\n/**\\n * @dev https://eips.ethereum.org/EIPS/eip-1167[ERC-1167] is a standard for\\n * deploying minimal proxy contracts, also known as \\\"clones\\\".\\n *\\n * > To simply and cheaply clone contract functionality in an immutable way, this standard specifies\\n * > a minimal bytecode implementation that delegates all calls to a known, fixed address.\\n *\\n * The library includes functions to deploy a proxy using either `create` (traditional deployment) or `create2`\\n * (salted deterministic deployment). It also includes functions to predict the addresses of clones deployed using the\\n * deterministic method.\\n */\\nlibrary Clones {\\n    /**\\n     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.\\n     *\\n     * This function uses the create opcode, which should never revert.\\n     */\\n    function clone(address implementation) internal returns (address instance) {\\n        return clone(implementation, 0);\\n    }\\n\\n    /**\\n     * @dev Same as {xref-Clones-clone-address-}[clone], but with a `value` parameter to send native currency\\n     * to the new contract.\\n     *\\n     * NOTE: Using a non-zero value at creation will require the contract using this function (e.g. a factory)\\n     * to always have enough balance for new deployments. Consider exposing this function under a payable method.\\n     */\\n    function clone(address implementation, uint256 value) internal returns (address instance) {\\n        if (address(this).balance < value) {\\n            revert Errors.InsufficientBalance(address(this).balance, value);\\n        }\\n        assembly (\\\"memory-safe\\\") {\\n            // Cleans the upper 96 bits of the `implementation` word, then packs the first 3 bytes\\n            // of the `implementation` address with the bytecode before the address.\\n            mstore(0x00, or(shr(0xe8, shl(0x60, implementation)), 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000))\\n            // Packs the remaining 17 bytes of `implementation` with the bytecode after the address.\\n            mstore(0x20, or(shl(0x78, implementation), 0x5af43d82803e903d91602b57fd5bf3))\\n            instance := create(value, 0x09, 0x37)\\n        }\\n        if (instance == address(0)) {\\n            revert Errors.FailedDeployment();\\n        }\\n    }\\n\\n    /**\\n     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.\\n     *\\n     * This function uses the create2 opcode and a `salt` to deterministically deploy\\n     * the clone. Using the same `implementation` and `salt` multiple time will revert, since\\n     * the clones cannot be deployed twice at the same address.\\n     */\\n    function cloneDeterministic(address implementation, bytes32 salt) internal returns (address instance) {\\n        return cloneDeterministic(implementation, salt, 0);\\n    }\\n\\n    /**\\n     * @dev Same as {xref-Clones-cloneDeterministic-address-bytes32-}[cloneDeterministic], but with\\n     * a `value` parameter to send native currency to the new contract.\\n     *\\n     * NOTE: Using a non-zero value at creation will require the contract using this function (e.g. a factory)\\n     * to always have enough balance for new deployments. Consider exposing this function under a payable method.\\n     */\\n    function cloneDeterministic(\\n        address implementation,\\n        bytes32 salt,\\n        uint256 value\\n    ) internal returns (address instance) {\\n        if (address(this).balance < value) {\\n            revert Errors.InsufficientBalance(address(this).balance, value);\\n        }\\n        assembly (\\\"memory-safe\\\") {\\n            // Cleans the upper 96 bits of the `implementation` word, then packs the first 3 bytes\\n            // of the `implementation` address with the bytecode before the address.\\n            mstore(0x00, or(shr(0xe8, shl(0x60, implementation)), 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000))\\n            // Packs the remaining 17 bytes of `implementation` with the bytecode after the address.\\n            mstore(0x20, or(shl(0x78, implementation), 0x5af43d82803e903d91602b57fd5bf3))\\n            instance := create2(value, 0x09, 0x37, salt)\\n        }\\n        if (instance == address(0)) {\\n            revert Errors.FailedDeployment();\\n        }\\n    }\\n\\n    /**\\n     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.\\n     */\\n    function predictDeterministicAddress(\\n        address implementation,\\n        bytes32 salt,\\n        address deployer\\n    ) internal pure returns (address predicted) {\\n        assembly (\\\"memory-safe\\\") {\\n            let ptr := mload(0x40)\\n            mstore(add(ptr, 0x38), deployer)\\n            mstore(add(ptr, 0x24), 0x5af43d82803e903d91602b57fd5bf3ff)\\n            mstore(add(ptr, 0x14), implementation)\\n            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73)\\n            mstore(add(ptr, 0x58), salt)\\n            mstore(add(ptr, 0x78), keccak256(add(ptr, 0x0c), 0x37))\\n            predicted := and(keccak256(add(ptr, 0x43), 0x55), 0xffffffffffffffffffffffffffffffffffffffff)\\n        }\\n    }\\n\\n    /**\\n     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.\\n     */\\n    function predictDeterministicAddress(\\n        address implementation,\\n        bytes32 salt\\n    ) internal view returns (address predicted) {\\n        return predictDeterministicAddress(implementation, salt, address(this));\\n    }\\n}\\n\",\"keccak256\":\"0xf55d01dac75cffdabec6833a79bf3be0c108fc0db10e273daf7adfd3e9e59dae\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Errors.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (utils/Errors.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Collection of common custom errors used in multiple contracts\\n *\\n * IMPORTANT: Backwards compatibility is not guaranteed in future versions of the library.\\n * It is recommended to avoid relying on the error API for critical functionality.\\n *\\n * _Available since v5.1._\\n */\\nlibrary Errors {\\n    /**\\n     * @dev The ETH balance of the account is not enough to perform the operation.\\n     */\\n    error InsufficientBalance(uint256 balance, uint256 needed);\\n\\n    /**\\n     * @dev A call to an address target failed. The target may have reverted.\\n     */\\n    error FailedCall();\\n\\n    /**\\n     * @dev The deployment failed.\\n     */\\n    error FailedDeployment();\\n\\n    /**\\n     * @dev A necessary precompile is missing.\\n     */\\n    error MissingPrecompile(address);\\n}\\n\",\"keccak256\":\"0x6afa713bfd42cf0f7656efa91201007ac465e42049d7de1d50753a373648c123\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Pausable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (utils/Pausable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which allows children to implement an emergency stop\\n * mechanism that can be triggered by an authorized account.\\n *\\n * This module is used through inheritance. It will make available the\\n * modifiers `whenNotPaused` and `whenPaused`, which can be applied to\\n * the functions of your contract. Note that they will not be pausable by\\n * simply including this module, only once the modifiers are put in place.\\n */\\nabstract contract Pausable is Context {\\n    bool private _paused;\\n\\n    /**\\n     * @dev Emitted when the pause is triggered by `account`.\\n     */\\n    event Paused(address account);\\n\\n    /**\\n     * @dev Emitted when the pause is lifted by `account`.\\n     */\\n    event Unpaused(address account);\\n\\n    /**\\n     * @dev The operation failed because the contract is paused.\\n     */\\n    error EnforcedPause();\\n\\n    /**\\n     * @dev The operation failed because the contract is not paused.\\n     */\\n    error ExpectedPause();\\n\\n    /**\\n     * @dev Initializes the contract in unpaused state.\\n     */\\n    constructor() {\\n        _paused = false;\\n    }\\n\\n    /**\\n     * @dev Modifier to make a function callable only when the contract is not paused.\\n     *\\n     * Requirements:\\n     *\\n     * - The contract must not be paused.\\n     */\\n    modifier whenNotPaused() {\\n        _requireNotPaused();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Modifier to make a function callable only when the contract is paused.\\n     *\\n     * Requirements:\\n     *\\n     * - The contract must be paused.\\n     */\\n    modifier whenPaused() {\\n        _requirePaused();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns true if the contract is paused, and false otherwise.\\n     */\\n    function paused() public view virtual returns (bool) {\\n        return _paused;\\n    }\\n\\n    /**\\n     * @dev Throws if the contract is paused.\\n     */\\n    function _requireNotPaused() internal view virtual {\\n        if (paused()) {\\n            revert EnforcedPause();\\n        }\\n    }\\n\\n    /**\\n     * @dev Throws if the contract is not paused.\\n     */\\n    function _requirePaused() internal view virtual {\\n        if (!paused()) {\\n            revert ExpectedPause();\\n        }\\n    }\\n\\n    /**\\n     * @dev Triggers stopped state.\\n     *\\n     * Requirements:\\n     *\\n     * - The contract must not be paused.\\n     */\\n    function _pause() internal virtual whenNotPaused {\\n        _paused = true;\\n        emit Paused(_msgSender());\\n    }\\n\\n    /**\\n     * @dev Returns to normal state.\\n     *\\n     * Requirements:\\n     *\\n     * - The contract must be paused.\\n     */\\n    function _unpause() internal virtual whenPaused {\\n        _paused = false;\\n        emit Unpaused(_msgSender());\\n    }\\n}\\n\",\"keccak256\":\"0xb2e5f50762c27fb4b123e3619c3c02bdcba5e515309382e5bfb6f7d6486510bd\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/ReentrancyGuard.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (utils/ReentrancyGuard.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Contract module that helps prevent reentrant calls to a function.\\n *\\n * Inheriting from `ReentrancyGuard` will make the {nonReentrant} modifier\\n * available, which can be applied to functions to make sure there are no nested\\n * (reentrant) calls to them.\\n *\\n * Note that because there is a single `nonReentrant` guard, functions marked as\\n * `nonReentrant` may not call one another. This can be worked around by making\\n * those functions `private`, and then adding `external` `nonReentrant` entry\\n * points to them.\\n *\\n * TIP: If EIP-1153 (transient storage) is available on the chain you're deploying at,\\n * consider using {ReentrancyGuardTransient} instead.\\n *\\n * TIP: If you would like to learn more about reentrancy and alternative ways\\n * to protect against it, check out our blog post\\n * https://blog.openzeppelin.com/reentrancy-after-istanbul/[Reentrancy After Istanbul].\\n */\\nabstract contract ReentrancyGuard {\\n    // Booleans are more expensive than uint256 or any type that takes up a full\\n    // word because each write operation emits an extra SLOAD to first read the\\n    // slot's contents, replace the bits taken up by the boolean, and then write\\n    // back. This is the compiler's defense against contract upgrades and\\n    // pointer aliasing, and it cannot be disabled.\\n\\n    // The values being non-zero value makes deployment a bit more expensive,\\n    // but in exchange the refund on every call to nonReentrant will be lower in\\n    // amount. Since refunds are capped to a percentage of the total\\n    // transaction's gas, it is best to keep them low in cases like this one, to\\n    // increase the likelihood of the full refund coming into effect.\\n    uint256 private constant NOT_ENTERED = 1;\\n    uint256 private constant ENTERED = 2;\\n\\n    uint256 private _status;\\n\\n    /**\\n     * @dev Unauthorized reentrant call.\\n     */\\n    error ReentrancyGuardReentrantCall();\\n\\n    constructor() {\\n        _status = NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Prevents a contract from calling itself, directly or indirectly.\\n     * Calling a `nonReentrant` function from another `nonReentrant`\\n     * function is not supported. It is possible to prevent this from happening\\n     * by making the `nonReentrant` function external, and making it call a\\n     * `private` function that does the actual work.\\n     */\\n    modifier nonReentrant() {\\n        _nonReentrantBefore();\\n        _;\\n        _nonReentrantAfter();\\n    }\\n\\n    function _nonReentrantBefore() private {\\n        // On the first call to nonReentrant, _status will be NOT_ENTERED\\n        if (_status == ENTERED) {\\n            revert ReentrancyGuardReentrantCall();\\n        }\\n\\n        // Any calls to nonReentrant after this point will fail\\n        _status = ENTERED;\\n    }\\n\\n    function _nonReentrantAfter() private {\\n        // By storing the original value once again, a refund is triggered (see\\n        // https://eips.ethereum.org/EIPS/eip-2200)\\n        _status = NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Returns true if the reentrancy guard is currently set to \\\"entered\\\", which indicates there is a\\n     * `nonReentrant` function in the call stack.\\n     */\\n    function _reentrancyGuardEntered() internal view returns (bool) {\\n        return _status == ENTERED;\\n    }\\n}\\n\",\"keccak256\":\"0x11a5a79827df29e915a12740caf62fe21ebe27c08c9ae3e09abe9ee3ba3866d3\",\"license\":\"MIT\"},\"contracts/Foundry.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\nimport \\\"./interfaces/IFoundry.sol\\\";\\nimport \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\nimport \\\"@openzeppelin/contracts/proxy/Clones.sol\\\";\\nimport \\\"@openzeppelin/contracts/utils/ReentrancyGuard.sol\\\";\\nimport \\\"@openzeppelin/contracts/utils/Pausable.sol\\\";\\n\\n/**\\n * @title Foundry\\n * @notice Main deployer contract for the bonding curve system\\n * @dev Implements minimal proxy pattern for gas-efficient deployment\\n */\\ncontract Foundry is IFoundry, Ownable, ReentrancyGuard, Pausable {\\n    using Clones for address;\\n\\n    // Implementation addresses\\n    address private factoryImplementation;\\n    address private lockImplementation;\\n    address private tokenImplementation;\\n    address private bondingCurveImplementation;\\n\\n    // Deployment fee\\n    uint256 private deploymentFee;\\n\\n    // Mapping to track deployed clones\\n    mapping(address => bool) private deployedClones;\\n\\n    /**\\n     * @notice Constructor to initialize the Foundry contract\\n     */\\n    constructor(\\n        address _factoryImpl,\\n        address _lockImpl,\\n        address _tokenImpl,\\n        address _bondingCurveImpl,\\n        uint256 _initialFee\\n    ) Ownable(msg.sender) {\\n        if (_factoryImpl == address(0)) revert ZeroAddress();\\n        if (_lockImpl == address(0)) revert ZeroAddress();\\n        if (_tokenImpl == address(0)) revert ZeroAddress();\\n        if (_bondingCurveImpl == address(0)) revert ZeroAddress();\\n\\n        factoryImplementation = _factoryImpl;\\n        lockImplementation = _lockImpl;\\n        tokenImplementation = _tokenImpl;\\n        bondingCurveImplementation = _bondingCurveImpl;\\n        deploymentFee = _initialFee;\\n    }\\n\\n    // Implementation of view functions\\n    function getFactoryImplementation() external view returns (address) {\\n        return factoryImplementation;\\n    }\\n\\n    function getLockImplementation() external view returns (address) {\\n        return lockImplementation;\\n    }\\n\\n    function getTokenImplementation() external view returns (address) {\\n        return tokenImplementation;\\n    }\\n\\n    function getBondingCurveImplementation() external view returns (address) {\\n        return bondingCurveImplementation;\\n    }\\n\\n    function getDeploymentFee() external view returns (uint256) {\\n        return deploymentFee;\\n    }\\n\\n    function isDeployedClone(\\n        address cloneAddress\\n    ) external view returns (bool) {\\n        return deployedClones[cloneAddress];\\n    }\\n\\n    /**\\n     * @inheritdoc IFoundry\\n     */\\n    function deploySystem(\\n        address owner,\\n        uint256 factoryFees,\\n        IFactory.BondingCurveSettings calldata settings\\n    )\\n        external\\n        payable\\n        whenNotPaused\\n        nonReentrant\\n        returns (address factoryAddress, address lockAddress)\\n    {\\n        if (msg.value < deploymentFee) {\\n            revert InsufficientDeploymentFee(msg.value, deploymentFee);\\n        }\\n        if (owner == address(0)) revert ZeroAddress();\\n\\n        // Deploy lock contract clone\\n        lockAddress = lockImplementation.clone();\\n        deployedClones[lockAddress] = true;\\n\\n        // Initialize lock contract\\n        (bool lockSuccess, ) = lockAddress.call(\\n            abi.encodeWithSignature(\\\"initialize()\\\")\\n        );\\n        if (!lockSuccess) revert InitializationFailed(\\\"lock\\\");\\n\\n        // Deploy factory clone\\n        factoryAddress = factoryImplementation.clone();\\n        deployedClones[factoryAddress] = true;\\n\\n        // Initialize factory with all required parameters\\n        IFactory(factoryAddress).initialize(\\n            factoryFees,\\n            owner,\\n            tokenImplementation,\\n            bondingCurveImplementation,\\n            lockAddress,\\n            settings\\n        );\\n\\n        emit SystemDeployed(factoryAddress, lockAddress, owner);\\n\\n        // Refund excess fee if any\\n        if (msg.value > deploymentFee) {\\n            (bool refundSuccess, ) = msg.sender.call{\\n                value: msg.value - deploymentFee\\n            }(\\\"\\\");\\n            if (!refundSuccess) revert FeeOperationFailed(\\\"refund\\\");\\n        }\\n\\n        return (factoryAddress, lockAddress);\\n    }\\n\\n    /**\\n     * @inheritdoc IFoundry\\n     */\\n    function updateImplementation(\\n        string calldata implementationType,\\n        address newImplementation\\n    ) external onlyOwner {\\n        if (newImplementation == address(0)) revert ZeroAddress();\\n\\n        address oldImplementation;\\n        bytes32 implType = keccak256(bytes(implementationType));\\n\\n        if (implType == keccak256(bytes(\\\"factory\\\"))) {\\n            oldImplementation = factoryImplementation;\\n            factoryImplementation = newImplementation;\\n        } else if (implType == keccak256(bytes(\\\"lock\\\"))) {\\n            oldImplementation = lockImplementation;\\n            lockImplementation = newImplementation;\\n        } else if (implType == keccak256(bytes(\\\"token\\\"))) {\\n            oldImplementation = tokenImplementation;\\n            tokenImplementation = newImplementation;\\n        } else if (implType == keccak256(bytes(\\\"bondingCurve\\\"))) {\\n            oldImplementation = bondingCurveImplementation;\\n            bondingCurveImplementation = newImplementation;\\n        } else {\\n            revert InvalidImplementationType(implementationType);\\n        }\\n\\n        emit ImplementationUpdated(\\n            implementationType,\\n            oldImplementation,\\n            newImplementation\\n        );\\n    }\\n\\n    /**\\n     * @inheritdoc IFoundry\\n     */\\n    function updateDeploymentFee(uint256 newFee) external onlyOwner {\\n        uint256 oldFee = deploymentFee;\\n        deploymentFee = newFee;\\n        emit DeploymentFeeUpdated(oldFee, newFee);\\n    }\\n\\n    /**\\n     * @inheritdoc IFoundry\\n     */\\n    function withdrawFees(address recipient) external onlyOwner {\\n        if (recipient == address(0)) revert ZeroAddress();\\n        uint256 balance = address(this).balance;\\n        if (balance == 0) revert NoFeesToWithdraw();\\n\\n        (bool success, ) = recipient.call{value: balance}(\\\"\\\");\\n        if (!success) revert FeeOperationFailed(\\\"withdrawal\\\");\\n\\n        emit FeesWithdrawn(recipient, balance);\\n    }\\n\\n    /**\\n     * @notice Pause the contract\\n     * @dev Only callable by owner\\n     */\\n    function pause() external onlyOwner {\\n        _pause();\\n    }\\n\\n    /**\\n     * @notice Unpause the contract\\n     * @dev Only callable by owner\\n     */\\n    function unpause() external onlyOwner {\\n        _unpause();\\n    }\\n\\n    /**\\n     * @dev Required for the contract to receive ETH\\n     */\\n    receive() external payable {}\\n}\\n\",\"keccak256\":\"0xe0d8980e3e3fdd43640d2683bd2ee24edd041c935d9317a42b3754e0e57f83f0\",\"license\":\"MIT\"},\"contracts/interfaces/IFactory.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\n/**\\n * @title IFactory\\n * @notice Interface for the factory contract that deploys token and bonding curve instances\\n * @dev Factory is deployed via minimal proxy pattern and implements Initializable\\n */\\ninterface IFactory {\\n    // Custom Errors\\n    /// @notice Thrown when an address parameter is zero\\n    error ZeroAddress();\\n\\n    /// @notice Thrown when initialization fails\\n    error InitializationFailed();\\n\\n    /// @notice Thrown when caller is not authorized\\n    error Unauthorized();\\n\\n    /// @notice Thrown when deployment fee is insufficient\\n    /// @param provided The amount of ETH provided\\n    /// @param required The required deployment fee\\n    error InsufficientDeploymentFee(uint256 provided, uint256 required);\\n\\n    /// @notice Thrown when deployment parameters are invalid\\n    error InvalidDeploymentParameters();\\n\\n    /// @notice Thrown when deployment minting fails\\n    error TokenMintingFailed();\\n\\n    /// @notice Thrown when deployment extra fees refund fails\\n    error RefundFailed();\\n    error NoFeesToWithdraw();\\n    error FeeWithdrawalFailed();\\n\\n    // Events\\n    /**\\n     * @notice Emitted when a new bonding curve system is deployed\\n     * @param bondingCurveAddress The address of the deployed bonding curve\\n     * @param tokenAddress The address of the deployed token\\n     * @param owner The address that will own both contracts\\n     * @param name Token name\\n     * @param symbol Token symbol\\n     */\\n    event BondingCurveSystemDeployed(\\n        address indexed bondingCurveAddress,\\n        address indexed tokenAddress,\\n        address indexed owner,\\n        string name,\\n        string symbol\\n    );\\n\\n    /**\\n     * @notice Emitted when deployment fee is updated\\n     * @param oldFee Previous fee amount\\n     * @param newFee New fee amount\\n     */\\n    event DeploymentFeeUpdated(uint256 oldFee, uint256 newFee);\\n\\n    /**\\n     * @notice Emitted when fees are withdrawn\\n     * @param recipient Address receiving the fees\\n     * @param amount Amount withdrawn\\n     */\\n    event FeesWithdrawn(address indexed recipient, uint256 amount);\\n\\n    // Add new events\\n    event BondingCurveSettingsUpdated(\\n        uint256 virtualEth,\\n        uint256 preBondingTarget,\\n        uint256 bondingTarget,\\n        uint256 minContribution,\\n        uint24 poolFee\\n    );\\n\\n    struct BondingCurveSettings {\\n        uint256 virtualEth;\\n        uint256 preBondingTarget;\\n        uint256 bondingTarget;\\n        uint256 minContribution;\\n        uint24 poolFee;\\n        uint24 sellFee;\\n        address uniswapV3Factory;\\n        address positionManager;\\n        address weth;\\n        address feeTo;\\n    }\\n\\n    // Add new functions\\n    function getBondingCurveSettings()\\n        external\\n        view\\n        returns (BondingCurveSettings memory);\\n\\n    function updateBondingCurveSettings(\\n        BondingCurveSettings calldata newSettings\\n    ) external;\\n\\n    // View Functions\\n    /**\\n     * @notice Get the current deployment fee\\n     * @return Current fee amount in wei\\n     */\\n    function getDeploymentFee() external view returns (uint256);\\n\\n    /**\\n     * @notice Get the token implementation address\\n     * @return Address of the token implementation contract\\n     */\\n    function getTokenImplementation() external view returns (address);\\n\\n    /**\\n     * @notice Get the bonding curve implementation address\\n     * @return Address of the bonding curve implementation contract\\n     */\\n    function getBondingCurveImplementation() external view returns (address);\\n\\n    /**\\n     * @notice Get the LP NFT lock contract address\\n     * @return Address of the LP NFT lock contract\\n     */\\n    function getLockContract() external view returns (address);\\n\\n    // State-Changing Functions\\n    /**\\n     * @notice Initialize the factory contract\\n     * @param owner Address that will own the factory\\n     * @param tokenImpl Address of the token implementation\\n     * @param bondingCurveImpl Address of the bonding curve implementation\\n     * @param lockContract Address of the LP NFT lock contract\\n     */\\n    // Update initialize function\\n    function initialize(\\n        uint256 factoryFees,\\n        address owner,\\n        address tokenImpl,\\n        address bondingCurveImpl,\\n        address lockContract,\\n        BondingCurveSettings calldata settings\\n    ) external;\\n\\n    /**\\n     * @notice Deploy a complete bonding curve system (token + bonding curve)\\n     * @param name Token name\\n     * @param symbol Token symbol\\n     * @return tokenAddress Address of the deployed token contract\\n     * @return bondingCurveAddress Address of the deployed bonding curve\\n     */\\n    function deployBondingCurveSystem(\\n        string calldata name,\\n        string calldata symbol\\n    )\\n        external\\n        payable\\n        returns (address tokenAddress, address bondingCurveAddress);\\n\\n    /**\\n     * @notice Update the deployment fee\\n     * @param newFee New fee amount in wei\\n     */\\n    function updateDeploymentFee(uint256 newFee) external;\\n\\n    /**\\n     * @notice Withdraw collected fees\\n     * @param recipient Address to receive the fees\\n     */\\n    function withdrawFees(address recipient) external;\\n}\\n\",\"keccak256\":\"0x241cb344383f28f7ff9a72cb71bfff6dad2fecedaaa1822aa15962a5351f873b\",\"license\":\"MIT\"},\"contracts/interfaces/IFoundry.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\nimport \\\"./IFactory.sol\\\";\\n\\n/**\\n * @title IFoundry\\n * @notice Interface for the main deployer contract that manages the bonding curve system\\n * @dev Handles deployment and initialization of the entire bonding curve ecosystem\\n */\\ninterface IFoundry {\\n    // Custom Errors\\n    /// @notice Thrown when an address parameter is zero\\n    error ZeroAddress();\\n\\n    /// @notice Thrown when initialization of a contract fails\\n    /// @param contractType The type of contract that failed to initialize\\n    error InitializationFailed(string contractType);\\n\\n    /// @notice Thrown when the deployment fee provided is insufficient\\n    /// @param provided The amount of ETH provided\\n    /// @param required The required deployment fee\\n    error InsufficientDeploymentFee(uint256 provided, uint256 required);\\n\\n    /// @notice Thrown when an invalid implementation type is provided\\n    /// @param providedType The invalid implementation type\\n    error InvalidImplementationType(string providedType);\\n\\n    /// @notice Thrown when a fee-related operation fails\\n    /// @param operation The operation that failed (e.g., \\\"refund\\\", \\\"withdrawal\\\")\\n    error FeeOperationFailed(string operation);\\n\\n    /// @notice Thrown when attempting to withdraw zero fees or when contract has no balance\\n    error NoFeesToWithdraw();\\n\\n    /**\\n     * @notice Emitted when a new system (factory + lock) is deployed\\n     * @param factoryAddress The address of the newly deployed factory\\n     * @param lockAddress The address of the newly deployed lock contract\\n     * @param owner The address of the factory owner\\n     */\\n    event SystemDeployed(\\n        address indexed factoryAddress,\\n        address indexed lockAddress,\\n        address indexed owner\\n    );\\n\\n    /**\\n     * @notice Emitted when implementation addresses are updated\\n     * @param implementationType The type of implementation being updated\\n     * @param oldImplementation The previous implementation address\\n     * @param newImplementation The new implementation address\\n     */\\n    event ImplementationUpdated(\\n        string indexed implementationType,\\n        address indexed oldImplementation,\\n        address indexed newImplementation\\n    );\\n\\n    /**\\n     * @notice Emitted when the deployment fee is updated\\n     * @param oldFee The previous fee amount\\n     * @param newFee The new fee amount\\n     */\\n    event DeploymentFeeUpdated(uint256 oldFee, uint256 newFee);\\n\\n    /**\\n     * @notice Emitted when fees are withdrawn\\n     * @param recipient The address receiving the fees\\n     * @param amount The amount withdrawn\\n     */\\n    event FeesWithdrawn(address indexed recipient, uint256 amount);\\n\\n    // View Functions\\n    function getFactoryImplementation() external view returns (address);\\n\\n    function getLockImplementation() external view returns (address);\\n\\n    function getTokenImplementation() external view returns (address);\\n\\n    function getBondingCurveImplementation() external view returns (address);\\n\\n    function getDeploymentFee() external view returns (uint256);\\n\\n    function isDeployedClone(address cloneAddress) external view returns (bool);\\n\\n    /**\\n     * @notice Deploy both factory and lock contracts in a single transaction\\n     * @param owner Address that will own the factory\\n     * @param settings Bonding curve settings for initialization\\n     * @return factoryAddress The address of the newly deployed factory\\n     * @return lockAddress The address of the newly deployed lock contract\\n     */\\n    function deploySystem(\\n        address owner,\\n         uint256 factoryFees,\\n        IFactory.BondingCurveSettings calldata settings\\n    ) external payable returns (address factoryAddress, address lockAddress);\\n\\n    /**\\n     * @notice Update the implementation address for a specific contract type\\n     * @param implementationType The type of implementation to update\\n     * @param newImplementation The new implementation address\\n     */\\n    function updateImplementation(\\n        string calldata implementationType,\\n        address newImplementation\\n    ) external;\\n\\n    /**\\n     * @notice Update the deployment fee\\n     * @param newFee The new fee amount in wei\\n     */\\n    function updateDeploymentFee(uint256 newFee) external;\\n\\n    /**\\n     * @notice Withdraw collected fees\\n     * @param recipient The address to receive the fees\\n     */\\n    function withdrawFees(address recipient) external;\\n}\\n\",\"keccak256\":\"0x8fc51a2e948502e318687adafa720e65a2aa73a6d43cd236bac9e5ce2c24fa5c\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60806040523480156200001157600080fd5b5060405162001227380380620012278339810160408190526200003491620001e4565b33806200005b57604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b620000668162000177565b50600180556002805460ff191690556001600160a01b0385166200009d5760405163d92e233d60e01b815260040160405180910390fd5b6001600160a01b038416620000c55760405163d92e233d60e01b815260040160405180910390fd5b6001600160a01b038316620000ed5760405163d92e233d60e01b815260040160405180910390fd5b6001600160a01b038216620001155760405163d92e233d60e01b815260040160405180910390fd5b60028054610100600160a81b0319166101006001600160a01b0397881602179055600380546001600160a01b0319908116958716959095179055600480548516938616939093179092556005805490931693169290921790556006556200024b565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80516001600160a01b0381168114620001df57600080fd5b919050565b600080600080600060a08688031215620001fd57600080fd5b6200020886620001c7565b94506200021860208701620001c7565b93506200022860408701620001c7565b92506200023860608701620001c7565b9150608086015190509295509295909350565b610fcc806200025b6000396000f3fe6080604052600436106100f75760003560e01c80638456cb591161008a578063eb4a2d2811610059578063eb4a2d2814610296578063f1f7c6fc146102b9578063f2fde38b146102d7578063f365dfde146102f757600080fd5b80638456cb59146102255780638da5cb5b1461023a578063ad9ef49414610258578063dc312a071461027657600080fd5b8063499200db116100c6578063499200db146101a65780635c975abb146101c6578063709bc7f3146101de578063715018a61461021057600080fd5b8063164e68de146101035780631eeb51d2146101255780633f4ba83a1461017357806346c549cc1461018857600080fd5b366100fe57005b600080fd5b34801561010f57600080fd5b5061012361011e366004610cd0565b61032a565b005b34801561013157600080fd5b5061015e610140366004610cd0565b6001600160a01b031660009081526007602052604090205460ff1690565b60405190151581526020015b60405180910390f35b34801561017f57600080fd5b5061012361045a565b34801561019457600080fd5b5060065460405190815260200161016a565b3480156101b257600080fd5b506101236101c1366004610cf2565b61046c565b3480156101d257600080fd5b5060025460ff1661015e565b3480156101ea57600080fd5b506004546001600160a01b03165b6040516001600160a01b03909116815260200161016a565b34801561021c57600080fd5b506101236104b9565b34801561023157600080fd5b506101236104cb565b34801561024657600080fd5b506000546001600160a01b03166101f8565b34801561026457600080fd5b506003546001600160a01b03166101f8565b34801561028257600080fd5b50610123610291366004610d0b565b6104db565b3480156102a257600080fd5b5060025461010090046001600160a01b03166101f8565b3480156102c557600080fd5b506005546001600160a01b03166101f8565b3480156102e357600080fd5b506101236102f2366004610cd0565b61075a565b61030a610305366004610d8c565b610798565b604080516001600160a01b0393841681529290911660208301520161016a565b610332610a8e565b6001600160a01b0381166103595760405163d92e233d60e01b815260040160405180910390fd5b47600081900361037c57604051630d00db4d60e31b815260040160405180910390fd5b6000826001600160a01b03168260405160006040518083038185875af1925050503d80600081146103c9576040519150601f19603f3d011682016040523d82523d6000602084013e6103ce565b606091505b5050905080610412576040516337a9990160e21b815260206004820152600a6024820152691dda5d1a191c985dd85b60b21b60448201526064015b60405180910390fd5b826001600160a01b03167fc0819c13be868895eb93e40eaceb96de976442fa1d404e5c55f14bb65a8c489a8360405161044d91815260200190565b60405180910390a2505050565b610462610a8e565b61046a610abb565b565b610474610a8e565b600680549082905560408051828152602081018490527fbade80ae0982a2d3106c4f5afa708793d20a9d6441a6440011f99e9f69ad5f3c910160405180910390a15050565b6104c1610a8e565b61046a6000610b0d565b6104d3610a8e565b61046a610b5d565b6104e3610a8e565b6001600160a01b03811661050a5760405163d92e233d60e01b815260040160405180910390fd5b600080848460405161051d929190610dd6565b604080519182900382208282019091526007825266666163746f727960c81b60209092019190915290507f1c99567b89fdf34600733a992f32153beb1ab92d18121bba0b18fcd5bd8d388f810161059e57600280546001600160a01b03858116610100908102610100600160a81b03198416179093559190041691506106ff565b6040805180820190915260048152636c6f636b60e01b6020909101527f9e979ad3cf83e17ec35ee304c59fe0e30c4ddbadfde5afad274fa0e0e075c16e810161060757600380546001600160a01b038581166001600160a01b03198316179092551691506106ff565b6040805180820190915260058152643a37b5b2b760d91b6020909101527f6464fbab35234a77b22c05594568a25b2dba655c0ee2ced6e5da57ca707b6b93810161067157600480546001600160a01b038581166001600160a01b03198316179092551691506106ff565b60408051808201909152600c81526b626f6e64696e67437572766560a01b6020909101527f7446fb55a503b793a73f4ae51fec8b3e3d6f97be8014a61511307953b93e010781016106e257600580546001600160a01b038581166001600160a01b03198316179092551691506106ff565b8484604051639ceb178160e01b8152600401610409929190610de6565b826001600160a01b0316826001600160a01b03168686604051610723929190610dd6565b604051908190038120907fb6bbe3bbfc71867f6077c6f16e542a54da5c211f21febbc290204b13a4dd771990600090a45050505050565b610762610a8e565b6001600160a01b03811661078c57604051631e4fbdf760e01b815260006004820152602401610409565b61079581610b0d565b50565b6000806107a3610b9a565b6107ab610bbe565b6006543410156107db57600654604051632e1932e360e11b81523460048201526024810191909152604401610409565b6001600160a01b0385166108025760405163d92e233d60e01b815260040160405180910390fd5b600354610817906001600160a01b0316610be8565b6001600160a01b0381166000818152600760209081526040808320805460ff1916600117905580516004815260248101825291820180516001600160e01b031663204a7f0760e21b1790525193945090926108729190610e15565b6000604051808303816000865af19150503d80600081146108af576040519150601f19603f3d011682016040523d82523d6000602084013e6108b4565b606091505b50509050806108ef57604051634efdcb9560e01b8152600401610409906020808252600490820152636c6f636b60e01b604082015260600190565b6002546109099061010090046001600160a01b0316610be8565b6001600160a01b0380821660008181526007602052604090819020805460ff191660011790556004805460055492516306387f9d60e51b8152959850929463c70ff3a094610966948c948e94918316939216918a918d9101610e57565b600060405180830381600087803b15801561098057600080fd5b505af1158015610994573d6000803e3d6000fd5b50505050856001600160a01b0316826001600160a01b0316846001600160a01b03167fcd61b8b190bac633217adac80660740023bd78fa9a1aa4802fbb87388bb73c4960405160405180910390a4600654341115610a7c5760065460009033906109fe9034610f75565b604051600081818185875af1925050503d8060008114610a3a576040519150601f19603f3d011682016040523d82523d6000602084013e610a3f565b606091505b5050905080610a7a576040516337a9990160e21b81526020600482015260066024820152651c99599d5b9960d21b6044820152606401610409565b505b50610a8660018055565b935093915050565b6000546001600160a01b0316331461046a5760405163118cdaa760e01b8152336004820152602401610409565b610ac3610bfb565b6002805460ff191690557f5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa335b6040516001600160a01b03909116815260200160405180910390a1565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b610b65610b9a565b6002805460ff191660011790557f62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258610af03390565b60025460ff161561046a5760405163d93c066560e01b815260040160405180910390fd5b600260015403610be157604051633ee5aeb560e01b815260040160405180910390fd5b6002600155565b6000610bf5826000610c1e565b92915050565b60025460ff1661046a57604051638dfc202b60e01b815260040160405180910390fd5b600081471015610c4a5760405163cf47918160e01b815247600482015260248101839052604401610409565b763d602d80600a3d3981f3363d3d373d3d3d363d730000008360601b60e81c176000526e5af43d82803e903d91602b57fd5bf38360781b176020526037600983f090506001600160a01b038116610bf55760405163b06ebf3d60e01b815260040160405180910390fd5b80356001600160a01b0381168114610ccb57600080fd5b919050565b600060208284031215610ce257600080fd5b610ceb82610cb4565b9392505050565b600060208284031215610d0457600080fd5b5035919050565b600080600060408486031215610d2057600080fd5b833567ffffffffffffffff80821115610d3857600080fd5b818601915086601f830112610d4c57600080fd5b813581811115610d5b57600080fd5b876020828501011115610d6d57600080fd5b602092830195509350610d839186019050610cb4565b90509250925092565b6000806000838503610180811215610da357600080fd5b610dac85610cb4565b935060208501359250610140603f1982011215610dc857600080fd5b506040840190509250925092565b8183823760009101908152919050565b60208152816020820152818360408301376000818301604090810191909152601f909201601f19160101919050565b6000825160005b81811015610e365760208186018101518583015201610e1c565b506000920191825250919050565b803562ffffff81168114610ccb57600080fd5b60006101e08201905087825260018060a01b03808816602084015280871660408401528086166060840152808516608084015250823560a0830152602083013560c0830152604083013560e0830152610100606084013581840152610ebe60808501610e44565b610120610ed18186018362ffffff169052565b610edd60a08701610e44565b62ffffff81166101408701529150610ef760c08701610cb4565b6001600160a01b0381166101608701529150610f1560e08701610cb4565b6001600160a01b0381166101808701529150610f32838701610cb4565b6001600160a01b0381166101a08701529250610f4f818701610cb4565b92505050610f696101c08401826001600160a01b03169052565b50979650505050505050565b81810381811115610bf557634e487b7160e01b600052601160045260246000fdfea2646970667358221220693006c85b7bced2f47eb14f3100f7c08f0c423f3e7c1c7cebf73809b9606d8264736f6c63430008140033",
+  "deployedBytecode": "0x6080604052600436106100f75760003560e01c80638456cb591161008a578063eb4a2d2811610059578063eb4a2d2814610296578063f1f7c6fc146102b9578063f2fde38b146102d7578063f365dfde146102f757600080fd5b80638456cb59146102255780638da5cb5b1461023a578063ad9ef49414610258578063dc312a071461027657600080fd5b8063499200db116100c6578063499200db146101a65780635c975abb146101c6578063709bc7f3146101de578063715018a61461021057600080fd5b8063164e68de146101035780631eeb51d2146101255780633f4ba83a1461017357806346c549cc1461018857600080fd5b366100fe57005b600080fd5b34801561010f57600080fd5b5061012361011e366004610cd0565b61032a565b005b34801561013157600080fd5b5061015e610140366004610cd0565b6001600160a01b031660009081526007602052604090205460ff1690565b60405190151581526020015b60405180910390f35b34801561017f57600080fd5b5061012361045a565b34801561019457600080fd5b5060065460405190815260200161016a565b3480156101b257600080fd5b506101236101c1366004610cf2565b61046c565b3480156101d257600080fd5b5060025460ff1661015e565b3480156101ea57600080fd5b506004546001600160a01b03165b6040516001600160a01b03909116815260200161016a565b34801561021c57600080fd5b506101236104b9565b34801561023157600080fd5b506101236104cb565b34801561024657600080fd5b506000546001600160a01b03166101f8565b34801561026457600080fd5b506003546001600160a01b03166101f8565b34801561028257600080fd5b50610123610291366004610d0b565b6104db565b3480156102a257600080fd5b5060025461010090046001600160a01b03166101f8565b3480156102c557600080fd5b506005546001600160a01b03166101f8565b3480156102e357600080fd5b506101236102f2366004610cd0565b61075a565b61030a610305366004610d8c565b610798565b604080516001600160a01b0393841681529290911660208301520161016a565b610332610a8e565b6001600160a01b0381166103595760405163d92e233d60e01b815260040160405180910390fd5b47600081900361037c57604051630d00db4d60e31b815260040160405180910390fd5b6000826001600160a01b03168260405160006040518083038185875af1925050503d80600081146103c9576040519150601f19603f3d011682016040523d82523d6000602084013e6103ce565b606091505b5050905080610412576040516337a9990160e21b815260206004820152600a6024820152691dda5d1a191c985dd85b60b21b60448201526064015b60405180910390fd5b826001600160a01b03167fc0819c13be868895eb93e40eaceb96de976442fa1d404e5c55f14bb65a8c489a8360405161044d91815260200190565b60405180910390a2505050565b610462610a8e565b61046a610abb565b565b610474610a8e565b600680549082905560408051828152602081018490527fbade80ae0982a2d3106c4f5afa708793d20a9d6441a6440011f99e9f69ad5f3c910160405180910390a15050565b6104c1610a8e565b61046a6000610b0d565b6104d3610a8e565b61046a610b5d565b6104e3610a8e565b6001600160a01b03811661050a5760405163d92e233d60e01b815260040160405180910390fd5b600080848460405161051d929190610dd6565b604080519182900382208282019091526007825266666163746f727960c81b60209092019190915290507f1c99567b89fdf34600733a992f32153beb1ab92d18121bba0b18fcd5bd8d388f810161059e57600280546001600160a01b03858116610100908102610100600160a81b03198416179093559190041691506106ff565b6040805180820190915260048152636c6f636b60e01b6020909101527f9e979ad3cf83e17ec35ee304c59fe0e30c4ddbadfde5afad274fa0e0e075c16e810161060757600380546001600160a01b038581166001600160a01b03198316179092551691506106ff565b6040805180820190915260058152643a37b5b2b760d91b6020909101527f6464fbab35234a77b22c05594568a25b2dba655c0ee2ced6e5da57ca707b6b93810161067157600480546001600160a01b038581166001600160a01b03198316179092551691506106ff565b60408051808201909152600c81526b626f6e64696e67437572766560a01b6020909101527f7446fb55a503b793a73f4ae51fec8b3e3d6f97be8014a61511307953b93e010781016106e257600580546001600160a01b038581166001600160a01b03198316179092551691506106ff565b8484604051639ceb178160e01b8152600401610409929190610de6565b826001600160a01b0316826001600160a01b03168686604051610723929190610dd6565b604051908190038120907fb6bbe3bbfc71867f6077c6f16e542a54da5c211f21febbc290204b13a4dd771990600090a45050505050565b610762610a8e565b6001600160a01b03811661078c57604051631e4fbdf760e01b815260006004820152602401610409565b61079581610b0d565b50565b6000806107a3610b9a565b6107ab610bbe565b6006543410156107db57600654604051632e1932e360e11b81523460048201526024810191909152604401610409565b6001600160a01b0385166108025760405163d92e233d60e01b815260040160405180910390fd5b600354610817906001600160a01b0316610be8565b6001600160a01b0381166000818152600760209081526040808320805460ff1916600117905580516004815260248101825291820180516001600160e01b031663204a7f0760e21b1790525193945090926108729190610e15565b6000604051808303816000865af19150503d80600081146108af576040519150601f19603f3d011682016040523d82523d6000602084013e6108b4565b606091505b50509050806108ef57604051634efdcb9560e01b8152600401610409906020808252600490820152636c6f636b60e01b604082015260600190565b6002546109099061010090046001600160a01b0316610be8565b6001600160a01b0380821660008181526007602052604090819020805460ff191660011790556004805460055492516306387f9d60e51b8152959850929463c70ff3a094610966948c948e94918316939216918a918d9101610e57565b600060405180830381600087803b15801561098057600080fd5b505af1158015610994573d6000803e3d6000fd5b50505050856001600160a01b0316826001600160a01b0316846001600160a01b03167fcd61b8b190bac633217adac80660740023bd78fa9a1aa4802fbb87388bb73c4960405160405180910390a4600654341115610a7c5760065460009033906109fe9034610f75565b604051600081818185875af1925050503d8060008114610a3a576040519150601f19603f3d011682016040523d82523d6000602084013e610a3f565b606091505b5050905080610a7a576040516337a9990160e21b81526020600482015260066024820152651c99599d5b9960d21b6044820152606401610409565b505b50610a8660018055565b935093915050565b6000546001600160a01b0316331461046a5760405163118cdaa760e01b8152336004820152602401610409565b610ac3610bfb565b6002805460ff191690557f5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa335b6040516001600160a01b03909116815260200160405180910390a1565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b610b65610b9a565b6002805460ff191660011790557f62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258610af03390565b60025460ff161561046a5760405163d93c066560e01b815260040160405180910390fd5b600260015403610be157604051633ee5aeb560e01b815260040160405180910390fd5b6002600155565b6000610bf5826000610c1e565b92915050565b60025460ff1661046a57604051638dfc202b60e01b815260040160405180910390fd5b600081471015610c4a5760405163cf47918160e01b815247600482015260248101839052604401610409565b763d602d80600a3d3981f3363d3d373d3d3d363d730000008360601b60e81c176000526e5af43d82803e903d91602b57fd5bf38360781b176020526037600983f090506001600160a01b038116610bf55760405163b06ebf3d60e01b815260040160405180910390fd5b80356001600160a01b0381168114610ccb57600080fd5b919050565b600060208284031215610ce257600080fd5b610ceb82610cb4565b9392505050565b600060208284031215610d0457600080fd5b5035919050565b600080600060408486031215610d2057600080fd5b833567ffffffffffffffff80821115610d3857600080fd5b818601915086601f830112610d4c57600080fd5b813581811115610d5b57600080fd5b876020828501011115610d6d57600080fd5b602092830195509350610d839186019050610cb4565b90509250925092565b6000806000838503610180811215610da357600080fd5b610dac85610cb4565b935060208501359250610140603f1982011215610dc857600080fd5b506040840190509250925092565b8183823760009101908152919050565b60208152816020820152818360408301376000818301604090810191909152601f909201601f19160101919050565b6000825160005b81811015610e365760208186018101518583015201610e1c565b506000920191825250919050565b803562ffffff81168114610ccb57600080fd5b60006101e08201905087825260018060a01b03808816602084015280871660408401528086166060840152808516608084015250823560a0830152602083013560c0830152604083013560e0830152610100606084013581840152610ebe60808501610e44565b610120610ed18186018362ffffff169052565b610edd60a08701610e44565b62ffffff81166101408701529150610ef760c08701610cb4565b6001600160a01b0381166101608701529150610f1560e08701610cb4565b6001600160a01b0381166101808701529150610f32838701610cb4565b6001600160a01b0381166101a08701529250610f4f818701610cb4565b92505050610f696101c08401826001600160a01b03169052565b50979650505050505050565b81810381811115610bf557634e487b7160e01b600052601160045260246000fdfea2646970667358221220693006c85b7bced2f47eb14f3100f7c08f0c423f3e7c1c7cebf73809b9606d8264736f6c63430008140033",
+  "devdoc": {
+    "details": "Implements minimal proxy pattern for gas-efficient deployment",
+    "errors": {
+      "EnforcedPause()": [
+        {
+          "details": "The operation failed because the contract is paused."
+        }
+      ],
+      "ExpectedPause()": [
+        {
+          "details": "The operation failed because the contract is not paused."
+        }
+      ],
+      "FailedDeployment()": [
+        {
+          "details": "The deployment failed."
+        }
+      ],
+      "FeeOperationFailed(string)": [
+        {
+          "params": {
+            "operation": "The operation that failed (e.g., \"refund\", \"withdrawal\")"
+          }
+        }
+      ],
+      "InitializationFailed(string)": [
+        {
+          "params": {
+            "contractType": "The type of contract that failed to initialize"
+          }
+        }
+      ],
+      "InsufficientBalance(uint256,uint256)": [
+        {
+          "details": "The ETH balance of the account is not enough to perform the operation."
+        }
+      ],
+      "InsufficientDeploymentFee(uint256,uint256)": [
+        {
+          "params": {
+            "provided": "The amount of ETH provided",
+            "required": "The required deployment fee"
+          }
+        }
+      ],
+      "InvalidImplementationType(string)": [
+        {
+          "params": {
+            "providedType": "The invalid implementation type"
+          }
+        }
+      ],
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ],
+      "ReentrancyGuardReentrantCall()": [
+        {
+          "details": "Unauthorized reentrant call."
+        }
+      ]
+    },
+    "events": {
+      "DeploymentFeeUpdated(uint256,uint256)": {
+        "params": {
+          "newFee": "The new fee amount",
+          "oldFee": "The previous fee amount"
+        }
+      },
+      "FeesWithdrawn(address,uint256)": {
+        "params": {
+          "amount": "The amount withdrawn",
+          "recipient": "The address receiving the fees"
+        }
+      },
+      "ImplementationUpdated(string,address,address)": {
+        "params": {
+          "implementationType": "The type of implementation being updated",
+          "newImplementation": "The new implementation address",
+          "oldImplementation": "The previous implementation address"
+        }
+      },
+      "Paused(address)": {
+        "details": "Emitted when the pause is triggered by `account`."
+      },
+      "SystemDeployed(address,address,address)": {
+        "params": {
+          "factoryAddress": "The address of the newly deployed factory",
+          "lockAddress": "The address of the newly deployed lock contract",
+          "owner": "The address of the factory owner"
+        }
+      },
+      "Unpaused(address)": {
+        "details": "Emitted when the pause is lifted by `account`."
+      }
+    },
+    "kind": "dev",
+    "methods": {
+      "deploySystem(address,uint256,(uint256,uint256,uint256,uint256,uint24,uint24,address,address,address,address))": {
+        "params": {
+          "owner": "Address that will own the factory",
+          "settings": "Bonding curve settings for initialization"
+        },
+        "returns": {
+          "factoryAddress": "The address of the newly deployed factory",
+          "lockAddress": "The address of the newly deployed lock contract"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "pause()": {
+        "details": "Only callable by owner"
+      },
+      "paused()": {
+        "details": "Returns true if the contract is paused, and false otherwise."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      },
+      "unpause()": {
+        "details": "Only callable by owner"
+      },
+      "updateDeploymentFee(uint256)": {
+        "params": {
+          "newFee": "The new fee amount in wei"
+        }
+      },
+      "updateImplementation(string,address)": {
+        "params": {
+          "implementationType": "The type of implementation to update",
+          "newImplementation": "The new implementation address"
+        }
+      },
+      "withdrawFees(address)": {
+        "params": {
+          "recipient": "The address to receive the fees"
+        }
+      }
+    },
+    "title": "Foundry",
+    "version": 1
+  },
+  "userdoc": {
+    "errors": {
+      "FeeOperationFailed(string)": [
+        {
+          "notice": "Thrown when a fee-related operation fails"
+        }
+      ],
+      "InitializationFailed(string)": [
+        {
+          "notice": "Thrown when initialization of a contract fails"
+        }
+      ],
+      "InsufficientDeploymentFee(uint256,uint256)": [
+        {
+          "notice": "Thrown when the deployment fee provided is insufficient"
+        }
+      ],
+      "InvalidImplementationType(string)": [
+        {
+          "notice": "Thrown when an invalid implementation type is provided"
+        }
+      ],
+      "NoFeesToWithdraw()": [
+        {
+          "notice": "Thrown when attempting to withdraw zero fees or when contract has no balance"
+        }
+      ],
+      "ZeroAddress()": [
+        {
+          "notice": "Thrown when an address parameter is zero"
+        }
+      ]
+    },
+    "events": {
+      "DeploymentFeeUpdated(uint256,uint256)": {
+        "notice": "Emitted when the deployment fee is updated"
+      },
+      "FeesWithdrawn(address,uint256)": {
+        "notice": "Emitted when fees are withdrawn"
+      },
+      "ImplementationUpdated(string,address,address)": {
+        "notice": "Emitted when implementation addresses are updated"
+      },
+      "SystemDeployed(address,address,address)": {
+        "notice": "Emitted when a new system (factory + lock) is deployed"
+      }
+    },
+    "kind": "user",
+    "methods": {
+      "constructor": {
+        "notice": "Constructor to initialize the Foundry contract"
+      },
+      "deploySystem(address,uint256,(uint256,uint256,uint256,uint256,uint24,uint24,address,address,address,address))": {
+        "notice": "Deploy both factory and lock contracts in a single transaction"
+      },
+      "pause()": {
+        "notice": "Pause the contract"
+      },
+      "unpause()": {
+        "notice": "Unpause the contract"
+      },
+      "updateDeploymentFee(uint256)": {
+        "notice": "Update the deployment fee"
+      },
+      "updateImplementation(string,address)": {
+        "notice": "Update the implementation address for a specific contract type"
+      },
+      "withdrawFees(address)": {
+        "notice": "Withdraw collected fees"
+      }
+    },
+    "notice": "Main deployer contract for the bonding curve system",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 1386,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 4637,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "_status",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 4518,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "_paused",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_bool"
+      },
+      {
+        "astId": 9846,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "factoryImplementation",
+        "offset": 1,
+        "slot": "2",
+        "type": "t_address"
+      },
+      {
+        "astId": 9848,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "lockImplementation",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_address"
+      },
+      {
+        "astId": 9850,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "tokenImplementation",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_address"
+      },
+      {
+        "astId": 9852,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "bondingCurveImplementation",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_address"
+      },
+      {
+        "astId": 9854,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "deploymentFee",
+        "offset": 0,
+        "slot": "6",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 9858,
+        "contract": "contracts/Foundry.sol:Foundry",
+        "label": "deployedClones",
+        "offset": 0,
+        "slot": "7",
+        "type": "t_mapping(t_address,t_bool)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

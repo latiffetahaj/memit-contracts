@@ -16,6 +16,14 @@
         "sepolia:verify": "hardhat --network  sepolia verifix",
         "bsc:deploy": "hardhat --network bsc deploy",
         "bsc:verify": "hardhat --network bsc verifix",
+        "base:deploy": "hardhat --network base deploy",
+        "base:verify": "hardhat --network base verifix",
+        "blast:deploy": "hardhat --network blast deploy",
+        "blast:verify": "hardhat --network blast verifix",
+        "linea:deploy": "hardhat --network linea deploy",
+        "linea:verify": "hardhat --network linea verifix",
+        "arbitrum:deploy": "hardhat --network arbitrum deploy",
+        "arbitrum:verify": "hardhat --network arbitrum verifix",
         "done": "npm run export && node build"
     },
     "devDependencies": {

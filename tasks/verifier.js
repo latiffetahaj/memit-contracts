@@ -15,11 +15,10 @@ function getNetworkName(network) {
 task("verifix", "Verify Specific contracts code")
     .setAction(async (taskArgs, hre) => {
         const contracts = [
-            'DepositsManager',
-            'USDT',
-            'BNB',
-            'USDC',
-            'PrizeClaim',
+            'BondingCurve',
+            'Factory',
+            'Lock',
+            'TokenImplementation'
         ];
         const apiKey = hre.network.config.verify?.etherscan?.apiKey;
         const apiUrl = hre.network.config.verify?.etherscan?.apiUrl;

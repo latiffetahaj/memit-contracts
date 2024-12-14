@@ -1,7 +1,7 @@
 module.exports = async function ({ deployments, getChainId, getNamedAccounts, }) {
     const { deploy } = deployments;
     const chainId = await getChainId();
-    const { deployer, ether, bnb, arbitrum, base, avalanche, zora } = await getNamedAccounts();
+    const { deployer, ether, bnb, arbitrum, base, avalanche, linea, blast, zora } = await getNamedAccounts();
     const accounts = {
         1: ether, // mainnet
         11155111: deployer, // sepolia
@@ -10,7 +10,9 @@ module.exports = async function ({ deployments, getChainId, getNamedAccounts, })
         8453: base, // base
         43114: avalanche, // avalanche
         7777777: zora, // Zora
-        999999999: zora, // Zora Sepolia
+        999999999: zora, // Zora Sepolia,
+        81457: blast, // 
+        59144: linea,
     };
     await deploy("TokenImplementation", {
         from: accounts[chainId],

@@ -65,11 +65,13 @@ module.exports = {
     namedAccounts: {
         deployer: { default: 0 },
         ether: { default: 1 },
-        bsc: { default: 2 },
+        bnb: { default: 2 },
         arbitrum: { default: 3 },
         base: { default: 4 },
         avalanche: { default: 5 },
-        zora: { default: 6 }
+        zora: { default: 6 },
+        blast: { default: 7 },
+        linea: { default: 8 }
     },
     networks: {
         hardhat: {
@@ -124,6 +126,34 @@ module.exports = {
             }
 
         },
+        blast: {
+            url: "https://rpc.ankr.com/blast/a2e2e0ee70153e9f9ea6eca45dbdce42021037389167d0e56825030f04213d1c",
+            accounts,
+            chainId: 81457,
+            live: true,
+            saveDeployments: true,
+            verify: {
+                etherscan: {
+                    apiKey: process.env.BLASTSCAN_KEY,
+                    apiUrl: 'https://api.blastscan.io'
+                }
+            }
+
+        },
+        linea: {
+            url: "https://rpc.ankr.com/linea/a2e2e0ee70153e9f9ea6eca45dbdce42021037389167d0e56825030f04213d1c",
+            accounts,
+            chainId: 59144,
+            live: true,
+            saveDeployments: true,
+            verify: {
+                etherscan: {
+                    apiKey: process.env.LINEASCAN_KEY,
+                    apiUrl: 'https://api.lineascan.build/'
+                }
+            }
+
+        },
         // ARBITRUM
         arbitrum: {
             url: "https://arb1.arbitrum.io/rpc",
@@ -147,7 +177,7 @@ module.exports = {
             verify: {
                 etherscan: {
                     apiKey: process.env.BASESCAN_KEY,
-                    apiUrl: 'https://basescan.org/'
+                    apiUrl: 'https://api.basescan.org'
                 }
             }
         },

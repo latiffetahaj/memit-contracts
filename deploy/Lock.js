@@ -1,15 +1,17 @@
 module.exports = async function ({ deployments, getNamedAccounts, getChainId }) {
     const { deploy } = deployments;
-    const { deployer, ether, bnb, arbitrum, base, avalanche, zora } = await getNamedAccounts();
+    const { deployer, ether, bnb, arbitrum, base, avalanche, linea, zora, blast } = await getNamedAccounts();
     const accounts = {
         1: ether, // mainnet
         11155111: deployer, // sepolia
         56: bnb, // BSC
         42161: arbitrum, // 
+        81457: blast, // 
         8453: base, // base
         43114: avalanche, // avalanche
         7777777: zora, // Zora
         999999999: zora, // Zora Sepolia
+        59144: linea,
     };
     const chainId = await getChainId();
     // https://docs.uniswap.org/contracts/v3/reference/deployments/
@@ -22,6 +24,8 @@ module.exports = async function ({ deployments, getNamedAccounts, getChainId }) 
         43114: "0x655C406EBFa14EE2006250925e54ec43AD184f8B", // avalanche
         7777777: "0xbC91e8DfA3fF18De43853372A3d7dfe585137D78", // Zora
         999999999: "0xB8458EaAe43292e3c1F7994EFd016bd653d23c20", // Zora Sepolia
+        81457: "0xB218e4f7cF0533d4696fDfC419A0023D33345F28", // Blast
+        59144: "0x80C7DD17B01855a6D2347444a0FCC36136a314de", // Blast
     };
 
     const positionManager = positionManagers[chainId];

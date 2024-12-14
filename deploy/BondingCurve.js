@@ -1,7 +1,8 @@
 module.exports = async function ({ deployments, getNamedAccounts, getChainId }) {
     const { deploy } = deployments;
     const chainId = await getChainId();
-    const { deployer, ether, bnb, arbitrum, base, avalanche, zora } = await getNamedAccounts();
+    const { deployer, ether, bnb, arbitrum, base, avalanche, blast, zora, linea } = await getNamedAccounts();
+
     const accounts = {
         1: ether, // mainnet
         11155111: deployer, // sepolia
@@ -9,8 +10,10 @@ module.exports = async function ({ deployments, getNamedAccounts, getChainId }) 
         42161: arbitrum, // 
         8453: base, // base
         43114: avalanche, // avalanche
+        81457: blast, // 
         7777777: zora, // Zora
         999999999: zora, // Zora Sepolia
+        59144: linea
     };
     await deploy("BondingCurve", {
         from: accounts[chainId],

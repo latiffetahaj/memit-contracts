@@ -1,0 +1,867 @@
+{
+  "address": "0x1d51b3be97dc11098c571f59717c49c8c3b45b21",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_positionManager",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidInitialization",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "LockPeriodNotEnded",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NFTAlreadyLocked",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NFTNotLocked",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotInitializing",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotNFTOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ReentrancyGuardReentrantCall",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount0",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount1",
+          "type": "uint256"
+        }
+      ],
+      "name": "FeesClaimed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "version",
+          "type": "uint64"
+        }
+      ],
+      "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "NFTLocked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "NFTUnlocked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferStarted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "LOCK_DURATION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "UNISWAP_V3_POSITION_MANAGER",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "acceptOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "checkAvailableFees",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount1",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "claimFees",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount1",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "getNFTsByOwner",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRemainingLockTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "isNFTLocked",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "lockNFT",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "lockedNFTs",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "isLocked",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lockedAt",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "onERC721Received",
+      "outputs": [
+        {
+          "internalType": "bytes4",
+          "name": "",
+          "type": "bytes4"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "ownerNFTs",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pendingOwner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "positionManager",
+      "outputs": [
+        {
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "unlockNFT",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x9b030275eea95d3a532a1dc5871cc3cf315509f407d2afc2ed3c545e017775f5",
+  "receipt": {
+    "to": null,
+    "from": "0x5540b2e749df13b56017b69252b9fc6c31625c20",
+    "contractAddress": "0x1d51b3be97dc11098c571f59717c49c8c3b45b21",
+    "transactionIndex": "0x1",
+    "gasUsed": "0x111bee",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000080000000000000000000000000000000000000000010000000000000000004000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xadb52eeac71d3e25fb5016acefdf99ed677979fdfae3e6683a908b5f4bd7b264",
+    "transactionHash": "0x25707d6480709e130cf51a045b6e780ae05a042e36bfaf681fb8c2530da5fcb5",
+    "logs": [
+      {
+        "address": "0x1d51b3be97dc11098c571f59717c49c8c3b45b21",
+        "topics": [
+          "0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000ffffffffffffffff",
+        "blockNumber": "0xc83d8e",
+        "transactionHash": "0x25707d6480709e130cf51a045b6e780ae05a042e36bfaf681fb8c2530da5fcb5",
+        "transactionIndex": "0x1",
+        "blockHash": "0xadb52eeac71d3e25fb5016acefdf99ed677979fdfae3e6683a908b5f4bd7b264",
+        "logIndex": "0x4",
+        "removed": false
+      }
+    ],
+    "blockNumber": "0xc83d8e",
+    "cumulativeGasUsed": "0x144008",
+    "status": "0x1"
+  },
+  "args": [
+    "0x80C7DD17B01855a6D2347444a0FCC36136a314de"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "755db2098558d55cecbeb68d819ee939",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_positionManager\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"InvalidInitialization\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"LockPeriodNotEnded\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NFTAlreadyLocked\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NFTNotLocked\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotInitializing\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotNFTOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ReentrancyGuardReentrantCall\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount0\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount1\",\"type\":\"uint256\"}],\"name\":\"FeesClaimed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"version\",\"type\":\"uint64\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"NFTLocked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"NFTUnlocked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferStarted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"LOCK_DURATION\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"UNISWAP_V3_POSITION_MANAGER\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"checkAvailableFees\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"amount0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount1\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"claimFees\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"amount0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount1\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"getNFTsByOwner\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getRemainingLockTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"isNFTLocked\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"lockNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"lockedNFTs\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isLocked\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"lockedAt\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"onERC721Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"ownerNFTs\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"positionManager\",\"outputs\":[{\"internalType\":\"contract INonfungiblePositionManager\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"unlockNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Implements IERC721Receiver to accept NFT transfers\",\"errors\":{\"InvalidInitialization()\":[{\"details\":\"The contract is already initialized.\"}],\"NotInitializing()\":[{\"details\":\"The contract is not initializing.\"}],\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}],\"ReentrancyGuardReentrantCall()\":[{\"details\":\"Unauthorized reentrant call.\"}]},\"events\":{\"FeesClaimed(address,uint256,uint256,uint256)\":{\"params\":{\"amount0\":\"Amount of token0 fees claimed\",\"amount1\":\"Amount of token1 fees claimed\",\"owner\":\"Address claiming the fees\",\"tokenId\":\"NFT position ID\"}},\"Initialized(uint64)\":{\"details\":\"Triggered when the contract has been initialized or reinitialized.\"},\"NFTLocked(address,uint256)\":{\"params\":{\"owner\":\"Address of the NFT owner\",\"tokenId\":\"ID of the locked NFT\"}},\"NFTUnlocked(address,uint256,address)\":{\"params\":{\"owner\":\"Address of the NFT owner\",\"tokenId\":\"ID of the unlocked NFT\"}}},\"kind\":\"dev\",\"methods\":{\"acceptOwnership()\":{\"details\":\"The new owner accepts the ownership transfer.\"},\"checkAvailableFees(uint256)\":{\"params\":{\"tokenId\":\"The NFT position ID\"},\"returns\":{\"amount0\":\"Available fees for token0\",\"amount1\":\"Available fees for token1\"}},\"claimFees(uint256)\":{\"params\":{\"tokenId\":\"The NFT position ID\"}},\"getNFTsByOwner(address)\":{\"params\":{\"owner\":\"The address to query\"},\"returns\":{\"_0\":\"Array of NFT IDs owned by the address\"}},\"getRemainingLockTime(uint256)\":{\"params\":{\"tokenId\":\"The NFT ID to check\"},\"returns\":{\"_0\":\"Remaining time in seconds, 0 if lock period has ended\"}},\"isNFTLocked(uint256)\":{\"params\":{\"tokenId\":\"The NFT ID to check\"},\"returns\":{\"_0\":\"true if NFT is locked\"}},\"lockNFT(uint256,address)\":{\"params\":{\"tokenId\":\"The ID of the NFT to lock\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"pendingOwner()\":{\"details\":\"Returns the address of the pending owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner. Setting `newOwner` to the zero address is allowed; this can be used to cancel an initiated ownership transfer.\"},\"unlockNFT(uint256,address)\":{\"params\":{\"tokenId\":\"The ID of the NFT to unlock\"}}},\"title\":\"Lock\",\"version\":1},\"userdoc\":{\"errors\":{\"LockPeriodNotEnded()\":[{\"notice\":\"Thrown when lock period has not ended\"}],\"NFTAlreadyLocked()\":[{\"notice\":\"Thrown when NFT is already locked\"}],\"NFTNotLocked()\":[{\"notice\":\"Thrown when NFT is not locked\"}],\"NotNFTOwner()\":[{\"notice\":\"Thrown when caller is not the NFT owner\"}]},\"events\":{\"FeesClaimed(address,uint256,uint256,uint256)\":{\"notice\":\"Emitted when fees are claimed\"},\"NFTLocked(address,uint256)\":{\"notice\":\"Emitted when an NFT is locked\"},\"NFTUnlocked(address,uint256,address)\":{\"notice\":\"Emitted when an NFT is unlocked\"}},\"kind\":\"user\",\"methods\":{\"checkAvailableFees(uint256)\":{\"notice\":\"Check available fees for a locked NFT position\"},\"claimFees(uint256)\":{\"notice\":\"Claim accumulated fees for a locked NFT position\"},\"getNFTsByOwner(address)\":{\"notice\":\"Get all NFTs owned by an address\"},\"getRemainingLockTime(uint256)\":{\"notice\":\"Get remaining lock time for an NFT\"},\"initialize()\":{\"notice\":\"Initialize the lock contract\"},\"isNFTLocked(uint256)\":{\"notice\":\"Check if an NFT is currently locked\"},\"lockNFT(uint256,address)\":{\"notice\":\"Lock a Uniswap V3 LP NFT\"},\"onERC721Received(address,address,uint256,bytes)\":{\"notice\":\"Implements IERC721Receiver\"},\"unlockNFT(uint256,address)\":{\"notice\":\"Unlock an NFT after the lock period\"}},\"notice\":\"Contract for locking Uniswap V3 LP NFTs and managing fee claims\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Lock.sol\":\"Lock\"},\"evmVersion\":\"paris\",\"libraries\":{\":__CACHE_BREAKER__\":\"0x00000000d41867734bbee4c6863d9255b2b06ac1\"},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (access/Ownable2Step.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {OwnableUpgradeable} from \\\"./OwnableUpgradeable.sol\\\";\\nimport {Initializable} from \\\"../proxy/utils/Initializable.sol\\\";\\n\\n/**\\n * @dev Contract module which provides access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * This extension of the {Ownable} contract includes a two-step mechanism to transfer\\n * ownership, where the new owner must call {acceptOwnership} in order to replace the\\n * old one. This can help prevent common mistakes, such as transfers of ownership to\\n * incorrect accounts, or to contracts that are unable to interact with the\\n * permission system.\\n *\\n * The initial owner is specified at deployment time in the constructor for `Ownable`. This\\n * can later be changed with {transferOwnership} and {acceptOwnership}.\\n *\\n * This module is used through inheritance. It will make available all functions\\n * from parent (Ownable).\\n */\\nabstract contract Ownable2StepUpgradeable is Initializable, OwnableUpgradeable {\\n    /// @custom:storage-location erc7201:openzeppelin.storage.Ownable2Step\\n    struct Ownable2StepStorage {\\n        address _pendingOwner;\\n    }\\n\\n    // keccak256(abi.encode(uint256(keccak256(\\\"openzeppelin.storage.Ownable2Step\\\")) - 1)) & ~bytes32(uint256(0xff))\\n    bytes32 private constant Ownable2StepStorageLocation = 0x237e158222e3e6968b72b9db0d8043aacf074ad9f650f0d1606b4d82ee432c00;\\n\\n    function _getOwnable2StepStorage() private pure returns (Ownable2StepStorage storage $) {\\n        assembly {\\n            $.slot := Ownable2StepStorageLocation\\n        }\\n    }\\n\\n    event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);\\n\\n    function __Ownable2Step_init() internal onlyInitializing {\\n    }\\n\\n    function __Ownable2Step_init_unchained() internal onlyInitializing {\\n    }\\n    /**\\n     * @dev Returns the address of the pending owner.\\n     */\\n    function pendingOwner() public view virtual returns (address) {\\n        Ownable2StepStorage storage $ = _getOwnable2StepStorage();\\n        return $._pendingOwner;\\n    }\\n\\n    /**\\n     * @dev Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one.\\n     * Can only be called by the current owner.\\n     *\\n     * Setting `newOwner` to the zero address is allowed; this can be used to cancel an initiated ownership transfer.\\n     */\\n    function transferOwnership(address newOwner) public virtual override onlyOwner {\\n        Ownable2StepStorage storage $ = _getOwnable2StepStorage();\\n        $._pendingOwner = newOwner;\\n        emit OwnershipTransferStarted(owner(), newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`) and deletes any pending owner.\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual override {\\n        Ownable2StepStorage storage $ = _getOwnable2StepStorage();\\n        delete $._pendingOwner;\\n        super._transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev The new owner accepts the ownership transfer.\\n     */\\n    function acceptOwnership() public virtual {\\n        address sender = _msgSender();\\n        if (pendingOwner() != sender) {\\n            revert OwnableUnauthorizedAccount(sender);\\n        }\\n        _transferOwnership(sender);\\n    }\\n}\\n\",\"keccak256\":\"0xe9570c90b688339474e80090b0cdf0b2c85c25aa28cc6044d489dda9efc2c716\",\"license\":\"MIT\"},\"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {ContextUpgradeable} from \\\"../utils/ContextUpgradeable.sol\\\";\\nimport {Initializable} from \\\"../proxy/utils/Initializable.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract OwnableUpgradeable is Initializable, ContextUpgradeable {\\n    /// @custom:storage-location erc7201:openzeppelin.storage.Ownable\\n    struct OwnableStorage {\\n        address _owner;\\n    }\\n\\n    // keccak256(abi.encode(uint256(keccak256(\\\"openzeppelin.storage.Ownable\\\")) - 1)) & ~bytes32(uint256(0xff))\\n    bytes32 private constant OwnableStorageLocation = 0x9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c199300;\\n\\n    function _getOwnableStorage() private pure returns (OwnableStorage storage $) {\\n        assembly {\\n            $.slot := OwnableStorageLocation\\n        }\\n    }\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    function __Ownable_init(address initialOwner) internal onlyInitializing {\\n        __Ownable_init_unchained(initialOwner);\\n    }\\n\\n    function __Ownable_init_unchained(address initialOwner) internal onlyInitializing {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        OwnableStorage storage $ = _getOwnableStorage();\\n        return $._owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        OwnableStorage storage $ = _getOwnableStorage();\\n        address oldOwner = $._owner;\\n        $._owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xc163fcf9bb10138631a9ba5564df1fa25db9adff73bd9ee868a8ae1858fe093a\",\"license\":\"MIT\"},\"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (proxy/utils/Initializable.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed\\n * behind a proxy. Since proxied contracts do not make use of a constructor, it's common to move constructor logic to an\\n * external initializer function, usually called `initialize`. It then becomes necessary to protect this initializer\\n * function so it can only be called once. The {initializer} modifier provided by this contract will have this effect.\\n *\\n * The initialization functions use a version number. Once a version number is used, it is consumed and cannot be\\n * reused. This mechanism prevents re-execution of each \\\"step\\\" but allows the creation of new initialization steps in\\n * case an upgrade adds a module that needs to be initialized.\\n *\\n * For example:\\n *\\n * [.hljs-theme-light.nopadding]\\n * ```solidity\\n * contract MyToken is ERC20Upgradeable {\\n *     function initialize() initializer public {\\n *         __ERC20_init(\\\"MyToken\\\", \\\"MTK\\\");\\n *     }\\n * }\\n *\\n * contract MyTokenV2 is MyToken, ERC20PermitUpgradeable {\\n *     function initializeV2() reinitializer(2) public {\\n *         __ERC20Permit_init(\\\"MyToken\\\");\\n *     }\\n * }\\n * ```\\n *\\n * TIP: To avoid leaving the proxy in an uninitialized state, the initializer function should be called as early as\\n * possible by providing the encoded function call as the `_data` argument to {ERC1967Proxy-constructor}.\\n *\\n * CAUTION: When used with inheritance, manual care must be taken to not invoke a parent initializer twice, or to ensure\\n * that all initializers are idempotent. This is not verified automatically as constructors are by Solidity.\\n *\\n * [CAUTION]\\n * ====\\n * Avoid leaving a contract uninitialized.\\n *\\n * An uninitialized contract can be taken over by an attacker. This applies to both a proxy and its implementation\\n * contract, which may impact the proxy. To prevent the implementation contract from being used, you should invoke\\n * the {_disableInitializers} function in the constructor to automatically lock it when it is deployed:\\n *\\n * [.hljs-theme-light.nopadding]\\n * ```\\n * /// @custom:oz-upgrades-unsafe-allow constructor\\n * constructor() {\\n *     _disableInitializers();\\n * }\\n * ```\\n * ====\\n */\\nabstract contract Initializable {\\n    /**\\n     * @dev Storage of the initializable contract.\\n     *\\n     * It's implemented on a custom ERC-7201 namespace to reduce the risk of storage collisions\\n     * when using with upgradeable contracts.\\n     *\\n     * @custom:storage-location erc7201:openzeppelin.storage.Initializable\\n     */\\n    struct InitializableStorage {\\n        /**\\n         * @dev Indicates that the contract has been initialized.\\n         */\\n        uint64 _initialized;\\n        /**\\n         * @dev Indicates that the contract is in the process of being initialized.\\n         */\\n        bool _initializing;\\n    }\\n\\n    // keccak256(abi.encode(uint256(keccak256(\\\"openzeppelin.storage.Initializable\\\")) - 1)) & ~bytes32(uint256(0xff))\\n    bytes32 private constant INITIALIZABLE_STORAGE = 0xf0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a00;\\n\\n    /**\\n     * @dev The contract is already initialized.\\n     */\\n    error InvalidInitialization();\\n\\n    /**\\n     * @dev The contract is not initializing.\\n     */\\n    error NotInitializing();\\n\\n    /**\\n     * @dev Triggered when the contract has been initialized or reinitialized.\\n     */\\n    event Initialized(uint64 version);\\n\\n    /**\\n     * @dev A modifier that defines a protected initializer function that can be invoked at most once. In its scope,\\n     * `onlyInitializing` functions can be used to initialize parent contracts.\\n     *\\n     * Similar to `reinitializer(1)`, except that in the context of a constructor an `initializer` may be invoked any\\n     * number of times. This behavior in the constructor can be useful during testing and is not expected to be used in\\n     * production.\\n     *\\n     * Emits an {Initialized} event.\\n     */\\n    modifier initializer() {\\n        // solhint-disable-next-line var-name-mixedcase\\n        InitializableStorage storage $ = _getInitializableStorage();\\n\\n        // Cache values to avoid duplicated sloads\\n        bool isTopLevelCall = !$._initializing;\\n        uint64 initialized = $._initialized;\\n\\n        // Allowed calls:\\n        // - initialSetup: the contract is not in the initializing state and no previous version was\\n        //                 initialized\\n        // - construction: the contract is initialized at version 1 (no reininitialization) and the\\n        //                 current contract is just being deployed\\n        bool initialSetup = initialized == 0 && isTopLevelCall;\\n        bool construction = initialized == 1 && address(this).code.length == 0;\\n\\n        if (!initialSetup && !construction) {\\n            revert InvalidInitialization();\\n        }\\n        $._initialized = 1;\\n        if (isTopLevelCall) {\\n            $._initializing = true;\\n        }\\n        _;\\n        if (isTopLevelCall) {\\n            $._initializing = false;\\n            emit Initialized(1);\\n        }\\n    }\\n\\n    /**\\n     * @dev A modifier that defines a protected reinitializer function that can be invoked at most once, and only if the\\n     * contract hasn't been initialized to a greater version before. In its scope, `onlyInitializing` functions can be\\n     * used to initialize parent contracts.\\n     *\\n     * A reinitializer may be used after the original initialization step. This is essential to configure modules that\\n     * are added through upgrades and that require initialization.\\n     *\\n     * When `version` is 1, this modifier is similar to `initializer`, except that functions marked with `reinitializer`\\n     * cannot be nested. If one is invoked in the context of another, execution will revert.\\n     *\\n     * Note that versions can jump in increments greater than 1; this implies that if multiple reinitializers coexist in\\n     * a contract, executing them in the right order is up to the developer or operator.\\n     *\\n     * WARNING: Setting the version to 2**64 - 1 will prevent any future reinitialization.\\n     *\\n     * Emits an {Initialized} event.\\n     */\\n    modifier reinitializer(uint64 version) {\\n        // solhint-disable-next-line var-name-mixedcase\\n        InitializableStorage storage $ = _getInitializableStorage();\\n\\n        if ($._initializing || $._initialized >= version) {\\n            revert InvalidInitialization();\\n        }\\n        $._initialized = version;\\n        $._initializing = true;\\n        _;\\n        $._initializing = false;\\n        emit Initialized(version);\\n    }\\n\\n    /**\\n     * @dev Modifier to protect an initialization function so that it can only be invoked by functions with the\\n     * {initializer} and {reinitializer} modifiers, directly or indirectly.\\n     */\\n    modifier onlyInitializing() {\\n        _checkInitializing();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Reverts if the contract is not in an initializing state. See {onlyInitializing}.\\n     */\\n    function _checkInitializing() internal view virtual {\\n        if (!_isInitializing()) {\\n            revert NotInitializing();\\n        }\\n    }\\n\\n    /**\\n     * @dev Locks the contract, preventing any future reinitialization. This cannot be part of an initializer call.\\n     * Calling this in the constructor of a contract will prevent that contract from being initialized or reinitialized\\n     * to any version. It is recommended to use this to lock implementation contracts that are designed to be called\\n     * through proxies.\\n     *\\n     * Emits an {Initialized} event the first time it is successfully executed.\\n     */\\n    function _disableInitializers() internal virtual {\\n        // solhint-disable-next-line var-name-mixedcase\\n        InitializableStorage storage $ = _getInitializableStorage();\\n\\n        if ($._initializing) {\\n            revert InvalidInitialization();\\n        }\\n        if ($._initialized != type(uint64).max) {\\n            $._initialized = type(uint64).max;\\n            emit Initialized(type(uint64).max);\\n        }\\n    }\\n\\n    /**\\n     * @dev Returns the highest version that has been initialized. See {reinitializer}.\\n     */\\n    function _getInitializedVersion() internal view returns (uint64) {\\n        return _getInitializableStorage()._initialized;\\n    }\\n\\n    /**\\n     * @dev Returns `true` if the contract is currently initializing. See {onlyInitializing}.\\n     */\\n    function _isInitializing() internal view returns (bool) {\\n        return _getInitializableStorage()._initializing;\\n    }\\n\\n    /**\\n     * @dev Returns a pointer to the storage namespace.\\n     */\\n    // solhint-disable-next-line var-name-mixedcase\\n    function _getInitializableStorage() private pure returns (InitializableStorage storage $) {\\n        assembly {\\n            $.slot := INITIALIZABLE_STORAGE\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0x631188737069917d2f909d29ce62c4d48611d326686ba6683e26b72a23bfac0b\",\"license\":\"MIT\"},\"@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\nimport {Initializable} from \\\"../proxy/utils/Initializable.sol\\\";\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract ContextUpgradeable is Initializable {\\n    function __Context_init() internal onlyInitializing {\\n    }\\n\\n    function __Context_init_unchained() internal onlyInitializing {\\n    }\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0xdbef5f0c787055227243a7318ef74c8a5a1108ca3a07f2b3a00ef67769e1e397\",\"license\":\"MIT\"},\"@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (utils/ReentrancyGuard.sol)\\n\\npragma solidity ^0.8.20;\\nimport {Initializable} from \\\"../proxy/utils/Initializable.sol\\\";\\n\\n/**\\n * @dev Contract module that helps prevent reentrant calls to a function.\\n *\\n * Inheriting from `ReentrancyGuard` will make the {nonReentrant} modifier\\n * available, which can be applied to functions to make sure there are no nested\\n * (reentrant) calls to them.\\n *\\n * Note that because there is a single `nonReentrant` guard, functions marked as\\n * `nonReentrant` may not call one another. This can be worked around by making\\n * those functions `private`, and then adding `external` `nonReentrant` entry\\n * points to them.\\n *\\n * TIP: If EIP-1153 (transient storage) is available on the chain you're deploying at,\\n * consider using {ReentrancyGuardTransient} instead.\\n *\\n * TIP: If you would like to learn more about reentrancy and alternative ways\\n * to protect against it, check out our blog post\\n * https://blog.openzeppelin.com/reentrancy-after-istanbul/[Reentrancy After Istanbul].\\n */\\nabstract contract ReentrancyGuardUpgradeable is Initializable {\\n    // Booleans are more expensive than uint256 or any type that takes up a full\\n    // word because each write operation emits an extra SLOAD to first read the\\n    // slot's contents, replace the bits taken up by the boolean, and then write\\n    // back. This is the compiler's defense against contract upgrades and\\n    // pointer aliasing, and it cannot be disabled.\\n\\n    // The values being non-zero value makes deployment a bit more expensive,\\n    // but in exchange the refund on every call to nonReentrant will be lower in\\n    // amount. Since refunds are capped to a percentage of the total\\n    // transaction's gas, it is best to keep them low in cases like this one, to\\n    // increase the likelihood of the full refund coming into effect.\\n    uint256 private constant NOT_ENTERED = 1;\\n    uint256 private constant ENTERED = 2;\\n\\n    /// @custom:storage-location erc7201:openzeppelin.storage.ReentrancyGuard\\n    struct ReentrancyGuardStorage {\\n        uint256 _status;\\n    }\\n\\n    // keccak256(abi.encode(uint256(keccak256(\\\"openzeppelin.storage.ReentrancyGuard\\\")) - 1)) & ~bytes32(uint256(0xff))\\n    bytes32 private constant ReentrancyGuardStorageLocation = 0x9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f00;\\n\\n    function _getReentrancyGuardStorage() private pure returns (ReentrancyGuardStorage storage $) {\\n        assembly {\\n            $.slot := ReentrancyGuardStorageLocation\\n        }\\n    }\\n\\n    /**\\n     * @dev Unauthorized reentrant call.\\n     */\\n    error ReentrancyGuardReentrantCall();\\n\\n    function __ReentrancyGuard_init() internal onlyInitializing {\\n        __ReentrancyGuard_init_unchained();\\n    }\\n\\n    function __ReentrancyGuard_init_unchained() internal onlyInitializing {\\n        ReentrancyGuardStorage storage $ = _getReentrancyGuardStorage();\\n        $._status = NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Prevents a contract from calling itself, directly or indirectly.\\n     * Calling a `nonReentrant` function from another `nonReentrant`\\n     * function is not supported. It is possible to prevent this from happening\\n     * by making the `nonReentrant` function external, and making it call a\\n     * `private` function that does the actual work.\\n     */\\n    modifier nonReentrant() {\\n        _nonReentrantBefore();\\n        _;\\n        _nonReentrantAfter();\\n    }\\n\\n    function _nonReentrantBefore() private {\\n        ReentrancyGuardStorage storage $ = _getReentrancyGuardStorage();\\n        // On the first call to nonReentrant, _status will be NOT_ENTERED\\n        if ($._status == ENTERED) {\\n            revert ReentrancyGuardReentrantCall();\\n        }\\n\\n        // Any calls to nonReentrant after this point will fail\\n        $._status = ENTERED;\\n    }\\n\\n    function _nonReentrantAfter() private {\\n        ReentrancyGuardStorage storage $ = _getReentrancyGuardStorage();\\n        // By storing the original value once again, a refund is triggered (see\\n        // https://eips.ethereum.org/EIPS/eip-2200)\\n        $._status = NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Returns true if the reentrancy guard is currently set to \\\"entered\\\", which indicates there is a\\n     * `nonReentrant` function in the call stack.\\n     */\\n    function _reentrancyGuardEntered() internal view returns (bool) {\\n        ReentrancyGuardStorage storage $ = _getReentrancyGuardStorage();\\n        return $._status == ENTERED;\\n    }\\n}\\n\",\"keccak256\":\"0x361126a17677994081cd9cb69c3f50cffff6e920d25cb7e428acdb1ae41d1866\",\"license\":\"MIT\"},\"@openzeppelin/contracts/interfaces/IERC721.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (interfaces/IERC721.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {IERC721} from \\\"../token/ERC721/IERC721.sol\\\";\\n\",\"keccak256\":\"0xc4d7ebf63eb2f6bf3fee1b6c0ee775efa9f31b4843a5511d07eea147e212932d\",\"license\":\"MIT\"},\"@openzeppelin/contracts/token/ERC721/IERC721.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (token/ERC721/IERC721.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {IERC165} from \\\"../../utils/introspection/IERC165.sol\\\";\\n\\n/**\\n * @dev Required interface of an ERC-721 compliant contract.\\n */\\ninterface IERC721 is IERC165 {\\n    /**\\n     * @dev Emitted when `tokenId` token is transferred from `from` to `to`.\\n     */\\n    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);\\n\\n    /**\\n     * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.\\n     */\\n    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);\\n\\n    /**\\n     * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.\\n     */\\n    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);\\n\\n    /**\\n     * @dev Returns the number of tokens in ``owner``'s account.\\n     */\\n    function balanceOf(address owner) external view returns (uint256 balance);\\n\\n    /**\\n     * @dev Returns the owner of the `tokenId` token.\\n     *\\n     * Requirements:\\n     *\\n     * - `tokenId` must exist.\\n     */\\n    function ownerOf(uint256 tokenId) external view returns (address owner);\\n\\n    /**\\n     * @dev Safely transfers `tokenId` token from `from` to `to`.\\n     *\\n     * Requirements:\\n     *\\n     * - `from` cannot be the zero address.\\n     * - `to` cannot be the zero address.\\n     * - `tokenId` token must exist and be owned by `from`.\\n     * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.\\n     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon\\n     *   a safe transfer.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;\\n\\n    /**\\n     * @dev Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients\\n     * are aware of the ERC-721 protocol to prevent tokens from being forever locked.\\n     *\\n     * Requirements:\\n     *\\n     * - `from` cannot be the zero address.\\n     * - `to` cannot be the zero address.\\n     * - `tokenId` token must exist and be owned by `from`.\\n     * - If the caller is not `from`, it must have been allowed to move this token by either {approve} or\\n     *   {setApprovalForAll}.\\n     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon\\n     *   a safe transfer.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function safeTransferFrom(address from, address to, uint256 tokenId) external;\\n\\n    /**\\n     * @dev Transfers `tokenId` token from `from` to `to`.\\n     *\\n     * WARNING: Note that the caller is responsible to confirm that the recipient is capable of receiving ERC-721\\n     * or else they may be permanently lost. Usage of {safeTransferFrom} prevents loss, though the caller must\\n     * understand this adds an external call which potentially creates a reentrancy vulnerability.\\n     *\\n     * Requirements:\\n     *\\n     * - `from` cannot be the zero address.\\n     * - `to` cannot be the zero address.\\n     * - `tokenId` token must be owned by `from`.\\n     * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transferFrom(address from, address to, uint256 tokenId) external;\\n\\n    /**\\n     * @dev Gives permission to `to` to transfer `tokenId` token to another account.\\n     * The approval is cleared when the token is transferred.\\n     *\\n     * Only a single account can be approved at a time, so approving the zero address clears previous approvals.\\n     *\\n     * Requirements:\\n     *\\n     * - The caller must own the token or be an approved operator.\\n     * - `tokenId` must exist.\\n     *\\n     * Emits an {Approval} event.\\n     */\\n    function approve(address to, uint256 tokenId) external;\\n\\n    /**\\n     * @dev Approve or remove `operator` as an operator for the caller.\\n     * Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller.\\n     *\\n     * Requirements:\\n     *\\n     * - The `operator` cannot be the address zero.\\n     *\\n     * Emits an {ApprovalForAll} event.\\n     */\\n    function setApprovalForAll(address operator, bool approved) external;\\n\\n    /**\\n     * @dev Returns the account approved for `tokenId` token.\\n     *\\n     * Requirements:\\n     *\\n     * - `tokenId` must exist.\\n     */\\n    function getApproved(uint256 tokenId) external view returns (address operator);\\n\\n    /**\\n     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.\\n     *\\n     * See {setApprovalForAll}\\n     */\\n    function isApprovedForAll(address owner, address operator) external view returns (bool);\\n}\\n\",\"keccak256\":\"0x5dc63d1c6a12fe1b17793e1745877b2fcbe1964c3edfd0a482fac21ca8f18261\",\"license\":\"MIT\"},\"@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (token/ERC721/IERC721Receiver.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @title ERC-721 token receiver interface\\n * @dev Interface for any contract that wants to support safeTransfers\\n * from ERC-721 asset contracts.\\n */\\ninterface IERC721Receiver {\\n    /**\\n     * @dev Whenever an {IERC721} `tokenId` token is transferred to this contract via {IERC721-safeTransferFrom}\\n     * by `operator` from `from`, this function is called.\\n     *\\n     * It must return its Solidity selector to confirm the token transfer.\\n     * If any other value is returned or the interface is not implemented by the recipient, the transfer will be\\n     * reverted.\\n     *\\n     * The selector can be obtained in Solidity with `IERC721Receiver.onERC721Received.selector`.\\n     */\\n    function onERC721Received(\\n        address operator,\\n        address from,\\n        uint256 tokenId,\\n        bytes calldata data\\n    ) external returns (bytes4);\\n}\\n\",\"keccak256\":\"0xb5afb8e8eebc4d1c6404df2f5e1e6d2c3d24fd01e5dfc855314951ecfaae462d\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/introspection/IERC165.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (utils/introspection/IERC165.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Interface of the ERC-165 standard, as defined in the\\n * https://eips.ethereum.org/EIPS/eip-165[ERC].\\n *\\n * Implementers can declare support of contract interfaces, which can then be\\n * queried by others ({ERC165Checker}).\\n *\\n * For an implementation, see {ERC165}.\\n */\\ninterface IERC165 {\\n    /**\\n     * @dev Returns true if this contract implements the interface defined by\\n     * `interfaceId`. See the corresponding\\n     * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]\\n     * to learn more about how these ids are created.\\n     *\\n     * This function call must use less than 30 000 gas.\\n     */\\n    function supportsInterface(bytes4 interfaceId) external view returns (bool);\\n}\\n\",\"keccak256\":\"0x79796192ec90263f21b464d5bc90b777a525971d3de8232be80d9c4f9fb353b8\",\"license\":\"MIT\"},\"contracts/Lock.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\nimport \\\"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\\\";\\nimport \\\"@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol\\\";\\nimport \\\"@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol\\\";\\nimport \\\"@openzeppelin/contracts/token/ERC721/IERC721.sol\\\";\\nimport \\\"@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol\\\";\\nimport \\\"./interfaces/ILock.sol\\\";\\nimport \\\"./interfaces/UniswapV3Interfaces.sol\\\";\\n\\n/**\\n * @title Lock\\n * @notice Contract for locking Uniswap V3 LP NFTs and managing fee claims\\n * @dev Implements IERC721Receiver to accept NFT transfers\\n */\\ncontract Lock is\\n    ILock,\\n    Initializable,\\n    Ownable2StepUpgradeable,\\n    ReentrancyGuardUpgradeable,\\n    IERC721Receiver\\n{\\n    // Structs\\n    struct LockedNFT {\\n        address owner;\\n        uint256 tokenId;\\n        bool isLocked;\\n        uint256 lockedAt;\\n    }\\n\\n    // State variables\\n    INonfungiblePositionManager public positionManager;\\n    mapping(uint256 => LockedNFT) public lockedNFTs;\\n    mapping(address => uint256[]) public ownerNFTs;\\n\\n    // Constants\\n    uint256 public constant LOCK_DURATION = 3650 days; // ten years.\\n    address public immutable UNISWAP_V3_POSITION_MANAGER;\\n\\n    constructor(address _positionManager) {\\n        _disableInitializers();\\n        UNISWAP_V3_POSITION_MANAGER = _positionManager;\\n    }\\n\\n    /**\\n     * @notice Initialize the lock contract\\n     */\\n    function initialize() external initializer {\\n        __Ownable_init(_msgSender());\\n        __ReentrancyGuard_init();\\n        positionManager = INonfungiblePositionManager(\\n            UNISWAP_V3_POSITION_MANAGER\\n        );\\n    }\\n\\n    /**\\n     * @notice Lock a Uniswap V3 LP NFT\\n     * @param tokenId The ID of the NFT to lock\\n     */\\n    function lockNFT(uint256 tokenId, address owner) external nonReentrant {\\n        if (lockedNFTs[tokenId].isLocked) revert NFTAlreadyLocked();\\n\\n        // Transfer NFT to this contract\\n        positionManager.safeTransferFrom(_msgSender(), address(this), tokenId);\\n\\n        // Create locked NFT record\\n        lockedNFTs[tokenId] = LockedNFT({\\n            owner: owner,\\n            tokenId: tokenId,\\n            isLocked: true,\\n            lockedAt: block.timestamp\\n        });\\n\\n        ownerNFTs[owner].push(tokenId);\\n\\n        emit NFTLocked(owner, tokenId);\\n    }\\n\\n    /**\\n     * @notice Unlock an NFT after the lock period\\n     * @param tokenId The ID of the NFT to unlock\\n     */\\n    function unlockNFT(uint256 tokenId, address to) external nonReentrant {\\n        LockedNFT storage nft = lockedNFTs[tokenId];\\n\\n        if (!nft.isLocked) revert NFTNotLocked();\\n        if (nft.owner != _msgSender()) revert NotNFTOwner();\\n        if (block.timestamp < nft.lockedAt + LOCK_DURATION)\\n            revert LockPeriodNotEnded();\\n\\n        // Transfer NFT back to owner\\n        positionManager.safeTransferFrom(address(this), to, tokenId);\\n\\n        // Update state\\n        nft.isLocked = false;\\n\\n        // Remove from owner's NFT array\\n        _removeNFTFromOwner(_msgSender(), tokenId);\\n\\n        emit NFTUnlocked(_msgSender(), tokenId, to);\\n    }\\n\\n    /**\\n     * @notice Claim accumulated fees for a locked NFT position\\n     * @param tokenId The NFT position ID\\n     */\\n    function claimFees(\\n        uint256 tokenId\\n    ) external nonReentrant returns (uint256 amount0, uint256 amount1) {\\n        LockedNFT storage nft = lockedNFTs[tokenId];\\n\\n        if (!nft.isLocked) revert NFTNotLocked();\\n        if (nft.owner != _msgSender()) revert NotNFTOwner();\\n\\n        // Collect fees through position manager\\n        (amount0, amount1) = positionManager.collect(\\n            INonfungiblePositionManager.CollectParams({\\n                tokenId: tokenId,\\n                recipient: _msgSender(),\\n                amount0Max: type(uint128).max,\\n                amount1Max: type(uint128).max\\n            })\\n        );\\n\\n        emit FeesClaimed(_msgSender(), tokenId, amount0, amount1);\\n    }\\n\\n    /**\\n     * @notice Check available fees for a locked NFT position\\n     * @param tokenId The NFT position ID\\n     * @return amount0 Available fees for token0\\n     * @return amount1 Available fees for token1\\n     */\\n    function checkAvailableFees(\\n        uint256 tokenId\\n    ) external view returns (uint256 amount0, uint256 amount1) {\\n        if (!lockedNFTs[tokenId].isLocked) revert NFTNotLocked();\\n\\n        // Get position info from position manager\\n        (\\n            ,\\n            ,\\n            ,\\n            ,\\n            ,\\n            ,\\n            ,\\n            uint128 liquidity,\\n            uint256 feeGrowthInside0LastX128,\\n            uint256 feeGrowthInside1LastX128,\\n            uint128 tokensOwed0,\\n            uint128 tokensOwed1\\n        ) = positionManager.positions(tokenId);\\n\\n        // Return currently owed tokens plus any accumulated but uncollected fees\\n        amount0 = uint256(tokensOwed0);\\n        amount1 = uint256(tokensOwed1);\\n\\n        if (liquidity > 0) {\\n            // Add current fee growth if position is still active\\n            amount0 += uint256(feeGrowthInside0LastX128);\\n            amount1 += uint256(feeGrowthInside1LastX128);\\n        }\\n    }\\n\\n    /**\\n     * @notice Get all NFTs owned by an address\\n     * @param owner The address to query\\n     * @return Array of NFT IDs owned by the address\\n     */\\n    function getNFTsByOwner(\\n        address owner\\n    ) external view returns (uint256[] memory) {\\n        return ownerNFTs[owner];\\n    }\\n\\n    /**\\n     * @notice Check if an NFT is currently locked\\n     * @param tokenId The NFT ID to check\\n     * @return true if NFT is locked\\n     */\\n    function isNFTLocked(uint256 tokenId) external view returns (bool) {\\n        return lockedNFTs[tokenId].isLocked;\\n    }\\n\\n    /**\\n     * @notice Get remaining lock time for an NFT\\n     * @param tokenId The NFT ID to check\\n     * @return Remaining time in seconds, 0 if lock period has ended\\n     */\\n    function getRemainingLockTime(\\n        uint256 tokenId\\n    ) external view returns (uint256) {\\n        LockedNFT storage nft = lockedNFTs[tokenId];\\n        if (!nft.isLocked) return 0;\\n\\n        uint256 endTime = nft.lockedAt + LOCK_DURATION;\\n        if (block.timestamp >= endTime) return 0;\\n\\n        return endTime - block.timestamp;\\n    }\\n\\n    /**\\n     * @notice Implements IERC721Receiver\\n     */\\n    function onERC721Received(\\n        address,\\n        address,\\n        uint256,\\n        bytes calldata\\n    ) external pure returns (bytes4) {\\n        return this.onERC721Received.selector;\\n    }\\n\\n    /**\\n     * @notice Remove an NFT from owner's array\\n     * @param owner Address of the NFT owner\\n     * @param tokenId ID of the NFT to remove\\n     */\\n    function _removeNFTFromOwner(address owner, uint256 tokenId) internal {\\n        uint256[] storage ownerTokens = ownerNFTs[owner];\\n        for (uint256 i = 0; i < ownerTokens.length; i++) {\\n            if (ownerTokens[i] == tokenId) {\\n                // Move the last element to this position and pop\\n                ownerTokens[i] = ownerTokens[ownerTokens.length - 1];\\n                ownerTokens.pop();\\n                break;\\n            }\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0xe6e7e682949dc37a3fee3942866a68908d2533c71d934a5d34a7def90b92cc14\",\"license\":\"MIT\"},\"contracts/interfaces/ILock.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\n/**\\n * @title ILock\\n * @notice Interface for the LP NFT lock contract\\n * @dev Handles locking of Uniswap V3 LP NFTs and fee management\\n */\\ninterface ILock {\\n    // Custom Errors\\n    /// @notice Thrown when NFT is already locked\\n    error NFTAlreadyLocked();\\n\\n    /// @notice Thrown when NFT is not locked\\n    error NFTNotLocked();\\n\\n    /// @notice Thrown when caller is not the NFT owner\\n    error NotNFTOwner();\\n\\n    /// @notice Thrown when lock period has not ended\\n    error LockPeriodNotEnded();\\n\\n    // Events\\n    /**\\n     * @notice Emitted when an NFT is locked\\n     * @param owner Address of the NFT owner\\n     * @param tokenId ID of the locked NFT\\n     */\\n    event NFTLocked(address indexed owner, uint256 indexed tokenId);\\n\\n    /**\\n     * @notice Emitted when an NFT is unlocked\\n     * @param owner Address of the NFT owner\\n     * @param tokenId ID of the unlocked NFT\\n     */\\n    event NFTUnlocked(\\n        address indexed owner,\\n        uint256 indexed tokenId,\\n        address to\\n    );\\n\\n    /**\\n     * @notice Emitted when fees are claimed\\n     * @param owner Address claiming the fees\\n     * @param tokenId NFT position ID\\n     * @param amount0 Amount of token0 fees claimed\\n     * @param amount1 Amount of token1 fees claimed\\n     */\\n    event FeesClaimed(\\n        address indexed owner,\\n        uint256 indexed tokenId,\\n        uint256 amount0,\\n        uint256 amount1\\n    );\\n\\n    // Functions\\n    function initialize() external;\\n\\n    function lockNFT(uint256 tokenId, address owner) external;\\n\\n    function unlockNFT(uint256 tokenId, address to) external;\\n\\n    function claimFees(\\n        uint256 tokenId\\n    ) external returns (uint256 amount0, uint256 amount1);\\n\\n    function checkAvailableFees(\\n        uint256 tokenId\\n    ) external view returns (uint256 amount0, uint256 amount1);\\n\\n    function getNFTsByOwner(\\n        address owner\\n    ) external view returns (uint256[] memory);\\n\\n    function isNFTLocked(uint256 tokenId) external view returns (bool);\\n\\n    function getRemainingLockTime(\\n        uint256 tokenId\\n    ) external view returns (uint256);\\n}\\n\",\"keccak256\":\"0x21e6ec346bfac301d5b44ec2471289de9c4e0be184389ff650f5bc598d77e9c6\",\"license\":\"MIT\"},\"contracts/interfaces/UniswapV3Interfaces.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\nimport \\\"@openzeppelin/contracts/interfaces/IERC721.sol\\\";\\n\\ninterface INonfungiblePositionManager is IERC721 {\\n    struct MintParams {\\n        address token0;\\n        address token1;\\n        uint24 fee;\\n        int24 tickLower;\\n        int24 tickUpper;\\n        uint256 amount0Desired;\\n        uint256 amount1Desired;\\n        uint256 amount0Min;\\n        uint256 amount1Min;\\n        address recipient;\\n        uint256 deadline;\\n    }\\n\\n    /// @notice Creates a new position wrapped in a NFT\\n    /// @dev Call this when the pool does exist and is initialized. Note that if the pool is created but not initialized\\n    /// a method does not exist, i.e. the pool is assumed to be initialized.\\n    /// @param params The params necessary to mint a position, encoded as `MintParams` in calldata\\n    /// @return tokenId The ID of the token that represents the minted position\\n    /// @return liquidity The amount of liquidity for this position\\n    /// @return amount0 The amount of token0\\n    /// @return amount1 The amount of token1\\n    function mint(\\n        MintParams calldata params\\n    )\\n        external\\n        payable\\n        returns (\\n            uint256 tokenId,\\n            uint128 liquidity,\\n            uint256 amount0,\\n            uint256 amount1\\n        );\\n\\n    /**\\n     * @dev Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients\\n     * are aware of the ERC721 protocol to prevent tokens from being forever locked.\\n     *\\n     * Requirements:\\n     *\\n     * - `from` cannot be the zero address.\\n     * - `to` cannot be the zero address.\\n     * - `tokenId` token must exist and be owned by `from`.\\n     * - If the caller is not `from`, it must be have been allowed to move this token by either {approve} or {setApprovalForAll}.\\n     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function safeTransferFrom(\\n        address from,\\n        address to,\\n        uint256 tokenId\\n    ) external;\\n\\n    struct CollectParams {\\n        uint256 tokenId;\\n        address recipient;\\n        uint128 amount0Max;\\n        uint128 amount1Max;\\n    }\\n\\n    /// @notice Collects up to a maximum amount of fees owed to a specific position to the recipient\\n    /// @param params tokenId The ID of the NFT for which tokens are being collected,\\n    /// recipient The account that should receive the tokens,\\n    /// amount0Max The maximum amount of token0 to collect,\\n    /// amount1Max The maximum amount of token1 to collect\\n    /// @return amount0 The amount of fees collected in token0\\n    /// @return amount1 The amount of fees collected in token1\\n    function collect(\\n        CollectParams calldata params\\n    ) external payable returns (uint256 amount0, uint256 amount1);\\n\\n    /// @notice Returns the position information associated with a given token ID.\\n    /// @dev Throws if the token ID is not valid.\\n    /// @param tokenId The ID of the token that represents the position\\n    /// @return nonce The nonce for permits\\n    /// @return operator The address that is approved for spending\\n    /// @return token0 The address of the token0 for a specific pool\\n    /// @return token1 The address of the token1 for a specific pool\\n    /// @return fee The fee associated with the pool\\n    /// @return tickLower The lower end of the tick range for the position\\n    /// @return tickUpper The higher end of the tick range for the position\\n    /// @return liquidity The liquidity of the position\\n    /// @return feeGrowthInside0LastX128 The fee growth of token0 as of the last action on the individual position\\n    /// @return feeGrowthInside1LastX128 The fee growth of token1 as of the last action on the individual position\\n    /// @return tokensOwed0 The uncollected amount of token0 owed to the position as of the last computation\\n    /// @return tokensOwed1 The uncollected amount of token1 owed to the position as of the last computation\\n    function positions(\\n        uint256 tokenId\\n    )\\n        external\\n        view\\n        returns (\\n            uint96 nonce,\\n            address operator,\\n            address token0,\\n            address token1,\\n            uint24 fee,\\n            int24 tickLower,\\n            int24 tickUpper,\\n            uint128 liquidity,\\n            uint256 feeGrowthInside0LastX128,\\n            uint256 feeGrowthInside1LastX128,\\n            uint128 tokensOwed0,\\n            uint128 tokensOwed1\\n        );\\n}\\n\\ninterface IUniswapV3Factory {\\n    function createPool(\\n        address tokenA,\\n        address tokenB,\\n        uint24 fee\\n    ) external returns (address pool);\\n\\n    function getPool(\\n        address tokenA,\\n        address tokenB,\\n        uint24 fee\\n    ) external view returns (address pool);\\n}\\n\\ninterface IUniswapV3Pool {\\n    function initialize(uint160 sqrtPriceX96) external;\\n\\n    function token0() external view returns (address);\\n\\n    function token1() external view returns (address);\\n}\\n\",\"keccak256\":\"0x44fd74f47e3d89e1e79e69f2ebb9fb8d8b4309b6c2f7f63abb4d2917f0b29e38\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60a060405234801561001057600080fd5b5060405161141d38038061141d83398101604081905261002f916100fa565b610037610048565b6001600160a01b031660805261012a565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a00805468010000000000000000900460ff16156100985760405163f92ee8a960e01b815260040160405180910390fd5b80546001600160401b03908116146100f75780546001600160401b0319166001600160401b0390811782556040519081527fc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d29060200160405180910390a15b50565b60006020828403121561010c57600080fd5b81516001600160a01b038116811461012357600080fd5b9392505050565b6080516112d161014c600039600081816102ed01526107a701526112d16000f3fe608060405234801561001057600080fd5b50600436106101215760003560e01c806379ba5097116100ad57806394cbab9d1161007157806394cbab9d146102e8578063ac68a7481461030f578063e2afe8b314610322578063e30c397814610342578063f2fde38b1461034a57600080fd5b806379ba5097146102485780638129fc1c146102505780638a26f447146102585780638da5cb5b1461026b578063945633c11461027357600080fd5b8063485d3834116100f4578063485d3834146101e25780636be9479b146101ed5780636d51590014610200578063715018a614610215578063791b98bc1461021d57600080fd5b8063150b7a02146101265780631a5a3b861461016357806321806bf91461019957806324f50dd2146101ba575b600080fd5b610145610134366004610f27565b630a85bd0160e11b95945050505050565b6040516001600160e01b031990911681526020015b60405180910390f35b610189610171366004610fc6565b60009081526001602052604090206002015460ff1690565b604051901515815260200161015a565b6101ac6101a7366004610fc6565b61035d565b60405190815260200161015a565b6101cd6101c8366004610fc6565b6103bb565b6040805192835260208301919091520161015a565b6101ac6312cc030081565b6101ac6101fb366004610fdf565b6104c4565b61021361020e36600461100b565b6104f5565b005b61021361066c565b600054610230906001600160a01b031681565b6040516001600160a01b03909116815260200161015a565b610213610680565b6102136106cd565b61021361026636600461100b565b61081f565b6102306109a4565b6102b8610281366004610fc6565b600160208190526000918252604090912080549181015460028201546003909201546001600160a01b0390931692909160ff169084565b604080516001600160a01b039095168552602085019390935290151591830191909152606082015260800161015a565b6102307f000000000000000000000000000000000000000000000000000000000000000081565b6101cd61031d366004610fc6565b6109d9565b61033561033036600461103b565b610b59565b60405161015a919061105f565b610230610bc5565b61021361035836600461103b565b610bee565b6000818152600160205260408120600281015460ff166103805750600092915050565b60006312cc0300826003015461039691906110b9565b90508042106103a9575060009392505050565b6103b342826110d2565b949350505050565b600081815260016020526040812060020154819060ff166103ef57604051630c0144e560e11b815260040160405180910390fd5b6000805460405163133f757160e31b81526004810186905282918291829182916001600160a01b03909116906399fbab889060240161018060405180830381865afa158015610442573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104669190611131565b9b509b509b509b509b5050505050505050816001600160801b03169650806001600160801b031695506000856001600160801b031611156104ba576104ab84886110b9565b96506104b783876110b9565b95505b5050505050915091565b600260205281600052604060002081815481106104e057600080fd5b90600052602060002001600091509150505481565b6104fd610c73565b6000828152600160205260409020600281015460ff1661053057604051630c0144e560e11b815260040160405180910390fd5b80546001600160a01b0316331461055a57604051631022318760e21b815260040160405180910390fd5b6312cc0300816003015461056e91906110b9565b42101561058e576040516387c0f2d560e01b815260040160405180910390fd5b600054604051632142170760e11b81523060048201526001600160a01b03848116602483015260448201869052909116906342842e0e90606401600060405180830381600087803b1580156105e257600080fd5b505af11580156105f6573d6000803e3d6000fd5b5050505060028101805460ff191690556106103384610cab565b604080516001600160a01b03841681529051849133917fc82027111cdc25a13287e45aaad5b7c1b91e77bb72aa2a8cc6eb098f298224879181900360200190a350610668600160008051602061127c83398151915255565b5050565b610674610d93565b61067e6000610dc5565b565b338061068a610bc5565b6001600160a01b0316146106c15760405163118cdaa760e01b81526001600160a01b03821660048201526024015b60405180910390fd5b6106ca81610dc5565b50565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a008054600160401b810460ff16159067ffffffffffffffff166000811580156107135750825b905060008267ffffffffffffffff1660011480156107305750303b155b90508115801561073e575080155b1561075c5760405163f92ee8a960e01b815260040160405180910390fd5b845467ffffffffffffffff19166001178555831561078657845460ff60401b1916600160401b1785555b61078f33610dfd565b610797610e0e565b600080546001600160a01b0319167f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316179055831561081857845460ff60401b19168555604051600181527fc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d29060200160405180910390a15b5050505050565b610827610c73565b60008281526001602052604090206002015460ff161561085a57604051630fb1583f60e21b815260040160405180910390fd5b6000546001600160a01b03166342842e0e336040516001600160e01b031960e084901b1681526001600160a01b03909116600482015230602482015260448101859052606401600060405180830381600087803b1580156108ba57600080fd5b505af11580156108ce573d6000803e3d6000fd5b5050604080516080810182526001600160a01b0385811680835260208084018981526001858701818152426060880190815260008d8152838652898120985189546001600160a01b0319169816979097178855925187830155516002808801805460ff19169215159290921790915591516003909601959095558284528152848320805494850181558352822090920187905591518694509092507fa9262575db5f22d8b54192efce38602ac59d04bcdbcba1962fc351473de561469190a3610668600160008051602061127c83398151915255565b6000807f9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c1993005b546001600160a01b031692915050565b6000806109e4610c73565b6000838152600160205260409020600281015460ff16610a1757604051630c0144e560e11b815260040160405180910390fd5b80546001600160a01b03163314610a4157604051631022318760e21b815260040160405180910390fd5b600080546040805160808101825287815233602082019081526001600160801b0382840181815260608401828152855163fc6f786560e01b81529451600486015292516001600160a01b0390811660248601529051821660448501529151166064830152825193169363fc6f7865936084808401949391929183900301908290875af1158015610ad5573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610af99190611212565b6040805183815260208101839052929550909350859133917fd49b328847f240dd41d9f8a97b5334cb8d06f55e51ce78bacd364d5c62136d77910160405180910390a350610b54600160008051602061127c83398151915255565b915091565b6001600160a01b038116600090815260026020908152604091829020805483518184028101840190945280845260609392830182828015610bb957602002820191906000526020600020905b815481526020019060010190808311610ba5575b50505050509050919050565b6000807f237e158222e3e6968b72b9db0d8043aacf074ad9f650f0d1606b4d82ee432c006109c9565b610bf6610d93565b7f237e158222e3e6968b72b9db0d8043aacf074ad9f650f0d1606b4d82ee432c0080546001600160a01b0319166001600160a01b0383169081178255610c3a6109a4565b6001600160a01b03167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e2270060405160405180910390a35050565b60008051602061127c833981519152805460011901610ca557604051633ee5aeb560e01b815260040160405180910390fd5b60029055565b6001600160a01b0382166000908152600260205260408120905b8154811015610d795782828281548110610ce157610ce1611236565b906000526020600020015403610d675781548290610d01906001906110d2565b81548110610d1157610d11611236565b9060005260206000200154828281548110610d2e57610d2e611236565b906000526020600020018190555081805480610d4c57610d4c61124c565b60019003818190600052602060002001600090559055610d79565b80610d7181611262565b915050610cc5565b50505050565b600160008051602061127c83398151915255565b33610d9c6109a4565b6001600160a01b03161461067e5760405163118cdaa760e01b81523360048201526024016106b8565b7f237e158222e3e6968b72b9db0d8043aacf074ad9f650f0d1606b4d82ee432c0080546001600160a01b031916815561066882610e1e565b610e05610e8f565b6106ca81610ed8565b610e16610e8f565b61067e610f0a565b7f9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c19930080546001600160a01b031981166001600160a01b03848116918217845560405192169182907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3505050565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a0054600160401b900460ff1661067e57604051631afcd79f60e31b815260040160405180910390fd5b610ee0610e8f565b6001600160a01b0381166106c157604051631e4fbdf760e01b8152600060048201526024016106b8565b610d7f610e8f565b6001600160a01b03811681146106ca57600080fd5b600080600080600060808688031215610f3f57600080fd5b8535610f4a81610f12565b94506020860135610f5a81610f12565b935060408601359250606086013567ffffffffffffffff80821115610f7e57600080fd5b818801915088601f830112610f9257600080fd5b813581811115610fa157600080fd5b896020828501011115610fb357600080fd5b9699959850939650602001949392505050565b600060208284031215610fd857600080fd5b5035919050565b60008060408385031215610ff257600080fd5b8235610ffd81610f12565b946020939093013593505050565b6000806040838503121561101e57600080fd5b82359150602083013561103081610f12565b809150509250929050565b60006020828403121561104d57600080fd5b813561105881610f12565b9392505050565b6020808252825182820181905260009190848201906040850190845b818110156110975783518352928401929184019160010161107b565b50909695505050505050565b634e487b7160e01b600052601160045260246000fd5b808201808211156110cc576110cc6110a3565b92915050565b818103818111156110cc576110cc6110a3565b80516110f081610f12565b919050565b805162ffffff811681146110f057600080fd5b8051600281900b81146110f057600080fd5b80516001600160801b03811681146110f057600080fd5b6000806000806000806000806000806000806101808d8f03121561115457600080fd5b8c516bffffffffffffffffffffffff8116811461117057600080fd5b9b5061117e60208e016110e5565b9a5061118c60408e016110e5565b995061119a60608e016110e5565b98506111a860808e016110f5565b97506111b660a08e01611108565b96506111c460c08e01611108565b95506111d260e08e0161111a565b94506101008d015193506101208d015192506111f16101408e0161111a565b91506112006101608e0161111a565b90509295989b509295989b509295989b565b6000806040838503121561122557600080fd5b505080516020909101519092909150565b634e487b7160e01b600052603260045260246000fd5b634e487b7160e01b600052603160045260246000fd5b600060018201611274576112746110a3565b506001019056fe9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f00a26469706673582212209d2174ca8a00c9878374479d6335f3965f237c4aa73f863fe64683b3d5a570ca64736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101215760003560e01c806379ba5097116100ad57806394cbab9d1161007157806394cbab9d146102e8578063ac68a7481461030f578063e2afe8b314610322578063e30c397814610342578063f2fde38b1461034a57600080fd5b806379ba5097146102485780638129fc1c146102505780638a26f447146102585780638da5cb5b1461026b578063945633c11461027357600080fd5b8063485d3834116100f4578063485d3834146101e25780636be9479b146101ed5780636d51590014610200578063715018a614610215578063791b98bc1461021d57600080fd5b8063150b7a02146101265780631a5a3b861461016357806321806bf91461019957806324f50dd2146101ba575b600080fd5b610145610134366004610f27565b630a85bd0160e11b95945050505050565b6040516001600160e01b031990911681526020015b60405180910390f35b610189610171366004610fc6565b60009081526001602052604090206002015460ff1690565b604051901515815260200161015a565b6101ac6101a7366004610fc6565b61035d565b60405190815260200161015a565b6101cd6101c8366004610fc6565b6103bb565b6040805192835260208301919091520161015a565b6101ac6312cc030081565b6101ac6101fb366004610fdf565b6104c4565b61021361020e36600461100b565b6104f5565b005b61021361066c565b600054610230906001600160a01b031681565b6040516001600160a01b03909116815260200161015a565b610213610680565b6102136106cd565b61021361026636600461100b565b61081f565b6102306109a4565b6102b8610281366004610fc6565b600160208190526000918252604090912080549181015460028201546003909201546001600160a01b0390931692909160ff169084565b604080516001600160a01b039095168552602085019390935290151591830191909152606082015260800161015a565b6102307f000000000000000000000000000000000000000000000000000000000000000081565b6101cd61031d366004610fc6565b6109d9565b61033561033036600461103b565b610b59565b60405161015a919061105f565b610230610bc5565b61021361035836600461103b565b610bee565b6000818152600160205260408120600281015460ff166103805750600092915050565b60006312cc0300826003015461039691906110b9565b90508042106103a9575060009392505050565b6103b342826110d2565b949350505050565b600081815260016020526040812060020154819060ff166103ef57604051630c0144e560e11b815260040160405180910390fd5b6000805460405163133f757160e31b81526004810186905282918291829182916001600160a01b03909116906399fbab889060240161018060405180830381865afa158015610442573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104669190611131565b9b509b509b509b509b5050505050505050816001600160801b03169650806001600160801b031695506000856001600160801b031611156104ba576104ab84886110b9565b96506104b783876110b9565b95505b5050505050915091565b600260205281600052604060002081815481106104e057600080fd5b90600052602060002001600091509150505481565b6104fd610c73565b6000828152600160205260409020600281015460ff1661053057604051630c0144e560e11b815260040160405180910390fd5b80546001600160a01b0316331461055a57604051631022318760e21b815260040160405180910390fd5b6312cc0300816003015461056e91906110b9565b42101561058e576040516387c0f2d560e01b815260040160405180910390fd5b600054604051632142170760e11b81523060048201526001600160a01b03848116602483015260448201869052909116906342842e0e90606401600060405180830381600087803b1580156105e257600080fd5b505af11580156105f6573d6000803e3d6000fd5b5050505060028101805460ff191690556106103384610cab565b604080516001600160a01b03841681529051849133917fc82027111cdc25a13287e45aaad5b7c1b91e77bb72aa2a8cc6eb098f298224879181900360200190a350610668600160008051602061127c83398151915255565b5050565b610674610d93565b61067e6000610dc5565b565b338061068a610bc5565b6001600160a01b0316146106c15760405163118cdaa760e01b81526001600160a01b03821660048201526024015b60405180910390fd5b6106ca81610dc5565b50565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a008054600160401b810460ff16159067ffffffffffffffff166000811580156107135750825b905060008267ffffffffffffffff1660011480156107305750303b155b90508115801561073e575080155b1561075c5760405163f92ee8a960e01b815260040160405180910390fd5b845467ffffffffffffffff19166001178555831561078657845460ff60401b1916600160401b1785555b61078f33610dfd565b610797610e0e565b600080546001600160a01b0319167f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316179055831561081857845460ff60401b19168555604051600181527fc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d29060200160405180910390a15b5050505050565b610827610c73565b60008281526001602052604090206002015460ff161561085a57604051630fb1583f60e21b815260040160405180910390fd5b6000546001600160a01b03166342842e0e336040516001600160e01b031960e084901b1681526001600160a01b03909116600482015230602482015260448101859052606401600060405180830381600087803b1580156108ba57600080fd5b505af11580156108ce573d6000803e3d6000fd5b5050604080516080810182526001600160a01b0385811680835260208084018981526001858701818152426060880190815260008d8152838652898120985189546001600160a01b0319169816979097178855925187830155516002808801805460ff19169215159290921790915591516003909601959095558284528152848320805494850181558352822090920187905591518694509092507fa9262575db5f22d8b54192efce38602ac59d04bcdbcba1962fc351473de561469190a3610668600160008051602061127c83398151915255565b6000807f9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c1993005b546001600160a01b031692915050565b6000806109e4610c73565b6000838152600160205260409020600281015460ff16610a1757604051630c0144e560e11b815260040160405180910390fd5b80546001600160a01b03163314610a4157604051631022318760e21b815260040160405180910390fd5b600080546040805160808101825287815233602082019081526001600160801b0382840181815260608401828152855163fc6f786560e01b81529451600486015292516001600160a01b0390811660248601529051821660448501529151166064830152825193169363fc6f7865936084808401949391929183900301908290875af1158015610ad5573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610af99190611212565b6040805183815260208101839052929550909350859133917fd49b328847f240dd41d9f8a97b5334cb8d06f55e51ce78bacd364d5c62136d77910160405180910390a350610b54600160008051602061127c83398151915255565b915091565b6001600160a01b038116600090815260026020908152604091829020805483518184028101840190945280845260609392830182828015610bb957602002820191906000526020600020905b815481526020019060010190808311610ba5575b50505050509050919050565b6000807f237e158222e3e6968b72b9db0d8043aacf074ad9f650f0d1606b4d82ee432c006109c9565b610bf6610d93565b7f237e158222e3e6968b72b9db0d8043aacf074ad9f650f0d1606b4d82ee432c0080546001600160a01b0319166001600160a01b0383169081178255610c3a6109a4565b6001600160a01b03167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e2270060405160405180910390a35050565b60008051602061127c833981519152805460011901610ca557604051633ee5aeb560e01b815260040160405180910390fd5b60029055565b6001600160a01b0382166000908152600260205260408120905b8154811015610d795782828281548110610ce157610ce1611236565b906000526020600020015403610d675781548290610d01906001906110d2565b81548110610d1157610d11611236565b9060005260206000200154828281548110610d2e57610d2e611236565b906000526020600020018190555081805480610d4c57610d4c61124c565b60019003818190600052602060002001600090559055610d79565b80610d7181611262565b915050610cc5565b50505050565b600160008051602061127c83398151915255565b33610d9c6109a4565b6001600160a01b03161461067e5760405163118cdaa760e01b81523360048201526024016106b8565b7f237e158222e3e6968b72b9db0d8043aacf074ad9f650f0d1606b4d82ee432c0080546001600160a01b031916815561066882610e1e565b610e05610e8f565b6106ca81610ed8565b610e16610e8f565b61067e610f0a565b7f9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c19930080546001600160a01b031981166001600160a01b03848116918217845560405192169182907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3505050565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a0054600160401b900460ff1661067e57604051631afcd79f60e31b815260040160405180910390fd5b610ee0610e8f565b6001600160a01b0381166106c157604051631e4fbdf760e01b8152600060048201526024016106b8565b610d7f610e8f565b6001600160a01b03811681146106ca57600080fd5b600080600080600060808688031215610f3f57600080fd5b8535610f4a81610f12565b94506020860135610f5a81610f12565b935060408601359250606086013567ffffffffffffffff80821115610f7e57600080fd5b818801915088601f830112610f9257600080fd5b813581811115610fa157600080fd5b896020828501011115610fb357600080fd5b9699959850939650602001949392505050565b600060208284031215610fd857600080fd5b5035919050565b60008060408385031215610ff257600080fd5b8235610ffd81610f12565b946020939093013593505050565b6000806040838503121561101e57600080fd5b82359150602083013561103081610f12565b809150509250929050565b60006020828403121561104d57600080fd5b813561105881610f12565b9392505050565b6020808252825182820181905260009190848201906040850190845b818110156110975783518352928401929184019160010161107b565b50909695505050505050565b634e487b7160e01b600052601160045260246000fd5b808201808211156110cc576110cc6110a3565b92915050565b818103818111156110cc576110cc6110a3565b80516110f081610f12565b919050565b805162ffffff811681146110f057600080fd5b8051600281900b81146110f057600080fd5b80516001600160801b03811681146110f057600080fd5b6000806000806000806000806000806000806101808d8f03121561115457600080fd5b8c516bffffffffffffffffffffffff8116811461117057600080fd5b9b5061117e60208e016110e5565b9a5061118c60408e016110e5565b995061119a60608e016110e5565b98506111a860808e016110f5565b97506111b660a08e01611108565b96506111c460c08e01611108565b95506111d260e08e0161111a565b94506101008d015193506101208d015192506111f16101408e0161111a565b91506112006101608e0161111a565b90509295989b509295989b509295989b565b6000806040838503121561122557600080fd5b505080516020909101519092909150565b634e487b7160e01b600052603260045260246000fd5b634e487b7160e01b600052603160045260246000fd5b600060018201611274576112746110a3565b506001019056fe9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f00a26469706673582212209d2174ca8a00c9878374479d6335f3965f237c4aa73f863fe64683b3d5a570ca64736f6c63430008140033",
+  "devdoc": {
+    "details": "Implements IERC721Receiver to accept NFT transfers",
+    "errors": {
+      "InvalidInitialization()": [
+        {
+          "details": "The contract is already initialized."
+        }
+      ],
+      "NotInitializing()": [
+        {
+          "details": "The contract is not initializing."
+        }
+      ],
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ],
+      "ReentrancyGuardReentrantCall()": [
+        {
+          "details": "Unauthorized reentrant call."
+        }
+      ]
+    },
+    "events": {
+      "FeesClaimed(address,uint256,uint256,uint256)": {
+        "params": {
+          "amount0": "Amount of token0 fees claimed",
+          "amount1": "Amount of token1 fees claimed",
+          "owner": "Address claiming the fees",
+          "tokenId": "NFT position ID"
+        }
+      },
+      "Initialized(uint64)": {
+        "details": "Triggered when the contract has been initialized or reinitialized."
+      },
+      "NFTLocked(address,uint256)": {
+        "params": {
+          "owner": "Address of the NFT owner",
+          "tokenId": "ID of the locked NFT"
+        }
+      },
+      "NFTUnlocked(address,uint256,address)": {
+        "params": {
+          "owner": "Address of the NFT owner",
+          "tokenId": "ID of the unlocked NFT"
+        }
+      }
+    },
+    "kind": "dev",
+    "methods": {
+      "acceptOwnership()": {
+        "details": "The new owner accepts the ownership transfer."
+      },
+      "checkAvailableFees(uint256)": {
+        "params": {
+          "tokenId": "The NFT position ID"
+        },
+        "returns": {
+          "amount0": "Available fees for token0",
+          "amount1": "Available fees for token1"
+        }
+      },
+      "claimFees(uint256)": {
+        "params": {
+          "tokenId": "The NFT position ID"
+        }
+      },
+      "getNFTsByOwner(address)": {
+        "params": {
+          "owner": "The address to query"
+        },
+        "returns": {
+          "_0": "Array of NFT IDs owned by the address"
+        }
+      },
+      "getRemainingLockTime(uint256)": {
+        "params": {
+          "tokenId": "The NFT ID to check"
+        },
+        "returns": {
+          "_0": "Remaining time in seconds, 0 if lock period has ended"
+        }
+      },
+      "isNFTLocked(uint256)": {
+        "params": {
+          "tokenId": "The NFT ID to check"
+        },
+        "returns": {
+          "_0": "true if NFT is locked"
+        }
+      },
+      "lockNFT(uint256,address)": {
+        "params": {
+          "tokenId": "The ID of the NFT to lock"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "pendingOwner()": {
+        "details": "Returns the address of the pending owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner. Setting `newOwner` to the zero address is allowed; this can be used to cancel an initiated ownership transfer."
+      },
+      "unlockNFT(uint256,address)": {
+        "params": {
+          "tokenId": "The ID of the NFT to unlock"
+        }
+      }
+    },
+    "title": "Lock",
+    "version": 1
+  },
+  "userdoc": {
+    "errors": {
+      "LockPeriodNotEnded()": [
+        {
+          "notice": "Thrown when lock period has not ended"
+        }
+      ],
+      "NFTAlreadyLocked()": [
+        {
+          "notice": "Thrown when NFT is already locked"
+        }
+      ],
+      "NFTNotLocked()": [
+        {
+          "notice": "Thrown when NFT is not locked"
+        }
+      ],
+      "NotNFTOwner()": [
+        {
+          "notice": "Thrown when caller is not the NFT owner"
+        }
+      ]
+    },
+    "events": {
+      "FeesClaimed(address,uint256,uint256,uint256)": {
+        "notice": "Emitted when fees are claimed"
+      },
+      "NFTLocked(address,uint256)": {
+        "notice": "Emitted when an NFT is locked"
+      },
+      "NFTUnlocked(address,uint256,address)": {
+        "notice": "Emitted when an NFT is unlocked"
+      }
+    },
+    "kind": "user",
+    "methods": {
+      "checkAvailableFees(uint256)": {
+        "notice": "Check available fees for a locked NFT position"
+      },
+      "claimFees(uint256)": {
+        "notice": "Claim accumulated fees for a locked NFT position"
+      },
+      "getNFTsByOwner(address)": {
+        "notice": "Get all NFTs owned by an address"
+      },
+      "getRemainingLockTime(uint256)": {
+        "notice": "Get remaining lock time for an NFT"
+      },
+      "initialize()": {
+        "notice": "Initialize the lock contract"
+      },
+      "isNFTLocked(uint256)": {
+        "notice": "Check if an NFT is currently locked"
+      },
+      "lockNFT(uint256,address)": {
+        "notice": "Lock a Uniswap V3 LP NFT"
+      },
+      "onERC721Received(address,address,uint256,bytes)": {
+        "notice": "Implements IERC721Receiver"
+      },
+      "unlockNFT(uint256,address)": {
+        "notice": "Unlock an NFT after the lock period"
+      }
+    },
+    "notice": "Contract for locking Uniswap V3 LP NFTs and managing fee claims",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 10371,
+        "contract": "contracts/Lock.sol:Lock",
+        "label": "positionManager",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_contract(INonfungiblePositionManager)11615"
+      },
+      {
+        "astId": 10376,
+        "contract": "contracts/Lock.sol:Lock",
+        "label": "lockedNFTs",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_mapping(t_uint256,t_struct(LockedNFT)10368_storage)"
+      },
+      {
+        "astId": 10381,
+        "contract": "contracts/Lock.sol:Lock",
+        "label": "ownerNFTs",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_uint256)dyn_storage": {
+        "base": "t_uint256",
+        "encoding": "dynamic_array",
+        "label": "uint256[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_contract(INonfungiblePositionManager)11615": {
+        "encoding": "inplace",
+        "label": "contract INonfungiblePositionManager",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_uint256)dyn_storage"
+      },
+      "t_mapping(t_uint256,t_struct(LockedNFT)10368_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct Lock.LockedNFT)",
+        "numberOfBytes": "32",
+        "value": "t_struct(LockedNFT)10368_storage"
+      },
+      "t_struct(LockedNFT)10368_storage": {
+        "encoding": "inplace",
+        "label": "struct Lock.LockedNFT",
+        "members": [
+          {
+            "astId": 10361,
+            "contract": "contracts/Lock.sol:Lock",
+            "label": "owner",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 10363,
+            "contract": "contracts/Lock.sol:Lock",
+            "label": "tokenId",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 10365,
+            "contract": "contracts/Lock.sol:Lock",
+            "label": "isLocked",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_bool"
+          },
+          {
+            "astId": 10367,
+            "contract": "contracts/Lock.sol:Lock",
+            "label": "lockedAt",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "128"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
