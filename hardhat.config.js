@@ -127,7 +127,7 @@ module.exports = {
 
         },
         blast: {
-            url: "https://rpc.ankr.com/blast/a2e2e0ee70153e9f9ea6eca45dbdce42021037389167d0e56825030f04213d1c",
+            url: `https://rpc.ankr.com/blast/${process.env.INFURA_KEY}`,
             accounts,
             chainId: 81457,
             live: true,
@@ -141,7 +141,7 @@ module.exports = {
 
         },
         linea: {
-            url: "https://rpc.ankr.com/linea/a2e2e0ee70153e9f9ea6eca45dbdce42021037389167d0e56825030f04213d1c",
+            url: `https://rpc.ankr.com/linea/${process.env.INFURA_KEY}`,
             accounts,
             chainId: 59144,
             live: true,
@@ -182,7 +182,7 @@ module.exports = {
             }
         },
         polygon: {
-            url: "https://rpc.ankr.com/polygon/a2e2e0ee70153e9f9ea6eca45dbdce42021037389167d0e56825030f04213d1c",
+            url: `https://rpc.ankr.com/polygon/${process.env.INFURA_KEY}`,
             accounts,
             chainId: 137,
             live: true,
@@ -230,7 +230,7 @@ module.exports = {
         enabled: true,
         currency: 'USD',
         gasPrice: 3,
-        coinmarketcap: '66e56a41-4420-45b3-ac5e-d874bd9fffb6',
+        coinmarketcap: `${process.env.CMCKEY}`,
         token: 'BNB',
         // gasPriceApi: "https://api-optimistic.etherscan.io/api?module=proxy&action=eth_gasPrice&apikey=WU61QQB9DF2R2PFH6YTHU8KRZIEU6ER4YU"
     }
