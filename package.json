@@ -24,12 +24,23 @@
         "linea:verify": "hardhat --network linea verifix",
         "arbitrum:deploy": "hardhat --network arbitrum deploy",
         "arbitrum:verify": "hardhat --network arbitrum verifix",
+        "incentiv:deploy": "hardhat --network incentiv deploy",
+        "incentiv:verify": "hardhat --network incentiv verifix",
         "done": "npm run export && node build"
     },
     "devDependencies": {
+        "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+        "@nomicfoundation/hardhat-ethers": "^3.1.0",
+        "@nomicfoundation/hardhat-network-helpers": "^1.1.0",
         "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+        "@nomicfoundation/hardhat-verify": "^1.1.1",
+        "@typechain/ethers-v6": "^0.4.3",
+        "@typechain/hardhat": "^8.0.3",
+        "@types/chai": "^4.3.20",
+        "@types/mocha": "^10.0.10",
+        "chai": "^4.5.0",
         "dotenv": "^16.3.1",
-        "hardhat": "^2.22.11",
+        "hardhat": "^2.24.3",
         "hardhat-abi-exporter": "^2.10.1",
         "hardhat-contract-sizer": "^2.10.0",
         "hardhat-deploy": "^0.12.4",
@@ -37,7 +48,11 @@
         "hardhat-log-remover": "^2.0.2",
         "hardhat-preprocessor": "^0.1.5",
         "hardhat-spdx-license-identifier": "^2.2.0",
-        "solhint": "^4.0.0"
+        "solhint": "^4.0.0",
+        "solidity-coverage": "^0.8.16",
+        "ts-node": "^10.9.2",
+        "typechain": "^8.3.2",
+        "typescript": "^5.9.2"
     },
     "dependencies": {
         "@openzeppelin/contracts": "^5.0.2",
@@ -48,6 +63,7 @@
         "eslint": "^8.54.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-config-standard": "^17.1.0",
+        "ethers": "^6.14.4",
         "uuid": "^9.0.1"
     }
 }

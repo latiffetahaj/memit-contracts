@@ -1,7 +1,7 @@
 module.exports = async function ({ deployments, getChainId, getNamedAccounts, }) {
     const { deploy } = deployments;
     const chainId = await getChainId();
-    const { deployer, ether, bnb, arbitrum, base, blast, linea, avalanche, zora } = await getNamedAccounts();
+    const { deployer, ether, bnb, arbitrum, base, blast, linea, avalanche, zora, dev, apechain, polygon, incentiv} = await getNamedAccounts();
     const accounts = {
         1: ether, // mainnet
         11155111: deployer, // sepolia
@@ -12,7 +12,11 @@ module.exports = async function ({ deployments, getChainId, getNamedAccounts, })
         81457: blast, // 
         7777777: zora, // Zora
         999999999: zora, // Zora Sepolia
-        59144: linea
+        59144: linea,
+        11691: dev, // dev
+        33139: apechain, // apechain
+        137: polygon, // polygon
+        28802: incentiv // incentiv
     };
 
     await deploy("Factory", {

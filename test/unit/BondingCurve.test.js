@@ -32,9 +32,9 @@ describe("BondingCurve Contract", function () {
         minContribution: MIN_CONTRIBUTION,
         poolFee: POOL_FEE,
         sellFee: SELL_FEE,
-        uniswapV3Factory: "0x1F98431c8aD98523631AE4a59f267346ea31F984",
-        positionManager: "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
-        weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        uniswapV3Factory: "0xe329aD6196c988d323340Ac2CE8a4b1b06401373",
+        positionManager: "0xe8B6FAb48DBc655877287818cb066B73C39A249A",
+        weth: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
         feeTo: ethers.ZeroAddress // Will be updated with owner address
     };
 

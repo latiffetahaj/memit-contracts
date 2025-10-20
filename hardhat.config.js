@@ -6,19 +6,20 @@ require('hardhat-deploy');
 require('hardhat-spdx-license-identifier');
 require('hardhat-log-remover');
 require('./tasks/verifier.js');
-require('dotenv').config({ path: __dirname + '/.env' });
+const path = require('path');
+
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const { removeConsoleLog } = require("hardhat-preprocessor");
 /** @type import('hardhat/config').HardhatUserConfig */
 const accounts = {
     mnemonic: process.env.MNEMONIC,
-    path: "m/44'/60'/0'/0", // 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+    // path: "m/44'/60'/0'/0", // 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
     initialIndex: 0,
     count: 200,
-    passphrase: "",
 };
 module.exports = {
     preprocess: {
-        eachLine: removeConsoleLog((bre) => bre.network.name !== "hardhat" && bre.network.name !== "localhost"),
+        eachLine: removeConsoleLog((bre) => bre.network.name !== "hardhat" && bre.network.name !== "localhost" && bre.network.name !== "dev"),
     },
     mocha: {
         timeout: 120000
@@ -55,7 +56,7 @@ module.exports = {
         runOnCompile: true,
         disambiguatePaths: false,
     },
-    defaultNetwork: 'hardhat',
+    defaultNetwork: 'incentiv',
     verify: {
         skipContracts: [],
         etherscan: {
@@ -71,9 +72,36 @@ module.exports = {
         avalanche: { default: 5 },
         zora: { default: 6 },
         blast: { default: 7 },
-        linea: { default: 8 }
+        linea: { default: 8 },
+        dev: { default: 0 },
+        apechain: { default: 0 },
+        polygon: { default: 0 },
+        incentiv: { default: 0 }
     },
     networks: {
+        incentiv: {
+            url: process.env.RPC_URL,
+            chainId: 28802,
+            accounts: { mnemonic: process.env.MNEMONIC },
+        },
+        dev: {
+            url: 'http://127.0.0.1:8545',
+            chainId: 11691,
+            accounts: { mnemonic: 'test test test test test test test test test test test junk' },
+            },
+        apechain: {
+            url: "https://apechain.calderachain.xyz/http",
+            accounts: { mnemonic: 'test test test test test test test test test test test junk' },
+            chainId: 33139,
+            live: true,
+            saveDeployments: true,
+            verify: {
+                etherscan: {
+                    apiKey: process.env.APECHAINSCAN_KEY,
+                    apiUrl: 'https://apechain.calderaexplorer.xyz/api/v2'
+                }
+            }
+        },
         hardhat: {
             chainId: 30008,
             forking: {
@@ -182,8 +210,8 @@ module.exports = {
             }
         },
         polygon: {
-            url: `https://rpc.ankr.com/polygon/${process.env.INFURA_KEY}`,
-            accounts,
+            url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
+            accounts: { mnemonic: process.env.MNEMONIC },
             chainId: 137,
             live: true,
             gasMultiplier: 2,

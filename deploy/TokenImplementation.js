@@ -1,7 +1,7 @@
 module.exports = async function ({ deployments, getChainId, getNamedAccounts, }) {
     const { deploy } = deployments;
     const chainId = await getChainId();
-    const { deployer, ether, bnb, arbitrum, base, avalanche, linea, blast, zora } = await getNamedAccounts();
+    const { deployer, ether, bnb, arbitrum, base, avalanche, linea, blast, zora, incentiv } = await getNamedAccounts();
     const accounts = {
         1: ether, // mainnet
         11155111: deployer, // sepolia
@@ -13,6 +13,7 @@ module.exports = async function ({ deployments, getChainId, getNamedAccounts, })
         999999999: zora, // Zora Sepolia,
         81457: blast, // 
         59144: linea,
+        28802: incentiv
     };
     await deploy("TokenImplementation", {
         from: accounts[chainId],

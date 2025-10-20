@@ -1,6 +1,6 @@
 module.exports = async function ({ deployments, getNamedAccounts, getChainId }) {
     const { deploy } = deployments;
-    const { deployer, ether, bnb, arbitrum, base, avalanche, linea, zora, blast } = await getNamedAccounts();
+    const { deployer, ether, bnb, arbitrum, base, avalanche, linea, zora, blast, incentiv } = await getNamedAccounts();
     const accounts = {
         1: ether, // mainnet
         11155111: deployer, // sepolia
@@ -12,6 +12,7 @@ module.exports = async function ({ deployments, getNamedAccounts, getChainId }) 
         7777777: zora, // Zora
         999999999: zora, // Zora Sepolia
         59144: linea,
+        28802: incentiv, // incentiv
     };
     const chainId = await getChainId();
     // https://docs.uniswap.org/contracts/v3/reference/deployments/
@@ -26,6 +27,7 @@ module.exports = async function ({ deployments, getNamedAccounts, getChainId }) 
         999999999: "0xB8458EaAe43292e3c1F7994EFd016bd653d23c20", // Zora Sepolia
         81457: "0xB218e4f7cF0533d4696fDfC419A0023D33345F28", // Blast
         59144: "0x80C7DD17B01855a6D2347444a0FCC36136a314de", // Blast
+        28802: "0xe8B6FAb48DBc655877287818cb066B73C39A249A", // Incentiv
     };
 
     const positionManager = positionManagers[chainId];
