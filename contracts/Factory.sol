@@ -123,15 +123,7 @@ contract Factory is
         // Deploy bonding curve contract
         bondingCurveAddress = bondingCurveImplementation.clone();
 
-        // Initialize bonding curve
-        IBondingCurve(bondingCurveAddress).initialize(
-            tokenAddress,
-            lockContract,
-            _msgSender(),
-            settings
-        );
-
-        // Mint total supply to the bonding curve contract
+        // Mint total supply to the bonding curve contract (mint before curve init)
         (bool mintSuccess, ) = tokenAddress.call(
             abi.encodeWithSignature(
                 "mintTotalSupply(address)",
@@ -139,6 +131,14 @@ contract Factory is
             )
         );
         if (!mintSuccess) revert TokenMintingFailed();
+
+        // Initialize bonding curve after tokens are minted so reserves are correct
+        IBondingCurve(bondingCurveAddress).initialize(
+            tokenAddress,
+            lockContract,
+            _msgSender(),
+            settings
+        );
 
         // Store the relationship between token and bonding curve
         tokenToBondingCurve[tokenAddress] = bondingCurveAddress;
