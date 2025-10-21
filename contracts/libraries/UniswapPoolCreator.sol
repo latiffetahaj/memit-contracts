@@ -35,9 +35,13 @@ library UniswapPoolCreator {
     ) internal returns (address pool) {
         IUniswapV3Factory factory = IUniswapV3Factory(params.factory);
         pool = factory.createPool(params.token, params.weth, params.fee);
+        // Uniswap v3 expects sqrtPriceX96 for price = token1 per token0.
+        // token0 is the lower address; adjust numerator/denominator accordingly.
+        bool tokenIs0 = params.token < params.weth;
+        uint256 priceNumerator = tokenIs0 ? params.ethReserve : params.tokenReserve;
+        uint256 priceDenominator = tokenIs0 ? params.tokenReserve : params.ethReserve;
         uint160 sqrtPriceX96 = uint160(
-            Math.sqrt((params.ethReserve * Q96) / params.tokenReserve) *
-                Math.sqrt(Q96)
+            Math.sqrt((priceNumerator * Q96) / priceDenominator) * Math.sqrt(Q96)
         );
         IUniswapV3Pool(pool).initialize(sqrtPriceX96);
     }

@@ -39,7 +39,7 @@ contract BondingCurve is
     address public uniswapPool;
     uint256 public lpTokenId;
     bool public isFinalized;
-    enum Phase { Bonding, Finalized }
+    enum Phase { PreBonding, Bonding, Finalized }
     Phase public currentPhase;
     uint256 public ethReserve;
     uint256 public tokenReserve;
