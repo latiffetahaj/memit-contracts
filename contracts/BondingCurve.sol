@@ -48,7 +48,6 @@ contract BondingCurve is
     enum Phase {
         PreBonding,
         Bonding,
-        BondingCompleted,
         Finalized
     }
 
@@ -67,11 +66,6 @@ contract BondingCurve is
 
     modifier onlyPhase(Phase phase) {
         if (currentPhase != phase) revert InvalidPhase();
-        _;
-    }
-    modifier onlyBondingOrCompleted() {
-        if (currentPhase != Phase.Bonding && currentPhase != Phase.BondingCompleted)
-            revert InvalidPhase();
         _;
     }
 
@@ -144,7 +138,7 @@ contract BondingCurve is
         returns (uint256 tokensToReceive)
     {
         if (msg.value < settings.minContribution) revert ContributionTooLow();
-        if (totalETHCollected >= settings.bondingTarget)
+        if (totalETHCollected > settings.bondingTarget)
             revert BondingTargetReached();
 
         tokensToReceive = BondingMath.calculateTokensForETH(
@@ -162,7 +156,7 @@ contract BondingCurve is
         token.safeTransfer(msg.sender, tokensToReceive);
         emit TokensPurchased(msg.sender, msg.value, tokensToReceive);
         if (totalETHCollected >= settings.bondingTarget) {
-            currentPhase = Phase.BondingCompleted;
+            currentPhase = Phase.Finalized;
         }
     }
 
@@ -172,7 +166,7 @@ contract BondingCurve is
     )
         external
         nonReentrant
-        onlyBondingOrCompleted()
+        onlyPhase(Phase.Bonding)
         returns (uint256 ethToReceive, uint256 fee)
     {
         if (tokenAmount == 0) revert InsufficientTokens();
