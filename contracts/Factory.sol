@@ -61,8 +61,7 @@ contract Factory is
         bondingCurveImplementation = bondingCurveImpl;
         lockContract = lockContractAddr;
         settings = initialSettings;
-        settings.preBondingTarget = (initialSettings.virtualEth * 20) / 100;
-        if (settings.bondingTarget <= settings.preBondingTarget)
+        if (settings.bondingTarget <= settings.virtualEth)
             revert InvalidDeploymentParameters();
         deploymentFee = factoryFees;
     }
@@ -72,12 +71,10 @@ contract Factory is
     ) external onlyOwner {
         // Update settings
         settings = newSettings;
-        settings.preBondingTarget = (newSettings.virtualEth * 20) / 100;
-        if (settings.bondingTarget <= settings.preBondingTarget)
+        if (settings.bondingTarget <= settings.virtualEth)
             revert InvalidDeploymentParameters();
         emit BondingCurveSettingsUpdated(
             newSettings.virtualEth,
-            newSettings.preBondingTarget,
             newSettings.bondingTarget,
             newSettings.minContribution,
             newSettings.poolFee
