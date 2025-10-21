@@ -67,7 +67,6 @@ interface IFactory {
     // Add new events
     event BondingCurveSettingsUpdated(
         uint256 virtualEth,
-        uint256 preBondingTarget,
         uint256 bondingTarget,
         uint256 minContribution,
         uint24 poolFee
@@ -75,7 +74,6 @@ interface IFactory {
 
     struct BondingCurveSettings {
         uint256 virtualEth;
-        uint256 preBondingTarget;
         uint256 bondingTarget;
         uint256 minContribution;
         uint24 poolFee;

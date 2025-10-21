@@ -5,18 +5,15 @@ import "./IFactory.sol";
 /**
  * @title IBondingCurve
  * @notice Interface for the bonding curve contract that manages token distribution and liquidity
- * @dev Implements constant product AMM formula with pre-bonding and bonding phases
+ * @dev Implements constant product AMM formula with bonding and finalization phases
  */
 interface IBondingCurve {
     // Custom Errors
     error ZeroAddress();
     error InitializationFailed();
-    error PreBondingTargetReached();
     error BondingTargetReached();
     error ContributionTooLow();
     error InvalidPhase();
-    error TokensLocked();
-    error TokensNotLocked();
     error InsufficientTokens();
     error InsufficientETH();
     error SlippageExceeded();
@@ -26,16 +23,6 @@ interface IBondingCurve {
     error NoFeesToWithdraw();
 
     // Events
-    event PreBondingContribution(
-        address indexed contributor,
-        uint256 amount,
-        uint256 tokenAmount
-    );
-
-    event PreBondingCompleted(uint256 totalContributed, uint256 totalTokens);
-
-    event TokensUnlocked(address indexed account);
-
     event TokensPurchased(
         address indexed buyer,
         uint256 ethAmount,
@@ -70,11 +57,6 @@ interface IBondingCurve {
         address owner_,
         IFactory.BondingCurveSettings calldata settings_
     ) external;
-
-    /**
-     * @notice Contribute ETH during pre-bonding phase
-     */
-    function contributePreBonding() external payable;
 
     /**
      * @notice Buy tokens during bonding phase
