@@ -101,6 +101,7 @@ contract BondingCurve is
         emit TokensPurchased(msg.sender, msg.value, tokensToReceive);
         if (totalETHCollected >= settings.bondingTarget) {
             currentPhase = Phase.Finalized;
+            finalizeCurve();
         }
     }
     function sellTokens(
@@ -129,7 +130,7 @@ contract BondingCurve is
         payable(settings.feeTo).sendValue(fee);
         emit TokensSold(msg.sender, tokenAmount, ethToReceive, fee);
     }
-    function finalizeCurve() external nonReentrant {
+    function finalizeCurve() internal nonReentrant {
         if (totalETHCollected < settings.bondingTarget)
             revert CannotFinalizeYet();
         if (isFinalized) revert AlreadyFinalized();

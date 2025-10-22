@@ -76,9 +76,4 @@ interface IBondingCurve {
         uint256 minETH
     ) external returns (uint256 ethToReceive, uint256 fee);
 
-    /**
-     * @notice Finalize the curve and create Uniswap pool
-     * @dev Only callable when bonding target is reached
-     */
-    function finalizeCurve() external;
 }
